@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found – BlogSphere{% endblock %}
+{% block meta_description %}The page you were looking for doesn't exist. Explore our latest articles instead.{% endblock %}
+{% block content %}
+
+<div class="not-found-page">
+  <div class="container">
+
+    <!-- ── Hero ── -->
+    <div class="nf-hero">
+      <div class="nf-code">404</div>
+      <h1 class="nf-title">This page doesn't exist.</h1>
+      <p class="nf-sub">The link may be broken, the article may have moved, or the URL might have a typo. Let's get you back on track.</p>
+      <div class="nf-actions">
+        <a href="/" class="nf-btn-primary">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Go home
+        </a>
+        <a href="/articles" class="nf-btn-secondary">Browse all articles</a>
+        <button class="nf-btn-secondary" id="nf-search-trigger">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Search
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Divider ── -->
+    {% if recent_articles %}
+    <div class="nf-divider">
+      <span class="nf-divider-label">Recent articles</span>
+    </div>
+
+    <!-- ── Recent articles grid ── -->
+    <div class="articles-grid nf-grid">
+      {% for article in recent_articles %}
+      <article class="article-card" onclick="location.href='/article/{{ article.slug }}'">
+        <div class="card-img-wrap">
+          {% if article.featured_image %}
+          <img src="{{ article.featured_image }}" alt="{{ article.title }}" loading="lazy"
+               width="{{ article.featured_image_width | default(800, true) }}"
+               height="{{ article.featured_image_height | default(450, true) }}">
+          {% else %}
+          <div class="card-img-ph">{{ article.category }}</div>
+          {% endif %}
+          <span class="card-badge">{{ article.category }}</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">{{ article.title }}</h3>
+          <p class="card-excerpt">{{ article.excerpt }}</p>
+          <div class="card-meta">
+            <span class="card-author">{{ article.author }}</span>
+            <span class="meta-sep">&middot;</span>
+            <span>{{ article.date }}</span>
+            <span class="meta-sep">&middot;</span>
+            <span class="card-readtime">{{ article.read_time }} min</span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<style>
+.not-found-page {
+  padding: 72px 0 80px;
+  min-height: 70vh;
+}
+
+/* Hero block */
+.nf-hero {
+  max-width: 580px;
+  margin: 0 auto 60px;
+  text-align: center;
+}
+.nf-code {
+  font-family: var(--serif);
+  font-size: clamp(80px, 15vw, 140px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--paper-3);
+  letter-spacing: -4px;
+  margin-bottom: 16px;
+  user-select: none;
+}
+[data-theme="dark"] .nf-code { color: var(--paper-3); }
+
+.nf-title {
+  font-family: var(--serif);
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+.nf-sub {
+  font-size: 15px;
+  color: var(--ink-3);
+  line-height: 1.75;
+  margin-bottom: 32px;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Action buttons */
+.nf-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.nf-btn-primary {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--ink); color: var(--paper);
+  padding: 11px 22px; border-radius: 8px;
+  font-size: 14px; font-weight: 600; font-family: var(--sans);
+  text-decoration: none;
+  transition: background 0.15s, transform 0.15s;
+}
+.nf-btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+
+.nf-btn-secondary {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: none; color: var(--ink-2);
+  padding: 10px 20px; border-radius: 8px;
+  border: 1px solid var(--paper-3);
+  font-size: 14px; font-weight: 500; font-family: var(--sans);
+  text-decoration: none; cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.nf-btn-secondary:hover {
+  border-color: var(--ink-3);
+  color: var(--ink);
+  background: var(--paper-2);
+}
+
+/* Divider with label */
+.nf-divider {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 36px;
+}
+.nf-divider::before,
+.nf-divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--paper-3);
+}
+.nf-divider-label {
+  font-size: 11px; font-family: var(--mono);
+  letter-spacing: 1.2px; text-transform: uppercase;
+  color: var(--ink-3); white-space: nowrap;
+}
+
+/* Grid: 2 col max on 404 so cards don't get too small */
+.nf-grid {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+@media (max-width: 480px) {
+  .not-found-page { padding: 48px 0 60px; }
+  .nf-code { letter-spacing: -2px; }
+}
+</style>
+
+<script>
+document.getElementById('nf-search-trigger') &&
+  document.getElementById('nf-search-trigger').addEventListener('click', function () {
+    var trigger = document.getElementById('search-trigger');
+    if (trigger) trigger.click();
+  });
+</script>
+{% endblock %}

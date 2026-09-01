@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}All Articles – BlogSphere{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <!-- Clean section header – no border-bottom, just a subtle underline on the title -->
+    <div class="section-header" style="border-bottom: none; padding-bottom: 0; margin-bottom: 28px;">
+      <h2 class="section-title" style="margin-bottom: 0; border-bottom: 2px solid var(--ink); padding-bottom: 10px; display: inline-block;">
+        All Articles
+        <span style="font-size:13px; color:var(--ink-3); font-family:var(--mono); font-weight:400; margin-left:12px;">
+          {{ articles | length }} article{{ 's' if articles | length != 1 else '' }}
+        </span>
+      </h2>
+    </div>
+
+    {% if articles %}
+    <div class="articles-grid">
+      {% for article in articles %}
+      <article class="article-card" onclick="location.href='/article/{{ article.slug }}'">
+        <div class="card-image-wrapper">
+          {% if article.featured_image %}
+          <img src="{{ article.featured_image }}" alt="{{ article.title }}" class="card-img" loading="lazy"
+               width="{{ article.featured_image_width | default(800, true) }}"
+               height="{{ article.featured_image_height | default(450, true) }}">
+          {% else %}
+          <div class="card-img-placeholder">
+            <span class="card-img-ph">{{ article.category }}</span>
+          </div>
+          {% endif %}
+          <div class="card-category-badge">{{ article.category }}</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">{{ article.title }}</h3>
+          <p class="card-excerpt">{{ article.excerpt }}</p>
+          <div class="card-meta">
+            <span class="card-author">{{ article.author }}</span>
+            <span class="dot">&middot;</span>
+            <span>{{ article.date }}</span>
+            <span class="dot">&middot;</span>
+            <span class="card-readtime">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-1px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              {{ article.read_time }} min
+            </span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-state-icon">&#9998;</div>
+      <h3>No articles yet</h3>
+      <p>The first story is waiting to be written.</p>
+      <a href="/admin/new" class="btn-load-more" style="text-decoration:none;display:inline-flex;">Write the first one &rarr;</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<style>
+/* card-category-badge defined here for standalone page */
+.card-category-badge {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.8px; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 20px;
+  font-family: var(--mono);
+  pointer-events: none;
+}
+.card-body { padding: 1.1rem 1.25rem 1.4rem; }
+.card-excerpt {
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card-author { font-weight: 500; color: var(--ink-2); }
+.card-readtime { display: inline-flex; align-items: center; gap: 3px; color: var(--ink-3); }
+.article-card:hover .card-title { color: var(--accent); }
+
+.empty-state {
+  text-align: center;
+  padding: 5rem 1rem;
+  color: var(--ink-3);
+}
+.empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+.empty-state h3 { font-family: var(--serif); font-size: 1.6rem; color: var(--ink); margin-bottom: 0.5rem; }
+.empty-state p { margin-bottom: 1.5rem; }
+
+/* Ensure the global progress bar stays on top of the nav but doesn't overlap content */
+#global-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--accent);
+  z-index: 100;   /* same as nav, so it sits just above the nav bar */
+}
+nav {
+  z-index: 99;    /* slightly lower than the progress bar */
+}
+</style>
+{% endblock %}

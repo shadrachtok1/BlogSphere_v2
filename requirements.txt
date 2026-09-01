@@ -1,0 +1,8 @@
+flask
+markdown
+python-dotenv
+openai
+pytrends
+requests
+werkzeug
+gunicorn

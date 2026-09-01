@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Cookie Policy – BlogSphere{% endblock %}
+{% block meta_description %}How BlogSphere uses cookies and similar technologies, including cookies set by Google AdSense.{% endblock %}
+{% block og_title %}Cookie Policy – BlogSphere{% endblock %}
+{% block content %}
+
+<div class="static-hero">
+  <div class="container">
+    <div class="static-hero-inner">
+      <div class="static-eyebrow">Legal</div>
+      <h1 class="static-hero-title">Cookie Policy</h1>
+      <p class="static-hero-sub">
+        What cookies we use, and why.
+        <br>Last updated: <strong>{{ now.strftime('%B %d, %Y') if now else '' }}</strong>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<section class="static-section">
+  <div class="container">
+    <div class="privacy-body">
+
+      <div class="policy-section">
+        <h2>What are cookies?</h2>
+        <p>Cookies are small text files placed on your device by your browser when you visit a website. They help sites remember information about your visit, such as preferences, or enable features like advertising.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Cookies we set directly</h2>
+        <p>BlogSphere stores a single preference in your browser's <code>localStorage</code> — not a traditional cookie — to remember whether you prefer light or dark mode. This value never leaves your device and is not transmitted to us or to any third party.</p>
+        <p>We also set one strictly necessary session cookie, named <code>session</code>, when you submit our contact form. This cookie allows us to display a one‑time confirmation message ("Message sent!") after you submit the form, and is automatically deleted when you close your browser. It does not track you across visits and is not used for advertising or analytics.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Cookies set by Google AdSense</h2>
+        <p>BlogSphere may use Google AdSense to display advertising. If enabled, Google and its advertising partners may set cookies on your device to serve ads based on your visits to this and other websites, measure ad performance, and prevent fraud. These cookies are controlled by Google, not by us, and are subject to Google's own privacy and cookie policies.</p>
+        <p>You can review and adjust how Google personalizes ads for you at <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>, or opt out of interest‑based advertising more broadly through the <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer">Digital Advertising Alliance opt‑out tool</a>.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Managing cookies in your browser</h2>
+        <p>Most browsers let you view, delete, and block cookies through their settings menu. Blocking all cookies may affect how ads are displayed on this site, but will not affect your ability to read our content. For general guidance on managing cookies, visit <a href="https://www.allaboutcookies.org" target="_blank" rel="noopener noreferrer">allaboutcookies.org</a>.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Changes to this policy</h2>
+        <p>We may update this Cookie Policy from time to time to reflect changes in the technologies or advertising partners we use. Updates will be posted on this page with a new "Last updated" date.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Contact us</h2>
+        <p>Questions about this Cookie Policy can be sent through our <a href="/contact">Contact page</a>. For more detail on how we handle personal data generally, see our <a href="/privacy">Privacy Policy</a>.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.privacy-body { max-width: 720px; margin: 0 auto; }
+.policy-section { padding: 36px 0; border-bottom: 1px solid var(--paper-3); }
+.policy-section:first-child { padding-top: 0; }
+.policy-section:last-child { border-bottom: none; padding-bottom: 0; }
+.policy-section h2 { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 16px; line-height: 1.3; }
+.policy-section p { font-size: 14px; color: var(--ink-2); line-height: 1.85; margin-bottom: 14px; }
+.policy-section p:last-child { margin-bottom: 0; }
+.policy-section a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.policy-section a:hover { text-decoration: none; }
+.policy-section code { font-family: var(--mono); font-size: 12px; background: var(--paper-2); padding: 2px 6px; border-radius: 4px; color: var(--accent); }
+[data-theme="dark"] .policy-section h2 { color: #e8e3db; }
+[data-theme="dark"] .policy-section p { color: #a8a098; }
+[data-theme="dark"] .policy-section code { background: var(--paper-3); }
+</style>
+{% endblock %}

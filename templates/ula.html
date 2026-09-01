@@ -1,0 +1,3662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=yes">
+    <title>Urhobo Language Academy | Learn Urhobo Online</title>
+    <meta name="description" content="Learn Urhobo through structured courses, live virtual classes, quizzes and certificates — built for the diaspora and every generation reconnecting with the language.">
+    <link rel="stylesheet" href="https://unpkg.com/tabler-icons@latest/iconfont/tabler-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,450;9..144,560;9..144,600;9..144,680&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ============ tokens ============ */
+        :root {
+            --ink: #0B1F10;
+            --ink2: #122A18;
+            --ink3: #193621;
+            --g8: #0E2E16;
+            --g7: #154821;
+            --g6: #1B5E2E;
+            --g5: #237C3C;
+            --g4: #36A855;
+            --g3: #72CA8B;
+            --g2: #B8E8C4;
+            --g1: #E8F7EC;
+            --au8: #4A2D00;
+            --au7: #714400;
+            --au6: #8F5A08;
+            --au5: #C47C00;
+            --au4: #DE9A1F;
+            --au3: #EFBA55;
+            --au2: #FAE08C;
+            --au1: #FDF6D6;
+            --parch: #FBF8F1;
+            --parch2: #F4EFE1;
+            --surface: #FFFFFF;
+            --surf2: #F9FBF7;
+            --surf3: #F1F5EF;
+            --bdr: #E1E7DC;
+            --bdr2: #CBD6C2;
+            --bdr3: #AFC0A4;
+            --tx1: #182A1B;
+            --tx2: #3C5641;
+            --tx3: #647A69;
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-lg: 22px;
+            --r-xl: 28px;
+            --disp: 'Fraunces', Georgia, serif;
+            --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            --shadow-sm: 0 1px 2px rgba(11, 31, 16, .06);
+            --shadow-md: 0 8px 24px rgba(11, 31, 16, .08);
+            --shadow-lg: 0 24px 60px rgba(11, 31, 16, .14);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: 100%;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+            * {
+                animation-duration: .001ms !important;
+                transition-duration: .001ms !important;
+            }
+        }
+        body {
+            font-family: var(--sans);
+            background: var(--surf3);
+            color: var(--tx1);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        button,
+        input,
+        select,
+        textarea {
+            font-family: var(--sans);
+        }
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .app {
+            width: 100%;
+            min-height: 100vh;
+            background: var(--surface);
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+        .pg {
+            display: none;
+        }
+        .pg.on {
+            display: block;
+            animation: riseIn .35s cubic-bezier(.2, .8, .2, 1);
+        }
+        @keyframes riseIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .weave {
+            height: 5px;
+            background: repeating-linear-gradient(115deg, var(--g5) 0 10px, var(--au4) 10px 20px);
+        }
+        .weave.thin {
+            height: 3px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--surf2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--bdr3);
+            border-radius: 10px;
+        }
+        :focus-visible {
+            outline: 2px solid var(--au4);
+            outline-offset: 2px;
+        }
+
+        /* ============ top nav ============ */
+        .announce {
+            background: var(--g7);
+            color: #eaf6ec;
+            font-size: 12.5px;
+            text-align: center;
+            padding: 9px 16px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            line-height: 1.4;
+        }
+        .announce-pill {
+            background: var(--au4);
+            color: var(--au8);
+            font-weight: 700;
+            font-size: 10px;
+            padding: 2.5px 9px;
+            border-radius: 20px;
+            letter-spacing: .03em;
+            flex-shrink: 0;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 40px;
+            position: relative;
+            z-index: 55;
+            gap: 12px;
+        }
+        .topbar.dark {
+            background: var(--ink);
+        }
+        .topbar.light {
+            background: var(--surface);
+            border-bottom: 1px solid var(--bdr);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            flex-shrink: 1;
+            min-width: 0;
+        }
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(145deg, var(--g5), var(--g7));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--au2);
+            font-size: 18px;
+            flex: none;
+            box-shadow: inset 0 0 0 1.5px rgba(222, 154, 31, .5);
+        }
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+            min-width: 0;
+            overflow: hidden;
+        }
+        .brand-name {
+            font-family: var(--disp);
+            font-weight: 600;
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        .topbar.dark .brand-name {
+            color: #fff;
+        }
+        .topbar.light .brand-name {
+            color: var(--ink);
+        }
+        .brand-tagline {
+            font-size: 10.5px;
+            letter-spacing: .02em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        .topbar.dark .brand-tagline {
+            color: var(--au3);
+        }
+        .topbar.light .brand-tagline {
+            color: var(--tx3);
+        }
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            padding: 0 4px;
+            flex-shrink: 1;
+            min-width: 0;
+        }
+        .top-nav::-webkit-scrollbar {
+            height: 3px;
+        }
+        .tnl {
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 4px;
+            border-bottom: 2px solid transparent;
+            flex-shrink: 0;
+            transition: border-color .2s, color .2s;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .topbar.dark .tnl {
+            color: #a9cbb1;
+        }
+        .topbar.light .tnl {
+            color: var(--tx2);
+        }
+        .tnl:hover,
+        .tnl.cur {
+            border-bottom-color: var(--au4);
+        }
+        .topbar.dark .tnl:hover,
+        .topbar.dark .tnl.cur {
+            color: #fff;
+        }
+        .topbar.light .tnl:hover,
+        .topbar.light .tnl.cur {
+            color: var(--g6);
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .btn-ghost {
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 9px;
+            white-space: nowrap;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .topbar.dark .btn-ghost {
+            color: #dcefdf;
+        }
+        .topbar.light .btn-ghost {
+            color: var(--tx2);
+        }
+        .btn-ghost:hover {
+            background: rgba(0, 0, 0, .05);
+        }
+        .topbar.dark .btn-ghost:hover {
+            background: rgba(255, 255, 255, .08);
+        }
+        .btn-cta {
+            padding: 10px 19px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--au8);
+            background: var(--au4);
+            border-radius: 9px;
+            white-space: nowrap;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .btn-cta:hover {
+            background: var(--au3);
+            transform: translateY(-1px);
+        }
+
+        /* ---------- Hamburger animation ---------- */
+        .hamb {
+            display: none;
+            position: relative;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.25s;
+            z-index: 60;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .topbar.dark .hamb {
+            color: #fff;
+        }
+        .topbar.light .hamb {
+            color: var(--tx1);
+        }
+        .hamb:active {
+            background: rgba(255, 255, 255, .1);
+        }
+        .topbar.light .hamb:active {
+            background: rgba(0, 0, 0, .06);
+        }
+
+        .hamb .hamb-line {
+            position: relative;
+            width: 24px;
+            height: 2px;
+            background: currentColor;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        .hamb .hamb-line::before,
+        .hamb .hamb-line::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 24px;
+            height: 2px;
+            background: currentColor;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        .hamb .hamb-line::before {
+            top: -8px;
+        }
+        .hamb .hamb-line::after {
+            top: 8px;
+        }
+
+        .hamb.active .hamb-line {
+            background: transparent;
+        }
+        .hamb.active .hamb-line::before {
+            transform: rotate(45deg);
+            top: 0;
+        }
+        .hamb.active .hamb-line::after {
+            transform: rotate(-45deg);
+            top: 0;
+        }
+        .hamb.active {
+            background: rgba(222, 154, 31, .18);
+            color: var(--au4);
+        }
+        .topbar.light .hamb.active {
+            background: rgba(222, 154, 31, .12);
+            color: var(--au5);
+        }
+
+        /* ---------- Mobile menu (drawer) ---------- */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            max-width: 80vw;
+            height: 100vh;
+            background: var(--surface);
+            box-shadow: -8px 0 40px rgba(0, 0, 0, 0.2);
+            z-index: 50;
+            padding: 80px 24px 32px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex !important;
+            flex-direction: column;
+            gap: 6px;
+            border-left: 1px solid var(--bdr);
+            /* override old display: none */
+        }
+        .mobile-menu.on {
+            transform: translateX(0);
+        }
+
+        .mobile-menu.dark-theme {
+            background: var(--ink);
+            border-left-color: rgba(255, 255, 255, 0.1);
+        }
+        .mobile-menu.dark-theme .tnl {
+            color: #dcefdf;
+        }
+        .mobile-menu.dark-theme .tnl.cur {
+            color: var(--au3);
+            background: rgba(222, 154, 31, 0.15);
+            border-left-color: var(--au4);
+        }
+
+        .mobile-menu .tnl {
+            padding: 14px 18px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
+            border-left: 3px solid transparent;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--tx2);
+            background: transparent;
+            border-bottom: none;
+            min-height: 52px;
+            opacity: 0;
+            transform: translateX(20px);
+            animation: none;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .mobile-menu.on .tnl {
+            animation: menuItemFadeIn 0.35s forwards;
+        }
+
+        .mobile-menu.on .tnl:nth-child(1) { animation-delay: 0.05s; }
+        .mobile-menu.on .tnl:nth-child(2) { animation-delay: 0.10s; }
+        .mobile-menu.on .tnl:nth-child(3) { animation-delay: 0.15s; }
+        .mobile-menu.on .tnl:nth-child(4) { animation-delay: 0.20s; }
+        .mobile-menu.on .tnl:nth-child(5) { animation-delay: 0.25s; }
+        .mobile-menu.on .tnl:nth-child(6) { animation-delay: 0.30s; }
+        .mobile-menu.on .tnl:nth-child(7) { animation-delay: 0.35s; }
+        .mobile-menu.on .tnl:nth-child(8) { animation-delay: 0.40s; }
+
+        @keyframes menuItemFadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .mobile-menu .tnl:hover {
+            background: rgba(222, 154, 31, 0.08);
+        }
+        .mobile-menu .tnl.cur {
+            background: var(--g1);
+            border-left-color: var(--g6);
+            color: var(--g7);
+            font-weight: 700;
+        }
+        .mobile-menu.light-theme .tnl.cur {
+            background: var(--g1);
+            border-left-color: var(--g6);
+            color: var(--g7);
+        }
+
+        .mobile-menu .tnl i {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* ---------- Close button inside drawer ---------- */
+        .menu-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.05);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--tx2);
+            transition: background 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .menu-close:hover {
+            background: rgba(0,0,0,0.1);
+        }
+        .dark-theme .menu-close {
+            color: #dcefdf;
+            background: rgba(255,255,255,0.05);
+        }
+        .dark-theme .menu-close:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        /* ---------- Overlay backdrop ---------- */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 45;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .menu-overlay.on {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ---------- Responsive: show hamburger & hide top-nav ---------- */
+        @media (max-width: 880px) {
+            .top-nav {
+                display: none;
+            }
+            .hamb {
+                display: flex;
+            }
+            .mobile-menu {
+                display: flex !important; /* override old display: none */
+            }
+            .topbar {
+                padding: 12px 16px;
+                gap: 8px;
+                z-index: 55;
+            }
+            .brand-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+            .brand-name {
+                font-size: 14px;
+            }
+            .brand-tagline {
+                font-size: 9.5px;
+            }
+            .brand {
+                gap: 8px;
+            }
+            .btn-ghost {
+                padding: 8px 12px;
+                font-size: 12px;
+                border-radius: 8px;
+            }
+            .btn-cta {
+                padding: 9px 14px;
+                font-size: 12px;
+                border-radius: 8px;
+            }
+            .top-actions {
+                gap: 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar {
+                padding: 10px 12px;
+                gap: 6px;
+            }
+            .brand-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+                border-radius: 7px;
+            }
+            .brand-name {
+                font-size: 12.5px;
+            }
+            .brand-tagline {
+                display: none;
+            }
+            .brand {
+                gap: 6px;
+            }
+            .btn-ghost {
+                padding: 7px 10px;
+                font-size: 11px;
+                border-radius: 7px;
+            }
+            .btn-cta {
+                padding: 8px 12px;
+                font-size: 11px;
+                border-radius: 7px;
+            }
+            .hamb {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+                border-radius: 8px;
+            }
+            .top-actions {
+                gap: 4px;
+            }
+            .mobile-menu {
+                width: 100%;
+                max-width: 100vw;
+                padding: 72px 20px 24px;
+            }
+            .mobile-menu .tnl {
+                font-size: 14px;
+                padding: 12px 16px;
+                min-height: 48px;
+            }
+            .announce {
+                font-size: 11px;
+                padding: 7px 10px;
+                gap: 6px;
+            }
+            .announce-pill {
+                font-size: 9px;
+                padding: 2px 7px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .topbar {
+                padding: 8px 10px;
+                gap: 4px;
+            }
+            .brand-name {
+                font-size: 11px;
+            }
+            .btn-ghost {
+                padding: 6px 8px;
+                font-size: 10px;
+            }
+            .btn-cta {
+                padding: 7px 10px;
+                font-size: 10px;
+            }
+            .hamb {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+            .top-actions {
+                gap: 3px;
+            }
+            .brand-icon {
+                width: 26px;
+                height: 26px;
+                font-size: 12px;
+            }
+            .mobile-menu .tnl {
+                padding: 12px 14px;
+                font-size: 12.5px;
+                min-height: 44px;
+            }
+        }
+
+        /* ============ hero ============ */
+        .hero {
+            background: radial-gradient(130% 110% at 12% -10%, var(--g7), var(--ink) 62%);
+            color: #fff;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 70px 40px 0;
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(222, 154, 31, .13);
+            border: 1px solid rgba(222, 154, 31, .38);
+            color: var(--au3);
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            letter-spacing: .02em;
+        }
+        .hero h1 {
+            font-family: var(--disp);
+            font-weight: 600;
+            font-size: 52px;
+            line-height: 1.08;
+            margin: 22px 0 18px;
+            letter-spacing: -.01em;
+        }
+        .hero h1 em {
+            color: var(--au3);
+            font-style: normal;
+        }
+        .hero-sub {
+            max-width: 460px;
+            color: #bcd4c2;
+            font-size: 16px;
+        }
+        .hero-ctas {
+            display: flex;
+            gap: 12px;
+            margin: 30px 0 40px;
+            flex-wrap: wrap;
+        }
+        .cta-gold {
+            background: var(--au4);
+            color: var(--au8);
+            font-weight: 700;
+            font-size: 14.5px;
+            padding: 14px 26px;
+            border-radius: 11px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            box-shadow: var(--shadow-md);
+            white-space: nowrap;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .cta-gold:hover {
+            background: var(--au3);
+            transform: translateY(-2px);
+        }
+        .cta-out {
+            border: 1.5px solid rgba(255, 255, 255, .28);
+            color: #fff;
+            font-weight: 600;
+            font-size: 14.5px;
+            padding: 14px 24px;
+            border-radius: 11px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            white-space: nowrap;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .cta-out:hover {
+            background: rgba(255, 255, 255, .08);
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+        .hv-card {
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: var(--r-xl);
+            padding: 22px;
+            backdrop-filter: blur(6px);
+            box-shadow: var(--shadow-lg);
+        }
+        .hv-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .hv-live {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11.5px;
+            color: #f0d9a0;
+            font-weight: 700;
+        }
+        .hv-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #e34848;
+            animation: pulse 1.4s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1
+            }
+            50% {
+                opacity: .25
+            }
+        }
+        .hv-word {
+            font-family: var(--disp);
+            font-size: 15px;
+            color: #fff;
+        }
+        .hv-phrase {
+            background: rgba(255, 255, 255, .06);
+            border-radius: var(--r-md);
+            padding: 16px 18px;
+            margin-bottom: 10px;
+        }
+        .hv-ur {
+            font-family: var(--disp);
+            font-size: 22px;
+            color: var(--au3);
+            margin-bottom: 3px;
+        }
+        .hv-en {
+            font-size: 12.5px;
+            color: #a9cbb1;
+        }
+        .hv-stats-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .hv-stat {
+            flex: 1;
+            min-width: 70px;
+            background: rgba(255, 255, 255, .05);
+            border-radius: var(--r-sm);
+            padding: 11px;
+            text-align: center;
+        }
+        .hv-stat b {
+            display: block;
+            font-family: var(--disp);
+            font-size: 17px;
+            color: #fff;
+        }
+        .hv-stat span {
+            font-size: 9.5px;
+            color: #8fb597;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .hero-stats {
+            max-width: 1180px;
+            margin: 44px auto 0;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            position: relative;
+        }
+        .hstat {
+            padding: 20px 8px;
+            border-top: 1px solid rgba(255, 255, 255, .1);
+        }
+        .hstat-n {
+            font-family: var(--disp);
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--au3);
+        }
+        .hstat-l {
+            font-size: 11px;
+            color: #9ecfac;
+            margin-top: 3px;
+        }
+        .hero-bottom-pad {
+            height: 44px;
+        }
+
+        @media (max-width: 900px) {
+            .hero-inner {
+                grid-template-columns: 1fr;
+                padding: 48px 24px 0;
+            }
+            .hero h1 {
+                font-size: 36px;
+            }
+            .hero-visual {
+                margin-top: 8px;
+            }
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 0 24px;
+            }
+            .hero-sub {
+                font-size: 14.5px;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+                margin: 16px 0 12px;
+            }
+            .hero-ctas {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .hero-ctas .cta-gold,
+            .hero-ctas .cta-out {
+                justify-content: center;
+                text-align: center;
+                padding: 13px 20px;
+                font-size: 13.5px;
+            }
+            .hero-inner {
+                padding: 36px 16px 0;
+            }
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 0 16px;
+            }
+            .hstat-n {
+                font-size: 20px;
+            }
+            .hstat-l {
+                font-size: 10px;
+            }
+            .hero-eyebrow {
+                font-size: 10.5px;
+                padding: 5px 11px;
+            }
+            .hv-card {
+                padding: 16px;
+            }
+            .hv-ur {
+                font-size: 18px;
+            }
+            .hero-bottom-pad {
+                height: 28px;
+            }
+        }
+        @media (max-width: 360px) {
+            .hero h1 {
+                font-size: 24px;
+            }
+            .hero-sub {
+                font-size: 13px;
+            }
+            .hero-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ============ generic sections ============ */
+        .sec {
+            padding: 80px 40px;
+        }
+        .sec-narrow {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+        .sec-head {
+            max-width: 560px;
+            margin: 0 auto 44px;
+            text-align: center;
+        }
+        .sec-eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--g5);
+            letter-spacing: .09em;
+            text-transform: uppercase;
+        }
+        .sec-h {
+            font-family: var(--disp);
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--ink);
+            margin: 10px 0 10px;
+            letter-spacing: -.01em;
+        }
+        .sec-sub {
+            color: var(--tx3);
+            font-size: 15px;
+        }
+        @media (max-width: 780px) {
+            .sec {
+                padding: 56px 22px;
+            }
+            .sec-h {
+                font-size: 25px;
+            }
+        }
+        @media (max-width: 480px) {
+            .sec {
+                padding: 40px 16px;
+            }
+            .sec-h {
+                font-size: 22px;
+            }
+            .sec-sub {
+                font-size: 13.5px;
+            }
+            .sec-head {
+                margin-bottom: 30px;
+            }
+        }
+
+        .feat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .feat-card {
+            background: var(--surface);
+            border: 1px solid var(--bdr);
+            border-radius: var(--r-lg);
+            padding: 26px;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .feat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--bdr3);
+        }
+        .feat-ic {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            background: var(--g1);
+            color: var(--g6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            margin-bottom: 16px;
+        }
+        .feat-card h3 {
+            font-size: 15.5px;
+            margin-bottom: 7px;
+            color: var(--ink);
+            font-weight: 700;
+        }
+        .feat-card p {
+            font-size: 13.5px;
+            color: var(--tx3);
+        }
+
+        .steps-wrap {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            position: relative;
+        }
+        .step-card {
+            text-align: left;
+            padding: 0 20px 0 0;
+            position: relative;
+        }
+        .step-card:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            top: 19px;
+            left: calc(100% - 14px);
+            width: calc(100% - 14px);
+            height: 1px;
+            background: var(--bdr2);
+        }
+        .step-num {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--ink);
+            color: var(--au3);
+            font-family: var(--disp);
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+        .step-card h3 {
+            font-size: 16px;
+            color: var(--ink);
+            margin-bottom: 7px;
+            font-weight: 700;
+        }
+        .step-card p {
+            font-size: 13.5px;
+            color: var(--tx3);
+        }
+
+        .testi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .testi-card {
+            background: var(--parch);
+            border: 1px solid var(--parch2);
+            border-radius: var(--r-lg);
+            padding: 24px;
+        }
+        .testi-stars {
+            color: var(--au5);
+            font-size: 13px;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        .testi-card p {
+            font-size: 14px;
+            color: var(--tx2);
+            font-style: italic;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+        .testi-who {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+        .testi-av {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12.5px;
+            flex: none;
+        }
+        .testi-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .testi-role {
+            font-size: 11.5px;
+            color: var(--tx3);
+        }
+
+        @media (max-width: 900px) {
+            .feat-grid,
+            .testi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .steps-wrap {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+            .step-card::after {
+                display: none;
+            }
+            .step-card {
+                padding: 0;
+            }
+        }
+        @media (max-width: 600px) {
+            .feat-grid,
+            .testi-grid {
+                grid-template-columns: 1fr;
+            }
+            .feat-card {
+                padding: 20px;
+            }
+            .testi-card {
+                padding: 18px;
+            }
+        }
+
+        .cta-band {
+            background: var(--ink);
+            position: relative;
+            padding: 64px 24px;
+            text-align: center;
+            overflow: hidden;
+        }
+        .cta-band::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(70% 100% at 50% 0%, rgba(35, 124, 60, .4), transparent 60%);
+        }
+        .cta-band-inner {
+            position: relative;
+        }
+        .cta-kicker {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--au3);
+            text-transform: uppercase;
+            letter-spacing: .12em;
+        }
+        .cta-h {
+            font-family: var(--disp);
+            font-size: 26px;
+            font-weight: 600;
+            color: #fff;
+            margin: 10px 0 12px;
+        }
+        .cta-sub {
+            font-size: 13.5px;
+            color: #9ecfac;
+            margin: 0 auto 24px;
+            max-width: 400px;
+        }
+        @media (max-width: 480px) {
+            .cta-band {
+                padding: 44px 16px;
+            }
+            .cta-h {
+                font-size: 22px;
+            }
+            .cta-sub {
+                font-size: 12.5px;
+            }
+        }
+
+        .footer {
+            background: var(--ink);
+            color: #a9cbb1;
+            padding: 52px 40px 26px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 30px;
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+        .footer h4 {
+            color: #fff;
+            font-size: 13px;
+            margin-bottom: 14px;
+            font-weight: 700;
+        }
+        .footer li {
+            list-style: none;
+            margin-bottom: 9px;
+        }
+        .footer li a,
+        .footer li span {
+            color: #7fa588;
+            font-size: 13px;
+            cursor: pointer;
+            transition: color .15s;
+        }
+        .footer li a:hover,
+        .footer li span:hover {
+            color: #fff;
+        }
+        .footer p {
+            color: #7fa588;
+            font-size: 12.5px;
+            max-width: 260px;
+            margin-top: 10px;
+        }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 38px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, .08);
+            color: #5c8065;
+            font-size: 11.5px;
+            max-width: 1180px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .footer-bottom a {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .footer-bottom a:hover {
+            color: #cfe6d2;
+        }
+        @media (max-width: 780px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer {
+                padding: 40px 22px 22px;
+            }
+        }
+        @media (max-width: 480px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .footer {
+                padding: 32px 16px 18px;
+            }
+            .footer p {
+                max-width: 100%;
+            }
+        }
+
+        /* ============ toast ============ */
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 26px;
+            transform: translate(-50%, 20px);
+            background: var(--ink);
+            color: #fff;
+            padding: 13px 20px;
+            border-radius: 11px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .25s ease, transform .25s ease;
+            z-index: 999;
+            max-width: 90vw;
+            text-align: center;
+        }
+        .toast.on {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+        .toast i {
+            color: var(--au3);
+            font-size: 15px;
+            flex: none;
+        }
+
+        /* ============ courses ============ */
+        .course-hero {
+            background: var(--ink);
+            color: #fff;
+            padding: 56px 40px 40px;
+            text-align: center;
+        }
+        .course-hero .sec-eyebrow {
+            color: var(--au3);
+        }
+        .course-hero h2 {
+            font-family: var(--disp);
+            font-size: 32px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .course-hero p {
+            color: #a9cbb1;
+            font-size: 14.5px;
+            margin-top: 8px;
+        }
+        .course-filters {
+            display: flex;
+            gap: 9px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 24px 40px;
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+        .cf-chip {
+            padding: 8px 17px;
+            border: 1.5px solid var(--bdr2);
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--tx2);
+            cursor: pointer;
+            transition: background .15s, color .15s, border-color .15s;
+            white-space: nowrap;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .cf-chip:hover {
+            border-color: var(--g5);
+        }
+        .cf-chip.on {
+            background: var(--g6);
+            border-color: var(--g6);
+            color: #fff;
+        }
+        .course-body {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 12px 40px 70px;
+        }
+        .cg {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        @media (max-width: 900px) {
+            .cg {
+                grid-template-columns: 1fr 1fr;
+            }
+            .course-body,
+            .course-filters {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            .course-hero {
+                padding: 40px 24px 32px;
+            }
+            .course-hero h2 {
+                font-size: 26px;
+            }
+        }
+        @media (max-width: 600px) {
+            .cg {
+                grid-template-columns: 1fr;
+            }
+            .course-body,
+            .course-filters {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            .cf-chip {
+                padding: 7px 13px;
+                font-size: 11.5px;
+            }
+            .course-hero {
+                padding: 32px 16px 24px;
+            }
+            .course-hero h2 {
+                font-size: 22px;
+            }
+        }
+        .cc {
+            background: var(--surface);
+            border: 1px solid var(--bdr);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .cc:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .cc-thumb {
+            height: 118px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 32px;
+            position: relative;
+        }
+        .cc-thumb::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 4px;
+            background: repeating-linear-gradient(115deg, var(--g4) 0 8px, var(--au3) 8px 16px);
+            opacity: .85;
+        }
+        .cc-body {
+            padding: 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .cc-level {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--g5);
+        }
+        .cc-title {
+            font-size: 15.5px;
+            font-weight: 700;
+            color: var(--ink);
+            margin: 7px 0 7px;
+        }
+        .cc-desc {
+            font-size: 12.5px;
+            color: var(--tx3);
+            margin-bottom: 16px;
+            flex: 1;
+        }
+        .cc-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--tx3);
+            margin-bottom: 14px;
+        }
+        .cc-price {
+            font-weight: 700;
+            color: var(--ink);
+            font-size: 14px;
+        }
+        .cc-enroll {
+            background: var(--g1);
+            color: var(--g7);
+            font-weight: 700;
+            font-size: 12.5px;
+            padding: 11px;
+            border-radius: 9px;
+            text-align: center;
+            width: 100%;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .cc-enroll:hover {
+            background: var(--g6);
+            color: #fff;
+        }
+        .cg-empty {
+            display: none;
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--tx3);
+            font-size: 14px;
+        }
+        .cg-empty.on {
+            display: block;
+        }
+
+        /* ============ dashboards ============ */
+        .dash-layout,
+        .teacher-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 640px;
+        }
+        .sidebar {
+            border-right: 1px solid var(--bdr);
+            padding: 22px 14px;
+            background: var(--surf2);
+        }
+        .sb-user {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 8px 10px 22px;
+        }
+        .sb-av {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--g6);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            flex: none;
+        }
+        .sb-uname {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .sb-urole {
+            font-size: 11px;
+            color: var(--tx3);
+        }
+        .sb-section {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: var(--tx3);
+            padding: 15px 10px 7px;
+        }
+        .sb-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 10px 11px;
+            border-radius: 9px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--tx2);
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            white-space: nowrap;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .sb-item:hover {
+            background: var(--surf3);
+        }
+        .sb-item.on {
+            background: var(--g1);
+            color: var(--g7);
+            border-left-color: var(--g6);
+        }
+        .sb-badge {
+            margin-left: auto;
+            background: var(--au4);
+            color: var(--au8);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1.5px 7px;
+            border-radius: 20px;
+        }
+        .main-col {
+            padding: 30px 36px;
+        }
+        .main-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 26px;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .main-head h2 {
+            font-family: var(--disp);
+            font-size: 24px;
+            color: var(--ink);
+        }
+        .main-head p {
+            font-size: 13px;
+            color: var(--tx3);
+            margin-top: 4px;
+        }
+        .metrics,
+        .t-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .metric {
+            background: var(--surf2);
+            border: 1px solid var(--bdr);
+            border-radius: var(--r-md);
+            padding: 18px;
+        }
+        .metric-ic {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            background: var(--au1);
+            color: var(--au6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+        .metric-n {
+            font-size: 21px;
+            font-weight: 800;
+            color: var(--ink);
+            font-family: var(--disp);
+        }
+        .metric-l {
+            font-size: 11.5px;
+            color: var(--tx3);
+            margin-top: 2px;
+        }
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--bdr);
+            border-radius: var(--r-md);
+            padding: 22px;
+            margin-bottom: 18px;
+            overflow-x: auto;
+        }
+        .panel h3 {
+            font-size: 15px;
+            color: var(--ink);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        .crow {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 13px 0;
+            border-bottom: 1px solid var(--bdr);
+            flex-wrap: wrap;
+        }
+        .crow:last-child {
+            border-bottom: none;
+        }
+        .crow-ic {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: var(--g1);
+            color: var(--g6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex: none;
+        }
+        .crow-info {
+            flex: 1;
+            min-width: 140px;
+        }
+        .crow-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .crow-sub {
+            font-size: 11.5px;
+            color: var(--tx3);
+            margin-top: 1px;
+        }
+        .pbar {
+            height: 6px;
+            background: var(--bdr);
+            border-radius: 20px;
+            margin-top: 7px;
+            overflow: hidden;
+            max-width: 220px;
+        }
+        .pbar-fill {
+            height: 100%;
+            background: var(--g5);
+            border-radius: 20px;
+        }
+        .crow-pct {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--g6);
+            flex: none;
+        }
+
+        .stbl {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 520px;
+        }
+        .stbl th {
+            text-align: left;
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--tx3);
+            padding: 9px 11px;
+            border-bottom: 1px solid var(--bdr);
+        }
+        .stbl td {
+            padding: 11px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--bdr);
+            color: var(--tx2);
+            white-space: nowrap;
+        }
+        .stbl-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            max-width: 100%;
+        }
+        .badge {
+            padding: 3.5px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .badge.good {
+            background: var(--g1);
+            color: var(--g7);
+        }
+        .badge.warn {
+            background: var(--au1);
+            color: var(--au7);
+        }
+        .badge.bad {
+            background: #FBE4E4;
+            color: #A32424;
+        }
+
+        @media (max-width: 900px) {
+            .dash-layout,
+            .teacher-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--bdr);
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                align-items: center;
+                padding: 12px 14px;
+                gap: 8px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .sb-user {
+                padding: 0 12px 0 0;
+                flex: none;
+                border-right: 1px solid var(--bdr);
+                margin-right: 6px;
+            }
+            .sb-section {
+                display: none;
+            }
+            .sb-item {
+                border-left: none;
+                background: var(--surf3);
+                border-radius: 40px;
+                padding: 8px 15px;
+                font-size: 12.5px;
+                flex: none;
+                white-space: nowrap;
+            }
+            .sb-item.on {
+                background: var(--g1);
+                border-left-color: transparent;
+            }
+            .main-col {
+                padding: 22px 20px;
+            }
+            .metrics,
+            .t-metrics {
+                grid-template-columns: 1fr 1fr;
+            }
+            .main-head h2 {
+                font-size: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .metrics,
+            .t-metrics {
+                grid-template-columns: 1fr;
+            }
+            .main-head {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .main-head .btn-cta {
+                width: 100%;
+                text-align: center;
+            }
+            .main-col {
+                padding: 16px 14px;
+            }
+            .panel {
+                padding: 16px;
+            }
+            .crow {
+                gap: 10px;
+                padding: 10px 0;
+            }
+            .crow-ic {
+                width: 36px;
+                height: 36px;
+                font-size: 15px;
+            }
+        }
+
+        /* ============ live class ============ */
+        .live-outer {
+            background: var(--ink);
+            color: #fff;
+            padding: 24px 30px;
+            min-height: 640px;
+            display: flex;
+            flex-direction: column;
+        }
+        .live-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .live-title {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e34848;
+            animation: pulse 1.4s infinite;
+            flex: none;
+        }
+        .live-name {
+            font-size: 14.5px;
+            font-weight: 700;
+        }
+        .live-sub {
+            font-size: 11.5px;
+            color: #8fb597;
+            margin-top: 1px;
+        }
+        .live-body {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 18px;
+            flex: 1;
+        }
+        .live-stage {
+            background: linear-gradient(150deg, var(--g7), #081008);
+            border-radius: var(--r-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            min-height: 360px;
+            overflow: hidden;
+        }
+        .live-stage::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 5px;
+            background: repeating-linear-gradient(115deg, var(--g4) 0 10px, var(--au4) 10px 20px);
+        }
+        .live-avatar {
+            width: 94px;
+            height: 94px;
+            border-radius: 50%;
+            background: var(--g6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            border: 2px solid rgba(222, 154, 31, .5);
+        }
+        .live-tag {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            background: rgba(0, 0, 0, .5);
+            padding: 7px 13px;
+            border-radius: 9px;
+            font-size: 12px;
+        }
+        .live-chat {
+            background: #132818;
+            border-radius: var(--r-lg);
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+        }
+        .live-chat h4 {
+            font-size: 12.5px;
+            margin-bottom: 12px;
+            color: #bcd4c2;
+            font-weight: 700;
+        }
+        .chat-msgs {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin-bottom: 12px;
+            max-height: 280px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .cmsg {
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .cmsg b {
+            color: var(--au3);
+        }
+        .chat-input {
+            display: flex;
+            gap: 7px;
+        }
+        .chat-input input {
+            flex: 1;
+            background: rgba(255, 255, 255, .07);
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 9px;
+            padding: 9px 11px;
+            color: #fff;
+            font-size: 12.5px;
+            min-width: 0;
+        }
+        .chat-input input::placeholder {
+            color: #6f8f78;
+        }
+        .live-controls-row {
+            display: flex;
+            justify-content: center;
+            gap: 11px;
+            padding-top: 20px;
+            flex-wrap: wrap;
+        }
+        .lctrl {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            border: none;
+            color: #fff;
+            flex-shrink: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .lctrl.off {
+            background: #a33333;
+        }
+        .lctrl.on-state {
+            background: var(--g5);
+        }
+        .lctrl.leave {
+            background: #a33333;
+            width: auto;
+            padding: 0 22px;
+            border-radius: 23px;
+            font-size: 13px;
+            font-weight: 700;
+            gap: 7px;
+        }
+        .lctrl:hover {
+            filter: brightness(1.15);
+        }
+        @media (max-width: 900px) {
+            .live-body {
+                grid-template-columns: 1fr;
+            }
+            .live-chat {
+                min-height: 240px;
+            }
+            .live-outer {
+                padding: 18px;
+            }
+            .live-stage {
+                min-height: 280px;
+            }
+            .live-avatar {
+                width: 70px;
+                height: 70px;
+                font-size: 24px;
+            }
+        }
+        @media (max-width: 480px) {
+            .live-controls-row {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            .lctrl {
+                width: 42px;
+                height: 42px;
+                font-size: 16px;
+            }
+            .live-outer {
+                padding: 12px;
+            }
+            .live-stage {
+                min-height: 220px;
+            }
+            .live-avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+            }
+            .live-name {
+                font-size: 13px;
+            }
+            .live-sub {
+                font-size: 10.5px;
+            }
+        }
+
+        /* ============ quiz ============ */
+        .quiz-outer {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 56px 24px 70px;
+        }
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .quiz-progress span {
+            font-size: 12.5px;
+            color: var(--tx3);
+            font-weight: 600;
+        }
+        .quiz-dots {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .qdot {
+            width: 24px;
+            height: 5px;
+            border-radius: 4px;
+            background: var(--bdr2);
+        }
+        .qdot.done {
+            background: var(--g5);
+        }
+        .qdot.cur {
+            background: var(--au4);
+        }
+        .quiz-card {
+            background: var(--surface);
+            border: 1px solid var(--bdr);
+            border-radius: var(--r-xl);
+            padding: 34px;
+            box-shadow: var(--shadow-md);
+        }
+        .quiz-kicker {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--g5);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 12px;
+        }
+        .quiz-q {
+            font-family: var(--disp);
+            font-size: 22px;
+            color: var(--ink);
+            margin-bottom: 24px;
+        }
+        .qopt {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 15px 17px;
+            border: 1.5px solid var(--bdr2);
+            border-radius: 11px;
+            margin-bottom: 11px;
+            font-size: 14.5px;
+            color: var(--tx2);
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            min-height: 48px;
+        }
+        .qopt:hover {
+            border-color: var(--g4);
+            background: var(--g1);
+        }
+        .qopt.sel {
+            border-color: var(--g6);
+            background: var(--g1);
+            color: var(--g7);
+        }
+        .qopt .qletter {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--surf3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex: none;
+        }
+        .qopt.sel .qletter {
+            background: var(--g6);
+            color: #fff;
+        }
+        .quiz-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 28px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .qbtn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 700;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .qbtn.skip {
+            color: var(--tx3);
+        }
+        .qbtn.next {
+            background: var(--g6);
+            color: #fff;
+        }
+        .qbtn.next:hover {
+            background: var(--g7);
+        }
+        @media (max-width: 480px) {
+            .quiz-card {
+                padding: 24px 18px;
+            }
+            .quiz-q {
+                font-size: 18px;
+            }
+            .quiz-actions {
+                flex-direction: column-reverse;
+                gap: 10px;
+            }
+            .qbtn {
+                width: 100%;
+                text-align: center;
+                padding: 14px;
+            }
+            .quiz-outer {
+                padding: 36px 14px 50px;
+            }
+            .qopt {
+                padding: 13px 14px;
+                font-size: 13.5px;
+                min-height: 44px;
+            }
+        }
+
+        /* ============ payment ============ */
+        .pay-outer {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+        .pay-form-col {
+            padding: 48px 42px;
+        }
+        .pay-form-col h2 {
+            font-family: var(--disp);
+            font-size: 24px;
+            color: var(--ink);
+            margin-bottom: 5px;
+        }
+        .pay-form-col>p {
+            font-size: 12.5px;
+            color: var(--tx3);
+            margin-bottom: 28px;
+        }
+        .field-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--tx2);
+            margin: 15px 0 7px;
+            display: block;
+        }
+        .field {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid var(--bdr2);
+            border-radius: 9px;
+            font-size: 13.5px;
+            color: var(--tx1);
+            background: var(--surf2);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .field:focus {
+            outline: 2px solid var(--g4);
+            outline-offset: 1px;
+        }
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+        }
+        .pm-row {
+            display: flex;
+            gap: 11px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .pm {
+            flex: 1;
+            min-width: 80px;
+            border: 1.5px solid var(--bdr2);
+            border-radius: 10px;
+            padding: 13px;
+            text-align: center;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--tx2);
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .pm.on {
+            border-color: var(--g6);
+            background: var(--g1);
+            color: var(--g7);
+        }
+        .pay-btn {
+            width: 100%;
+            margin-top: 26px;
+            background: var(--g6);
+            color: #fff;
+            font-weight: 700;
+            font-size: 14.5px;
+            padding: 15px;
+            border-radius: 10px;
+            user-select: none;
+            -webkit-user-select: none;
+            min-height: 48px;
+        }
+        .pay-btn:hover {
+            background: var(--g7);
+        }
+        .pay-secure {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            font-size: 11.5px;
+            color: var(--tx3);
+            margin-top: 13px;
+        }
+        .pay-summary-col {
+            background: var(--surf2);
+            border-left: 1px solid var(--bdr);
+            padding: 48px 34px;
+        }
+        .psum-item {
+            display: flex;
+            gap: 13px;
+            margin-bottom: 20px;
+        }
+        .psum-ic {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: var(--g7);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex: none;
+        }
+        .psum-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .psum-sub {
+            font-size: 11.5px;
+            color: var(--tx3);
+            margin-top: 2px;
+        }
+        .psum-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--tx2);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--bdr);
+        }
+        .psum-line.total {
+            font-weight: 800;
+            color: var(--ink);
+            font-size: 15.5px;
+            border-bottom: none;
+            padding-top: 15px;
+        }
+        @media (max-width: 880px) {
+            .pay-outer {
+                grid-template-columns: 1fr;
+            }
+            .pay-summary-col {
+                border-left: none;
+                border-top: 1px solid var(--bdr);
+            }
+            .pay-form-col,
+            .pay-summary-col {
+                padding: 30px 24px;
+            }
+        }
+        @media (max-width: 480px) {
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+            .pm-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .pay-form-col,
+            .pay-summary-col {
+                padding: 22px 16px;
+            }
+            .pay-form-col h2 {
+                font-size: 20px;
+            }
+            .pay-btn {
+                font-size: 13.5px;
+                padding: 14px;
+            }
+        }
+
+        /* ============ certificate ============ */
+        .cert-page {
+            background: var(--parch2);
+            padding: 56px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .cert-doc-wrap {
+            background: var(--parch);
+            width: 100%;
+            max-width: 840px;
+            border-radius: 6px;
+            padding: 56px;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+        }
+        .cert-doc-wrap::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 7px;
+            background: repeating-linear-gradient(115deg, var(--g5) 0 12px, var(--au4) 12px 24px);
+            border-radius: 6px 6px 0 0;
+        }
+        .cert-doc-wrap::after {
+            content: "";
+            position: absolute;
+            inset: 16px 16px 16px 16px;
+            border: 1px solid var(--bdr3);
+            pointer-events: none;
+        }
+        .cert-inner {
+            text-align: center;
+            padding: 22px;
+        }
+        .cert-crest {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: var(--g6);
+            color: var(--au2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            margin: 0 auto 16px;
+            border: 2px solid var(--au4);
+        }
+        .cert-org {
+            font-size: 11px;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--tx3);
+            font-weight: 700;
+        }
+        .cert-title {
+            font-family: var(--disp);
+            font-size: 32px;
+            color: var(--ink);
+            margin: 16px 0 6px;
+        }
+        .cert-presented {
+            font-size: 12.5px;
+            color: var(--tx3);
+        }
+        .cert-recipient {
+            font-family: var(--disp);
+            font-size: 28px;
+            color: var(--g7);
+            margin: 20px 0;
+            border-bottom: 1.5px solid var(--au4);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        .cert-desc {
+            font-size: 14px;
+            color: var(--tx2);
+            max-width: 480px;
+            margin: 0 auto 28px;
+            line-height: 1.6;
+        }
+        .cert-footer {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 36px;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+        .cert-sign {
+            font-family: var(--disp);
+            font-size: 16px;
+            color: var(--ink);
+            border-top: 1px solid var(--bdr3);
+            padding-top: 7px;
+            font-style: italic;
+        }
+        .cert-signlabel {
+            font-size: 10.5px;
+            color: var(--tx3);
+            margin-top: 3px;
+        }
+        .cert-actions {
+            max-width: 840px;
+            margin: 22px auto 0;
+            display: flex;
+            gap: 11px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cert-btn {
+            padding: 11px 21px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid var(--bdr2);
+            color: var(--tx2);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--surface);
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            min-height: 44px;
+        }
+        .cert-btn.prim {
+            background: var(--g6);
+            color: #fff;
+            border-color: var(--g6);
+        }
+        .cert-btn.prim:hover {
+            background: var(--g7);
+        }
+        @media (max-width: 600px) {
+            .cert-doc-wrap {
+                padding: 26px 18px;
+            }
+            .cert-title {
+                font-size: 23px;
+            }
+            .cert-recipient {
+                font-size: 20px;
+            }
+            .cert-doc-wrap::after {
+                inset: 9px;
+            }
+            .cert-actions {
+                flex-direction: column;
+            }
+            .cert-btn {
+                justify-content: center;
+            }
+            .cert-page {
+                padding: 32px 12px;
+            }
+            .cert-crest {
+                width: 46px;
+                height: 46px;
+                font-size: 20px;
+            }
+            .cert-inner {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+
+        <!-- ============ HOME ============ -->
+        <div class="pg on" id="pg-home">
+            <div class="announce"><span class="announce-pill">New</span><span>Business Urhobo for professionals is now live — <strong>enrol today</strong></span></div>
+            <div class="topbar dark" id="homeTopbar">
+                <div class="brand">
+                    <div class="brand-icon"><i class="ti ti-language"></i></div>
+                    <div class="brand-text"><span class="brand-name">Urhobo Language Academy</span><span class="brand-tagline">Virtual learning platform</span></div>
+                </div>
+                <div class="top-nav">
+                    <span class="tnl cur" data-goto="home">Home</span>
+                    <span class="tnl" data-goto="courses">Courses</span>
+                    <span class="tnl" data-goto="student">Student dashboard</span>
+                    <span class="tnl" data-goto="live">Live class</span>
+                    <span class="tnl" data-goto="quiz">Quiz</span>
+                    <span class="tnl" data-goto="payment">Payment</span>
+                    <span class="tnl" data-goto="cert">Certificate</span>
+                    <span class="tnl" data-goto="teacher">Teacher dashboard</span>
+                </div>
+                <div class="top-actions">
+                    <button class="btn-ghost" data-goto="student">Sign in</button>
+                    <button class="btn-cta" data-goto="courses">Get started</button>
+                    <button class="hamb" data-menu-toggle="homeMenu" aria-label="Menu">
+                        <span class="hamb-line"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-menu dark-theme" id="homeMenu">
+                <button class="menu-close" aria-label="Close menu"><i class="ti ti-x"></i></button>
+                <span class="tnl cur" data-goto="home"><i class="ti ti-home"></i> Home</span>
+                <span class="tnl" data-goto="courses"><i class="ti ti-book"></i> Courses</span>
+                <span class="tnl" data-goto="student"><i class="ti ti-layout-dashboard"></i> Student dashboard</span>
+                <span class="tnl" data-goto="live"><i class="ti ti-broadcast"></i> Live class</span>
+                <span class="tnl" data-goto="quiz"><i class="ti ti-clipboard-check"></i> Quiz</span>
+                <span class="tnl" data-goto="payment"><i class="ti ti-credit-card"></i> Payment</span>
+                <span class="tnl" data-goto="cert"><i class="ti ti-certificate"></i> Certificate</span>
+                <span class="tnl" data-goto="teacher"><i class="ti ti-user-circle"></i> Teacher dashboard</span>
+            </div>
+
+            <div class="hero">
+                <div class="hero-inner">
+                    <div>
+                        <div class="hero-eyebrow"><i class="ti ti-leaf" style="font-size:12px"></i><span>Preserving Urhobo — one lesson at a time</span></div>
+                        <h1>Learn <em>Urhobo</em><br>from anywhere in the world</h1>
+                        <p class="hero-sub">Structured video courses, live virtual classes, interactive quizzes and a bilingual curriculum — built for the diaspora and every generation reconnecting with the
+                            language.</p>
+                        <div class="hero-ctas">
+                            <button class="cta-gold" data-goto="courses">Browse courses <i class="ti ti-arrow-right"></i></button>
+                            <button class="cta-out" data-goto="live"><i class="ti ti-player-play"></i> Watch a live class</button>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="hv-card">
+                            <div class="hv-top">
+                                <div class="hv-live"><span class="hv-dot"></span> LIVE CLASS</div>
+                                <div class="hv-word">Unit 4 · Greetings</div>
+                            </div>
+                            <div class="hv-phrase">
+                                <div class="hv-ur">Mavo</div>
+                                <div class="hv-en">Hello/How are you</div>
+                            </div>
+                            <div class="hv-phrase">
+                                <div class="hv-ur">Do</div>
+                                <div class="hv-en">Well done</div>
+                            </div>
+                            <div class="hv-stats-row">
+                                <div class="hv-stat"><b>14</b><span>Day streak</span></div>
+                                <div class="hv-stat"><b>68%</b><span>Course complete</span></div>
+                                <div class="hv-stat"><b>4.9★</b><span>Instructor rating</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <div class="hstat">
+                        <div class="hstat-n">2,400+</div>
+                        <div class="hstat-l">Active students</div>
+                    </div>
+                    <div class="hstat">
+                        <div class="hstat-n">18</div>
+                        <div class="hstat-l">Instructors</div>
+                    </div>
+                    <div class="hstat">
+                        <div class="hstat-n">40+</div>
+                        <div class="hstat-l">Courses</div>
+                    </div>
+                    <div class="hstat">
+                        <div class="hstat-n">4.9 ★</div>
+                        <div class="hstat-l">Avg rating</div>
+                    </div>
+                </div>
+                <div class="hero-bottom-pad"></div>
+            </div>
+
+            <div class="sec" id="about">
+                <div class="sec-narrow">
+                    <div class="sec-head">
+                        <div class="sec-eyebrow">Platform features</div>
+                        <div class="sec-h">Everything you need to learn Urhobo</div>
+                        <div class="sec-sub">A complete virtual campus built for language learning — web, Android, and iOS.</div>
+                    </div>
+                    <div class="feat-grid">
+                        <div class="feat-card">
+                            <div class="feat-ic"><i class="ti ti-video"></i></div>
+                            <h3>Video lessons</h3>
+                            <p>Bite-sized, native-taught videos you can rewatch as many times as you need.</p>
+                        </div>
+                        <div class="feat-card">
+                            <div class="feat-ic"><i class="ti ti-broadcast"></i></div>
+                            <h3>Live classes</h3>
+                            <p>Join real-time sessions with instructors and practice speaking with classmates.</p>
+                        </div>
+                        <div class="feat-card">
+                            <div class="feat-ic"><i class="ti ti-clipboard-check"></i></div>
+                            <h3>Interactive quizzes</h3>
+                            <p>Reinforce vocabulary and grammar with quizzes after every module.</p>
+                        </div>
+                        <div class="feat-card">
+                            <div class="feat-ic"><i class="ti ti-certificate"></i></div>
+                            <h3>Certificates</h3>
+                            <p>Earn a shareable certificate of completion for every course you finish.</p>
+                        </div>
+                        <div class="feat-card">
+                            <div class="feat-ic"><i class="ti ti-chart-line"></i></div>
+                            <h3>Progress tracking</h3>
+                            <p>A dashboard that shows exactly where you are and what's next.</p>
+                        </div>
+                        <div class="feat-card">
+                            <div class="feat-ic"><i class="ti ti-users"></i></div>
+                            <h3>Community</h3>
+                            <p>Connect with thousands of learners reconnecting with their heritage.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weave"></div>
+
+            <div class="sec" style="background:var(--surface)">
+                <div class="sec-narrow">
+                    <div class="sec-head">
+                        <div class="sec-eyebrow">How it works</div>
+                        <div class="sec-h">Start learning in 3 steps</div>
+                    </div>
+                    <div class="steps-wrap">
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <h3>Create your account</h3>
+                            <p>Sign up free and tell us your current level, from complete beginner to heritage speaker.</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <h3>Pick a course</h3>
+                            <p>Choose from beginner, conversational, or business Urhobo tracks.</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <h3>Learn and practice</h3>
+                            <p>Watch lessons, join live classes, take quizzes, and track your progress weekly.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sec">
+                <div class="sec-narrow">
+                    <div class="sec-head">
+                        <div class="sec-eyebrow">Student reviews</div>
+                        <div class="sec-h">What our learners say</div>
+                    </div>
+                    <div class="testi-grid">
+                        <div class="testi-card">
+                            <div class="testi-stars">★★★★★</div>
+                            <p>I grew up hearing Urhobo at home but never spoke it. Three months in, I can hold a full conversation with my grandmother.</p>
+                            <div class="testi-who">
+                                <div class="testi-av" style="background:var(--g6)">OE</div>
+                                <div>
+                                    <div class="testi-name">Oghenerukevwe E.</div>
+                                    <div class="testi-role">Beginner track</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testi-card">
+                            <div class="testi-stars">★★★★★</div>
+                            <p>The live classes make all the difference. My instructor corrects my tone and pronunciation in real time.</p>
+                            <div class="testi-who">
+                                <div class="testi-av" style="background:var(--au6)">TA</div>
+                                <div>
+                                    <div class="testi-name">Tega A.</div>
+                                    <div class="testi-role">Conversational track</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testi-card">
+                            <div class="testi-stars">★★★★★</div>
+                            <p>Clean platform, structured lessons, and the quizzes actually help the vocabulary stick.</p>
+                            <div class="testi-who">
+                                <div class="testi-av" style="background:var(--g7)">PR</div>
+                                <div>
+                                    <div class="testi-name">Preye R.</div>
+                                    <div class="testi-role">Business Urhobo</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-band">
+                <div class="cta-band-inner">
+                    <div class="cta-kicker">Join the movement</div>
+                    <div class="cta-h">Ready to speak Urhobo?</div>
+                    <p class="cta-sub">Join thousands of learners reconnecting with the Urhobo language and culture.</p>
+                    <button class="cta-gold" data-goto="courses">Get started for free <i class="ti ti-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="footer" id="contact">
+                <div class="footer-grid">
+                    <div>
+                        <div class="brand-name" style="color:#fff;font-family:var(--disp);font-weight:600;font-size:16px">Urhobo Language Academy</div>
+                        <p>Preserving and teaching the Urhobo language to learners everywhere, one lesson at a time.</p>
+                    </div>
+                    <div>
+                        <h4>Platform</h4>
+                        <ul>
+                            <li><span data-goto="courses">Courses</span></li>
+                            <li><span data-goto="live">Live classes</span></li>
+                            <li><span data-goto="cert">Certificates</span></li>
+                            <li><span data-goto="courses">Pricing</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Company</h4>
+                        <ul>
+                            <li><span data-scroll="about">About us</span></li>
+                            <li><span data-goto="teacher">Instructors</span></li>
+                            <li><span data-toast="Careers page coming soon">Careers</span></li>
+                            <li><span data-toast="Blog coming soon">Blog</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Contact</h4>
+                        <ul>
+                            <li><a href="mailto:hello@urhobolanguageacademy.com">hello@urhobolanguageacademy.com</a></li>
+                            <li><a href="tel:+2348000000000">+234 800 000 0000</a></li>
+                            <li><span>Warri, Delta State, Nigeria</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">© 2026 Urhobo Language Academy. All rights reserved. · <a data-goto="teacher">For instructors</a></div>
+            </div>
+        </div>
+
+        <!-- ============ COURSES ============ -->
+        <div class="pg" id="pg-courses">
+            <div class="topbar light">
+                <div class="brand">
+                    <div class="brand-icon"><i class="ti ti-language"></i></div>
+                    <div class="brand-text"><span class="brand-name">Urhobo Language Academy</span><span class="brand-tagline">Virtual learning platform</span></div>
+                </div>
+                <div class="top-nav">
+                    <span class="tnl" data-goto="home">Home</span>
+                    <span class="tnl cur" data-goto="courses">Courses</span>
+                    <span class="tnl" data-goto="student">Student dashboard</span>
+                    <span class="tnl" data-goto="live">Live class</span>
+                    <span class="tnl" data-goto="quiz">Quiz</span>
+                    <span class="tnl" data-goto="payment">Payment</span>
+                    <span class="tnl" data-goto="cert">Certificate</span>
+                    <span class="tnl" data-goto="teacher">Teacher dashboard</span>
+                </div>
+                <div class="top-actions">
+                    <button class="btn-ghost" data-goto="student">Sign in</button>
+                    <button class="btn-cta" data-goto="payment">Get started</button>
+                    <button class="hamb" data-menu-toggle="coursesMenu" aria-label="Menu">
+                        <span class="hamb-line"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-menu light-theme" id="coursesMenu">
+                <button class="menu-close" aria-label="Close menu"><i class="ti ti-x"></i></button>
+                <span class="tnl" data-goto="home"><i class="ti ti-home"></i> Home</span>
+                <span class="tnl cur" data-goto="courses"><i class="ti ti-book"></i> Courses</span>
+                <span class="tnl" data-goto="student"><i class="ti ti-layout-dashboard"></i> Student dashboard</span>
+                <span class="tnl" data-goto="live"><i class="ti ti-broadcast"></i> Live class</span>
+                <span class="tnl" data-goto="quiz"><i class="ti ti-clipboard-check"></i> Quiz</span>
+                <span class="tnl" data-goto="payment"><i class="ti ti-credit-card"></i> Payment</span>
+                <span class="tnl" data-goto="cert"><i class="ti ti-certificate"></i> Certificate</span>
+                <span class="tnl" data-goto="teacher"><i class="ti ti-user-circle"></i> Teacher dashboard</span>
+            </div>
+            <div class="course-hero">
+                <div class="sec-eyebrow">Course catalogue</div>
+                <h2>Find your Urhobo course</h2>
+                <p>40+ courses across every level — from first words to fluent conversation.</p>
+            </div>
+            <div class="course-filters">
+                <div class="cf-chip on" data-filter="all">All levels</div>
+                <div class="cf-chip" data-filter="beginner">Beginner</div>
+                <div class="cf-chip" data-filter="conversational">Conversational</div>
+                <div class="cf-chip" data-filter="advanced">Advanced</div>
+                <div class="cf-chip" data-filter="business">Business</div>
+                <div class="cf-chip" data-filter="kids">Kids</div>
+            </div>
+            <div class="course-body">
+                <div class="cg" id="courseGrid">
+                    <div class="cc" data-level="beginner">
+                        <div class="cc-thumb" style="background:linear-gradient(135deg,var(--g5),var(--g7))"><i class="ti ti-abc"></i></div>
+                        <div class="cc-body">
+                            <div class="cc-level">Beginner</div>
+                            <div class="cc-title">Urhobo Foundations</div>
+                            <div class="cc-desc">Alphabet, greetings, numbers, and everyday phrases for absolute beginners.</div>
+                            <div class="cc-meta"><span><i class="ti ti-clock"></i> 6 weeks</span><span class="cc-price">₦15,000</span></div><button class="cc-enroll" data-goto="payment">Enrol
+                                now</button>
+                        </div>
+                    </div>
+                    <div class="cc" data-level="conversational">
+                        <div class="cc-thumb" style="background:linear-gradient(135deg,var(--au5),var(--au7))"><i class="ti ti-message-circle"></i></div>
+                        <div class="cc-body">
+                            <div class="cc-level">Conversational</div>
+                            <div class="cc-title">Everyday Conversations</div>
+                            <div class="cc-desc">Build confidence speaking Urhobo in family, market, and social settings.</div>
+                            <div class="cc-meta"><span><i class="ti ti-clock"></i> 8 weeks</span><span class="cc-price">₦22,000</span></div><button class="cc-enroll" data-goto="payment">Enrol
+                                now</button>
+                        </div>
+                    </div>
+                    <div class="cc" data-level="business">
+                        <div class="cc-thumb" style="background:linear-gradient(135deg,var(--g6),var(--ink))"><i class="ti ti-briefcase"></i></div>
+                        <div class="cc-body">
+                            <div class="cc-level">Business</div>
+                            <div class="cc-title">Business Urhobo</div>
+                            <div class="cc-desc">Professional vocabulary for meetings, negotiations, and formal correspondence.</div>
+                            <div class="cc-meta"><span><i class="ti ti-clock"></i> 5 weeks</span><span class="cc-price">₦30,000</span></div><button class="cc-enroll" data-goto="payment">Enrol
+                                now</button>
+                        </div>
+                    </div>
+                    <div class="cc" data-level="kids">
+                        <div class="cc-thumb" style="background:linear-gradient(135deg,var(--au4),var(--g6))"><i class="ti ti-mood-smile"></i></div>
+                        <div class="cc-body">
+                            <div class="cc-level">Kids</div>
+                            <div class="cc-title">Urhobo for Kids</div>
+                            <div class="cc-desc">Songs, stories, and games that introduce children ages 5-12 to the language.</div>
+                            <div class="cc-meta"><span><i class="ti ti-clock"></i> 10 weeks</span><span class="cc-price">₦12,000</span></div><button class="cc-enroll" data-goto="payment">Enrol
+                                now</button>
+                        </div>
+                    </div>
+                    <div class="cc" data-level="advanced">
+                        <div class="cc-thumb" style="background:linear-gradient(135deg,var(--g7),var(--g4))"><i class="ti ti-book-2"></i></div>
+                        <div class="cc-body">
+                            <div class="cc-level">Advanced</div>
+                            <div class="cc-title">Urhobo Proverbs & Idioms</div>
+                            <div class="cc-desc">Explore proverbs and idioms and the cultural wisdom carried in them.</div>
+                            <div class="cc-meta"><span><i class="ti ti-clock"></i> 6 weeks</span><span class="cc-price">₦25,000</span></div><button class="cc-enroll" data-goto="payment">Enrol
+                                now</button>
+                        </div>
+                    </div>
+                    <div class="cc" data-level="conversational">
+                        <div class="cc-thumb" style="background:linear-gradient(135deg,var(--au6),var(--au3))"><i class="ti ti-microphone-2"></i></div>
+                        <div class="cc-body">
+                            <div class="cc-level">Conversational</div>
+                            <div class="cc-title">Urhobo Pronunciation Lab</div>
+                            <div class="cc-desc">Tone and pronunciation drills with live instructor feedback each week.</div>
+                            <div class="cc-meta"><span><i class="ti ti-clock"></i> 4 weeks</span><span class="cc-price">₦18,000</span></div><button class="cc-enroll" data-goto="payment">Enrol
+                                now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cg-empty" id="courseEmpty">No courses match this filter yet — check back soon or browse all levels.</div>
+            </div>
+        </div>
+
+        <!-- ============ STUDENT DASHBOARD ============ -->
+        <div class="pg" id="pg-student">
+            <div class="topbar light">
+                <div class="brand">
+                    <div class="brand-icon"><i class="ti ti-language"></i></div>
+                    <div class="brand-text"><span class="brand-name">Urhobo Language Academy</span></div>
+                </div>
+                <div class="top-nav">
+                    <span class="tnl" data-goto="home">Home</span>
+                    <span class="tnl" data-goto="courses">Courses</span>
+                    <span class="tnl cur" data-goto="student">Student dashboard</span>
+                    <span class="tnl" data-goto="live">Live class</span>
+                    <span class="tnl" data-goto="quiz">Quiz</span>
+                    <span class="tnl" data-goto="payment">Payment</span>
+                    <span class="tnl" data-goto="cert">Certificate</span>
+                    <span class="tnl" data-goto="teacher">Teacher dashboard</span>
+                </div>
+                <div class="top-actions">
+                    <button class="btn-ghost" data-goto="home"><i class="ti ti-logout"></i> Sign out</button>
+                    <button class="hamb" data-menu-toggle="studentMenu" aria-label="Menu">
+                        <span class="hamb-line"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-menu light-theme" id="studentMenu">
+                <button class="menu-close" aria-label="Close menu"><i class="ti ti-x"></i></button>
+                <span class="tnl" data-goto="home"><i class="ti ti-home"></i> Home</span>
+                <span class="tnl" data-goto="courses"><i class="ti ti-book"></i> Courses</span>
+                <span class="tnl cur" data-goto="student"><i class="ti ti-layout-dashboard"></i> Student dashboard</span>
+                <span class="tnl" data-goto="live"><i class="ti ti-broadcast"></i> Live class</span>
+                <span class="tnl" data-goto="quiz"><i class="ti ti-clipboard-check"></i> Quiz</span>
+                <span class="tnl" data-goto="payment"><i class="ti ti-credit-card"></i> Payment</span>
+                <span class="tnl" data-goto="cert"><i class="ti ti-certificate"></i> Certificate</span>
+                <span class="tnl" data-goto="teacher"><i class="ti ti-user-circle"></i> Teacher dashboard</span>
+            </div>
+            <div class="dash-layout">
+                <div class="sidebar">
+                    <div class="sb-user">
+                        <div class="sb-av">OE</div>
+                        <div>
+                            <div class="sb-uname">Oghenerukevwe</div>
+                            <div class="sb-urole">Conversational track</div>
+                        </div>
+                    </div>
+                    <div class="sb-section">Learn</div>
+                    <div class="sb-item on"><i class="ti ti-layout-dashboard"></i> Overview</div>
+                    <div class="sb-item" data-goto="courses"><i class="ti ti-books"></i> My courses</div>
+                    <div class="sb-item" data-goto="live"><i class="ti ti-broadcast"></i> Live classes</div>
+                    <div class="sb-item" data-goto="quiz"><i class="ti ti-clipboard-check"></i> Quizzes</div>
+                    <div class="sb-section">Account</div>
+                    <div class="sb-item" data-goto="cert"><i class="ti ti-certificate"></i> Certificates</div>
+                    <div class="sb-item" data-goto="payment"><i class="ti ti-credit-card"></i> Billing</div>
+                    <div class="sb-item" data-toast="Settings coming soon"><i class="ti ti-settings"></i> Settings</div>
+                </div>
+                <div class="main-col">
+                    <div class="main-head">
+                        <div>
+                            <h2>Welcome back, Oghenerukevwe 👋</h2>
+                            <p>You're 68% through Everyday Conversations — keep going.</p>
+                        </div><button class="btn-cta" style="color:var(--au8)" data-goto="live">Join live class</button>
+                    </div>
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-ic"><i class="ti ti-flame"></i></div>
+                            <div class="metric-n">14</div>
+                            <div class="metric-l">Day streak</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-ic"><i class="ti ti-books"></i></div>
+                            <div class="metric-n">3</div>
+                            <div class="metric-l">Courses enrolled</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-ic"><i class="ti ti-clock"></i></div>
+                            <div class="metric-n">42h</div>
+                            <div class="metric-l">Time learned</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-ic"><i class="ti ti-certificate"></i></div>
+                            <div class="metric-n">1</div>
+                            <div class="metric-l">Certificate earned</div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>Continue learning</h3>
+                        <div class="crow" data-goto="quiz" style="cursor:pointer">
+                            <div class="crow-ic"><i class="ti ti-message-circle"></i></div>
+                            <div class="crow-info">
+                                <div class="crow-title">Everyday Conversations</div>
+                                <div class="crow-sub">Module 6 of 9 · Ordering food</div>
+                                <div class="pbar">
+                                    <div class="pbar-fill" style="width:68%"></div>
+                                </div>
+                            </div>
+                            <div class="crow-pct">68%</div>
+                        </div>
+                        <div class="crow" data-goto="cert" style="cursor:pointer">
+                            <div class="crow-ic"><i class="ti ti-abc"></i></div>
+                            <div class="crow-info">
+                                <div class="crow-title">Urhobo Foundations</div>
+                                <div class="crow-sub">Module 12 of 12 · Review</div>
+                                <div class="pbar">
+                                    <div class="pbar-fill" style="width:100%"></div>
+                                </div>
+                            </div>
+                            <div class="crow-pct">100%</div>
+                        </div>
+                        <div class="crow" data-goto="quiz" style="cursor:pointer">
+                            <div class="crow-ic"><i class="ti ti-book-2"></i></div>
+                            <div class="crow-info">
+                                <div class="crow-title">Urhobo Proverbs & Idioms</div>
+                                <div class="crow-sub">Module 1 of 6 · Getting started</div>
+                                <div class="pbar">
+                                    <div class="pbar-fill" style="width:12%"></div>
+                                </div>
+                            </div>
+                            <div class="crow-pct">12%</div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>Upcoming live classes</h3>
+                        <div class="crow">
+                            <div class="crow-ic" style="background:var(--au1);color:var(--au6)"><i class="ti ti-calendar-event"></i></div>
+                            <div class="crow-info">
+                                <div class="crow-title">Conversational Practice — Group B</div>
+                                <div class="crow-sub">Today · 6:00 PM WAT · with Instructor Mrs. Efe</div>
+                            </div><button class="btn-cta" style="padding:9px 15px;font-size:12px;color:var(--au8)" data-goto="live">Join</button>
+                        </div>
+                        <div class="crow">
+                            <div class="crow-ic" style="background:var(--au1);color:var(--au6)"><i class="ti ti-calendar-event"></i></div>
+                            <div class="crow-info">
+                                <div class="crow-title">Pronunciation Lab</div>
+                                <div class="crow-sub">Thu · 5:00 PM WAT · with Instructor Mr. Onome</div>
+                            </div><button class="btn-ghost" style="border:1px solid var(--bdr2);padding:9px 15px;font-size:12px;color:var(--tx2)"
+                                data-toast="Full class details coming soon">Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ LIVE CLASS ============ -->
+        <div class="pg" id="pg-live">
+            <div class="live-outer">
+                <div class="live-topbar">
+                    <div class="live-title">
+                        <div class="live-dot"></div>
+                        <div>
+                            <div class="live-name">Conversational Practice — Group B</div>
+                            <div class="live-sub">Instructor: Mrs. Efe Onoharigho · 24 participants</div>
+                        </div>
+                    </div>
+                    <button class="btn-ghost" style="color:#fff" data-goto="student"><i class="ti ti-x"></i> Exit</button>
+                </div>
+                <div class="live-body">
+                    <div class="live-stage">
+                        <div class="live-avatar">EO</div>
+                        <div style="font-size:13px;color:#bcd4c2">Mrs. Efe Onoharigho is speaking</div>
+                        <div class="live-tag"><i class="ti ti-microphone" style="font-size:12px"></i> Live now · 00:24:10</div>
+                    </div>
+                    <div class="live-chat">
+                        <h4>Class chat</h4>
+                        <div class="chat-msgs" id="chatMsgs">
+                            <div class="cmsg"><b>Mrs. Efe:</b> Let's review greetings — how do we say "good morning"?</div>
+                            <div class="cmsg"><b>Tega A.:</b> Vwo miedo!</div>
+                            <div class="cmsg"><b>Mrs. Efe:</b> Correct 🎉 Now try "good evening"</div>
+                            <div class="cmsg"><b>Preye R.:</b> Miedo vweri?</div>
+                            <div class="cmsg"><b>Mrs. Efe:</b> Almost — let's go over the tone together</div>
+                        </div>
+                        <div class="chat-input"><input type="text" id="chatInput" placeholder="Type a message…"><button class="lctrl" id="chatSend"
+                                style="width:38px;height:38px;background:var(--g6)"><i class="ti ti-send"></i></button></div>
+                    </div>
+                </div>
+                <div class="live-controls-row">
+                    <button class="lctrl on-state" id="micBtn" title="Toggle microphone"><i class="ti ti-microphone"></i></button>
+                    <button class="lctrl on-state" id="camBtn" title="Toggle camera"><i class="ti ti-video"></i></button>
+                    <button class="lctrl off" id="shareBtn" title="Share screen"><i class="ti ti-screen-share"></i></button>
+                    <button class="lctrl" id="handBtn" title="Raise hand"><i class="ti ti-hand-stop"></i></button>
+                    <button class="lctrl leave" data-goto="student"><i class="ti ti-phone-off"></i> Leave</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ QUIZ ============ -->
+        <div class="pg" id="pg-quiz">
+            <div class="topbar light">
+                <div class="brand">
+                    <div class="brand-icon"><i class="ti ti-language"></i></div>
+                    <div class="brand-text"><span class="brand-name">Urhobo Language Academy</span></div>
+                </div>
+                <div class="top-nav">
+                    <span class="tnl" data-goto="home">Home</span>
+                    <span class="tnl" data-goto="courses">Courses</span>
+                    <span class="tnl" data-goto="student">Student dashboard</span>
+                    <span class="tnl" data-goto="live">Live class</span>
+                    <span class="tnl cur" data-goto="quiz">Quiz</span>
+                    <span class="tnl" data-goto="payment">Payment</span>
+                    <span class="tnl" data-goto="cert">Certificate</span>
+                    <span class="tnl" data-goto="teacher">Teacher dashboard</span>
+                </div>
+                <div class="top-actions">
+                    <button class="btn-ghost" data-goto="student"><i class="ti ti-x"></i> Exit quiz</button>
+                </div>
+            </div>
+            <div class="quiz-outer">
+                <div class="quiz-progress"><span>Question 4 of 10</span>
+                    <div class="quiz-dots">
+                        <div class="qdot done"></div>
+                        <div class="qdot done"></div>
+                        <div class="qdot done"></div>
+                        <div class="qdot cur"></div>
+                        <div class="qdot"></div>
+                        <div class="qdot"></div>
+                        <div class="qdot"></div>
+                        <div class="qdot"></div>
+                        <div class="qdot"></div>
+                        <div class="qdot"></div>
+                    </div>
+                </div>
+                <div class="quiz-card">
+                    <div class="quiz-kicker">Everyday Conversations · Module 6</div>
+                    <div class="quiz-q">How do you say "Thank you" in Urhobo?</div>
+                    <div class="qopt"><span class="qletter">A</span> Vwo miedo</div>
+                    <div class="qopt sel"><span class="qletter">B</span> Miovwerhen</div>
+                    <div class="qopt"><span class="qletter">C</span> Kevwe</div>
+                    <div class="qopt"><span class="qletter">D</span> Malo</div>
+                    <div class="quiz-actions"><button class="qbtn skip" data-goto="student">Skip question</button><button class="qbtn next" data-goto="cert">Finish quiz <i
+                                class="ti ti-arrow-right"></i></button></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ PAYMENT ============ -->
+        <div class="pg" id="pg-payment">
+            <div class="topbar light">
+                <div class="brand">
+                    <div class="brand-icon"><i class="ti ti-language"></i></div>
+                    <div class="brand-text"><span class="brand-name">Urhobo Language Academy</span></div>
+                </div>
+                <div class="top-nav">
+                    <span class="tnl" data-goto="home">Home</span>
+                    <span class="tnl" data-goto="courses">Courses</span>
+                    <span class="tnl" data-goto="student">Student dashboard</span>
+                    <span class="tnl" data-goto="live">Live class</span>
+                    <span class="tnl" data-goto="quiz">Quiz</span>
+                    <span class="tnl cur" data-goto="payment">Payment</span>
+                    <span class="tnl" data-goto="cert">Certificate</span>
+                    <span class="tnl" data-goto="teacher">Teacher dashboard</span>
+                </div>
+                <div class="top-actions"><button class="btn-ghost" data-goto="courses"><i class="ti ti-arrow-left"></i> Back to courses</button></div>
+            </div>
+            <div class="pay-outer">
+                <div class="pay-form-col">
+                    <h2>Complete your enrolment</h2>
+                    <p>Secure checkout · cancel anytime within 7 days</p>
+                    <label class="field-label" for="payName">Full name</label><input class="field" id="payName" type="text" placeholder="Oghenerukevwe Efemena">
+                    <label class="field-label" for="payEmail">Email address</label><input class="field" id="payEmail" type="email" placeholder="you@example.com">
+                    <div class="pm-row">
+                        <div class="pm on" data-pm="card"><i class="ti ti-credit-card"></i><br>Card</div>
+                        <div class="pm" data-pm="bank"><i class="ti ti-building-bank"></i><br>Bank transfer</div>
+                        <div class="pm" data-pm="ussd"><i class="ti ti-device-mobile"></i><br>USSD</div>
+                    </div>
+                    <label class="field-label" for="payCard">Card number</label><input class="field" id="payCard" type="text" placeholder="1234 1234 1234 1234">
+                    <div class="field-row">
+                        <div><label class="field-label" for="payExp">Expiry</label><input class="field" id="payExp" type="text" placeholder="MM/YY"></div>
+                        <div><label class="field-label" for="payCvc">CVC</label><input class="field" id="payCvc" type="text" placeholder="123"></div>
+                    </div>
+                    <button class="pay-btn" id="payBtn">Pay ₦22,000 <i class="ti ti-lock"></i></button>
+                    <div class="pay-secure"><i class="ti ti-shield-check"></i> Payments are encrypted and secure</div>
+                </div>
+                <div class="pay-summary-col">
+                    <div class="psum-item">
+                        <div class="psum-ic"><i class="ti ti-message-circle"></i></div>
+                        <div>
+                            <div class="psum-title">Everyday Conversations</div>
+                            <div class="psum-sub">8 weeks · Conversational level</div>
+                        </div>
+                    </div>
+                    <div class="psum-line"><span>Course fee</span><span>₦22,000</span></div>
+                    <div class="psum-line"><span>Materials & workbook</span><span>₦0 (included)</span></div>
+                    <div class="psum-line"><span>Discount</span><span style="color:var(--g6)">−₦0</span></div>
+                    <div class="psum-line total"><span>Total due today</span><span>₦22,000</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ CERTIFICATE ============ -->
+        <div class="pg" id="pg-cert">
+            <div class="topbar light">
+                <div class="brand">
+                    <div class="brand-icon"><i class="ti ti-language"></i></div>
+                    <div class="brand-text"><span class="brand-name">Urhobo Language Academy</span></div>
+                </div>
+                <div class="top-nav">
+                    <span class="tnl" data-goto="home">Home</span>
+                    <span class="tnl" data-goto="courses">Courses</span>
+                    <span class="tnl" data-goto="student">Student dashboard</span>
+                    <span class="tnl" data-goto="live">Live class</span>
+                    <span class="tnl" data-goto="quiz">Quiz</span>
+                    <span class="tnl" data-goto="payment">Payment</span>
+                    <span class="tnl cur" data-goto="cert">Certificate</span>
+                    <span class="tnl" data-goto="teacher">Teacher dashboard</span>
+                </div>
+                <div class="top-actions"><button class="btn-ghost" data-goto="student"><i class="ti ti-arrow-left"></i> Back to dashboard</button></div>
+            </div>
+            <div class="cert-page">
+                <div>
+                    <div class="cert-doc-wrap">
+                        <div class="cert-inner">
+                            <div class="cert-crest"><i class="ti ti-award"></i></div>
+                            <div class="cert-org">Urhobo Language Academy</div>
+                            <div class="cert-title">Certificate of Completion</div>
+                            <div class="cert-presented">This certificate is proudly presented to</div>
+                            <div class="cert-recipient">Oghenerukevwe Efemena</div>
+                            <p class="cert-desc">for successfully completing the <strong>Urhobo Foundations</strong> course, demonstrating proficiency in greetings, numbers, and everyday
+                                conversation.</p>
+                            <div class="cert-footer">
+                                <div>
+                                    <div class="cert-sign">E. Onoharigho</div>
+                                    <div class="cert-signlabel">Lead Instructor</div>
+                                </div>
+                                <div>
+                                    <div class="cert-sign">24 Jul 2026</div>
+                                    <div class="cert-signlabel">Date issued</div>
+                                </div>
+                                <div>
+                                    <div class="cert-sign">#ULA-08341</div>
+                                    <div class="cert-signlabel">Certificate ID</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cert-actions">
+                        <button class="cert-btn prim" id="certDownload"><i class="ti ti-download"></i> Download PDF</button>
+                        <button class="cert-btn" id="certShare"><i class="ti ti-share"></i> Share</button>
+                        <button class="cert-btn" data-goto="student"><i class="ti ti-layout-dashboard"></i> Back to dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ TEACHER DASHBOARD ============ -->
+        <div class="pg" id="pg-teacher">
+            <div class="topbar light">
+                <div class="brand">
+                    <div class="brand-icon"><i class="ti ti-language"></i></div>
+                    <div class="brand-text"><span class="brand-name">Urhobo Language Academy</span></div>
+                </div>
+                <div class="top-nav">
+                    <span class="tnl" data-goto="home">Home</span>
+                    <span class="tnl" data-goto="courses">Courses</span>
+                    <span class="tnl" data-goto="student">Student dashboard</span>
+                    <span class="tnl" data-goto="live">Live class</span>
+                    <span class="tnl" data-goto="quiz">Quiz</span>
+                    <span class="tnl" data-goto="payment">Payment</span>
+                    <span class="tnl" data-goto="cert">Certificate</span>
+                    <span class="tnl cur" data-goto="teacher">Teacher dashboard</span>
+                </div>
+                <div class="top-actions">
+                    <button class="btn-ghost" data-goto="home"><i class="ti ti-logout"></i> Sign out</button>
+                    <button class="hamb" data-menu-toggle="teacherMenu" aria-label="Menu">
+                        <span class="hamb-line"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-menu light-theme" id="teacherMenu">
+                <button class="menu-close" aria-label="Close menu"><i class="ti ti-x"></i></button>
+                <span class="tnl" data-goto="home"><i class="ti ti-home"></i> Home</span>
+                <span class="tnl" data-goto="courses"><i class="ti ti-book"></i> Courses</span>
+                <span class="tnl" data-goto="student"><i class="ti ti-layout-dashboard"></i> Student dashboard</span>
+                <span class="tnl" data-goto="live"><i class="ti ti-broadcast"></i> Live class</span>
+                <span class="tnl" data-goto="quiz"><i class="ti ti-clipboard-check"></i> Quiz</span>
+                <span class="tnl" data-goto="payment"><i class="ti ti-credit-card"></i> Payment</span>
+                <span class="tnl" data-goto="cert"><i class="ti ti-certificate"></i> Certificate</span>
+                <span class="tnl cur" data-goto="teacher"><i class="ti ti-user-circle"></i> Teacher dashboard</span>
+            </div>
+            <div class="teacher-layout">
+                <div class="sidebar">
+                    <div class="sb-user">
+                        <div class="sb-av" style="background:var(--au5)">EO</div>
+                        <div>
+                            <div class="sb-uname">Mrs. Efe Onoharigho</div>
+                            <div class="sb-urole">Instructor</div>
+                        </div>
+                    </div>
+                    <div class="sb-section">Teach</div>
+                    <div class="sb-item on"><i class="ti ti-layout-dashboard"></i> Overview</div>
+                    <div class="sb-item" data-goto="live"><i class="ti ti-broadcast"></i> Start live class</div>
+                    <div class="sb-item" data-goto="courses"><i class="ti ti-book-2"></i> My courses</div>
+                    <div class="sb-item" data-toast="Student roster coming soon"><i class="ti ti-users"></i> Students</div>
+                    <div class="sb-section">Account</div>
+                    <div class="sb-item" data-toast="Earnings report coming soon"><i class="ti ti-wallet"></i> Earnings</div>
+                    <div class="sb-item" data-toast="Settings coming soon"><i class="ti ti-settings"></i> Settings</div>
+                </div>
+                <div class="main-col">
+                    <div class="main-head">
+                        <div>
+                            <h2>Good evening, Mrs. Onoharigho</h2>
+                            <p>You have a live class starting in 40 minutes.</p>
+                        </div><button class="btn-cta" style="color:var(--au8)" data-goto="live">Start live class</button>
+                    </div>
+                    <div class="t-metrics">
+                        <div class="metric">
+                            <div class="metric-ic"><i class="ti ti-users"></i></div>
+                            <div class="metric-n">312</div>
+                            <div class="metric-l">Total students</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-ic"><i class="ti ti-book-2"></i></div>
+                            <div class="metric-n">4</div>
+                            <div class="metric-l">Active courses</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-ic"><i class="ti ti-star"></i></div>
+                            <div class="metric-n">4.9</div>
+                            <div class="metric-l">Avg rating</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-ic"><i class="ti ti-wallet"></i></div>
+                            <div class="metric-n">₦486k</div>
+                            <div class="metric-l">This month</div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>Recent student activity</h3>
+                        <div class="stbl-wrap">
+                            <table class="stbl">
+                                <thead>
+                                    <tr><th>Student</th><th>Course</th><th>Progress</th><th>Last active</th><th>Status</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Oghenerukevwe E.</td>
+                                        <td>Everyday Conversations</td>
+                                        <td>68%</td>
+                                        <td>Today</td>
+                                        <td><span class="badge good">On track</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tega A.</td>
+                                        <td>Urhobo Foundations</td>
+                                        <td>100%</td>
+                                        <td>Yesterday</td>
+                                        <td><span class="badge good">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Preye R.</td>
+                                        <td>Business Urhobo</td>
+                                        <td>34%</td>
+                                        <td>3 days ago</td>
+                                        <td><span class="badge warn">Slipping</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ese J.</td>
+                                        <td>Urhobo Foundations</td>
+                                        <td>12%</td>
+                                        <td>9 days ago</td>
+                                        <td><span class="badge bad">At risk</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>Today's schedule</h3>
+                        <div class="crow">
+                            <div class="crow-ic" style="background:var(--au1);color:var(--au6)"><i class="ti ti-calendar-event"></i></div>
+                            <div class="crow-info">
+                                <div class="crow-title">Conversational Practice — Group B</div>
+                                <div class="crow-sub">6:00 PM WAT · 24 registered</div>
+                            </div><button class="btn-cta" style="padding:9px 15px;font-size:12px;color:var(--au8)" data-goto="live">Start</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="toast" id="toast"><i class="ti ti-info-circle"></i><span id="toastMsg"></span></div>
+
+    </div>
+
+    <!-- Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <script>
+        (function() {
+            var pages = ['home', 'courses', 'student', 'live', 'quiz', 'payment', 'cert', 'teacher'];
+            var toastTimer = null;
+            var overlay = document.getElementById('menuOverlay');
+
+            function closeMenus() {
+                document.querySelectorAll('.mobile-menu').forEach(function(m) { m.classList.remove('on'); });
+                document.querySelectorAll('.hamb').forEach(function(h) { h.classList.remove('active'); });
+                if (overlay) overlay.classList.remove('on');
+                document.body.style.overflow = '';
+            }
+
+            function openMenu(menuId, button) {
+                var menu = document.getElementById(menuId);
+                if (!menu) return;
+                closeMenus();
+                menu.classList.add('on');
+                if (button) button.classList.add('active');
+                if (overlay) overlay.classList.add('on');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function showToast(msg) {
+                var t = document.getElementById('toast');
+                var m = document.getElementById('toastMsg');
+                if (!t || !m) return;
+                m.textContent = msg;
+                t.classList.add('on');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(function() { t.classList.remove('on'); }, 2600);
+            }
+
+            function goto(page) {
+                if (pages.indexOf(page) === -1) return;
+                document.querySelectorAll('.pg').forEach(function(el) { el.classList.remove('on'); });
+                var target = document.getElementById('pg-' + page);
+                if (target) target.classList.add('on');
+                document.querySelectorAll('.tnl').forEach(function(el) {
+                    el.classList.toggle('cur', el.dataset.goto === page);
+                });
+                closeMenus();
+                window.scrollTo({ top: 0, behavior: 'auto' });
+                history.replaceState(null, '', '#' + page);
+            }
+
+            document.addEventListener('click', function(e) {
+                // Handle menu toggle
+                var m = e.target.closest('[data-menu-toggle]');
+                if (m) {
+                    e.preventDefault();
+                    var menuId = m.dataset.menuToggle;
+                    var menu = document.getElementById(menuId);
+                    if (menu) {
+                        var isOpen = menu.classList.contains('on');
+                        if (isOpen) {
+                            closeMenus();
+                        } else {
+                            openMenu(menuId, m);
+                        }
+                    }
+                    return;
+                }
+
+                // Handle toast triggers
+                var toastEl = e.target.closest('[data-toast]');
+                if (toastEl) {
+                    e.preventDefault();
+                    showToast(toastEl.dataset.toast);
+                    closeMenus();
+                    return;
+                }
+
+                // Handle scroll to element
+                var s = e.target.closest('[data-scroll]');
+                if (s) {
+                    e.preventDefault();
+                    goto('home');
+                    setTimeout(function() {
+                        var t = document.getElementById(s.dataset.scroll);
+                        if (t) t.scrollIntoView({ behavior: 'smooth' });
+                    }, 60);
+                    return;
+                }
+
+                // Handle navigation
+                var el = e.target.closest('[data-goto]');
+                if (el) {
+                    e.preventDefault();
+                    goto(el.dataset.goto);
+                    return;
+                }
+
+                // Handle menu close buttons (any .menu-close)
+                var closeBtn = e.target.closest('.menu-close');
+                if (closeBtn) {
+                    closeMenus();
+                    return;
+                }
+            });
+
+            // Overlay click closes menu
+            if (overlay) {
+                overlay.addEventListener('click', closeMenus);
+            }
+
+            // Filter chips
+            document.querySelectorAll('.cf-chip').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    document.querySelectorAll('.cf-chip').forEach(function(c) { c.classList.remove('on'); });
+                    el.classList.add('on');
+                    var filter = el.dataset.filter;
+                    var any = false;
+                    document.querySelectorAll('#courseGrid .cc').forEach(function(card) {
+                        var show = (filter === 'all') || (card.dataset.level === filter);
+                        card.style.display = show ? '' : 'none';
+                        if (show) any = true;
+                    });
+                    document.getElementById('courseEmpty').classList.toggle('on', !any);
+                });
+            });
+
+            // Payment methods
+            document.querySelectorAll('.pm').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    document.querySelectorAll('.pm').forEach(function(p) { p.classList.remove('on'); });
+                    el.classList.add('on');
+                    showToast('Payment method set to ' + el.textContent.trim());
+                });
+            });
+
+            // Quiz options
+            document.querySelectorAll('.qopt').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    document.querySelectorAll('.qopt').forEach(function(q) { q.classList.remove('sel'); });
+                    el.classList.add('sel');
+                });
+            });
+
+            // Payment button
+            var payBtn = document.getElementById('payBtn');
+            if (payBtn) {
+                payBtn.addEventListener('click', function() {
+                    showToast('Payment successful — redirecting to your dashboard');
+                    setTimeout(function() { goto('student'); }, 700);
+                });
+            }
+
+            // Certificate actions
+            var certDl = document.getElementById('certDownload');
+            if (certDl) certDl.addEventListener('click', function() { showToast('Downloading PDF certificate…'); });
+            var certShare = document.getElementById('certShare');
+            if (certShare) certShare.addEventListener('click', function() { showToast('Share link copied to clipboard'); });
+
+            // Live controls
+            ['micBtn', 'camBtn', 'shareBtn', 'handBtn'].forEach(function(id) {
+                var b = document.getElementById(id);
+                if (!b) return;
+                b.addEventListener('click', function() {
+                    b.classList.toggle('off');
+                    b.classList.toggle('on-state');
+                    var labels = { micBtn: 'Microphone', camBtn: 'Camera', shareBtn: 'Screen share',
+                        handBtn: 'Raised hand' };
+                    showToast(labels[id] + (b.classList.contains('off') ? ' off' : ' on'));
+                });
+            });
+
+            // Chat
+            var chatSend = document.getElementById('chatSend');
+            var chatInput = document.getElementById('chatInput');
+            var chatMsgs = document.getElementById('chatMsgs');
+
+            function sendChat() {
+                if (!chatInput || !chatInput.value.trim()) return;
+                var div = document.createElement('div');
+                div.className = 'cmsg';
+                div.innerHTML = '<b>You:</b> ' + chatInput.value.replace(/</g, '&lt;');
+                chatMsgs.appendChild(div);
+                chatMsgs.scrollTop = chatMsgs.scrollHeight;
+                chatInput.value = '';
+            }
+            if (chatSend) chatSend.addEventListener('click', sendChat);
+            if (chatInput) chatInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendChat(); });
+
+            // Initial page from hash
+            var initial = (location.hash || '').replace('#', '');
+            if (pages.indexOf(initial) !== -1) { goto(initial); }
+        })();
+    </script>
+</body>
+</html>

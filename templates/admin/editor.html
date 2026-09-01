@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{% if article %}Edit{% else %}New{% endif %} Article — Blogsphere Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0e10;--bg2:#111416;--bg3:#181c20;--bg4:#1e2328;--bg5:#242930;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.11);--border3:rgba(255,255,255,.18);
+  --text:#e6e2da;--text2:#8a8680;--text3:#4e4a46;
+  --accent:#d4621a;--accent2:#e8844a;--accent-bg:rgba(212,98,26,.1);
+  --gold:#c8980a;--green:#22c55e;
+  --syne:'Syne',sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'JetBrains Mono',monospace;
+  --radius:6px;--topbar:54px;
+}
+html,body{height:100%;font-family:var(--syne);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:14px;overflow:hidden;}
+
+/* ── SHELL ── */
+.shell{display:grid;grid-template-rows:var(--topbar) 1fr;height:100vh;}
+.body-row{display:grid;grid-template-columns:52px 1fr 320px;overflow:hidden;}
+
+/* ── TOPBAR ── */
+.topbar{
+  display:flex;align-items:center;gap:0;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:0;z-index:100;
+}
+.tb-logo{
+  width:52px;height:var(--topbar);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  border-right:1px solid var(--border);
+}
+.tb-logo-img{width:30px;height:30px;object-fit:contain;display:block;}
+.tb-breadcrumb{display:flex;align-items:center;gap:8px;padding:0 20px;flex:1;font-size:13px;color:var(--text2);}
+.tb-sep{color:var(--text3);}
+.tb-crumb-active{color:var(--text);font-weight:600;}
+.tb-actions{display:flex;align-items:center;gap:8px;padding:0 16px;border-left:1px solid var(--border);}
+.tb-status{display:flex;align-items:center;gap:6px;font-size:11px;font-family:var(--mono);color:var(--text3);padding:0 16px;border-left:1px solid var(--border);}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--text3);transition:background .3s;}
+.status-dot.saved{background:var(--green);animation:blink 1s ease 2;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.tb-kbd{font-size:9px;background:var(--bg4);border:1px solid var(--border2);border-radius:3px;padding:1px 5px;font-family:var(--mono);color:var(--text3);}
+
+.btn{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border-radius:var(--radius);font-size:12px;font-weight:600;font-family:var(--syne);cursor:pointer;border:none;transition:all .15s;text-decoration:none;white-space:nowrap;height:34px;}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 10px rgba(212,98,26,.3);}
+.btn-primary:hover{background:#b8510f;}
+.btn-ghost{background:var(--bg4);color:var(--text2);border:1px solid var(--border2);}
+.btn-ghost:hover{background:var(--bg5);color:var(--text);}
+.btn-sm{padding:5px 11px;font-size:11px;height:28px;}
+.btn-danger{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.2);}
+.btn-danger:hover{background:rgba(239,68,68,.22);}
+
+/* ── ICON RAIL ── */
+.icon-rail{
+  background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;
+  padding:12px 0;gap:4px;overflow:hidden;
+}
+.rail-btn{
+  width:36px;height:36px;border-radius:var(--radius);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text3);cursor:pointer;transition:background .12s,color .12s;
+  position:relative;
+}
+.rail-btn:hover,.rail-btn.active{background:var(--bg4);color:var(--text);}
+.rail-btn.active{color:var(--accent);}
+.rail-tip{
+  position:absolute;left:calc(100% + 8px);
+  background:var(--bg5);border:1px solid var(--border2);
+  color:var(--text2);font-size:11px;font-family:var(--mono);
+  padding:4px 8px;border-radius:4px;white-space:nowrap;
+  opacity:0;pointer-events:none;z-index:200;transition:opacity .12s;
+}
+.rail-btn:hover .rail-tip{opacity:1;}
+.rail-divider{width:28px;height:1px;background:var(--border);margin:4px 0;}
+
+/* ── EDITOR AREA ── */
+.editor-area{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+
+.editor-toolbar{
+  display:flex;align-items:center;gap:8px;padding:8px 16px;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  overflow-x:auto;flex-shrink:0;
+}
+.editor-toolbar::-webkit-scrollbar{height:0;}
+
+.title-input{
+  width:100%;background:transparent;border:none;outline:none;
+  font-family:var(--serif);font-style:italic;font-size:28px;color:var(--text);
+  padding:20px 32px 12px;flex-shrink:0;
+  border-bottom:1px solid var(--border);
+  transition:border-color .15s;
+}
+.title-input::placeholder{color:var(--text3);}
+.title-input:focus{border-bottom-color:var(--border2);}
+
+.editor-meta-strip{
+  display:flex;align-items:center;gap:0;padding:0 32px;
+  border-bottom:1px solid var(--border);flex-shrink:0;height:38px;
+  font-size:12px;font-family:var(--mono);
+}
+.meta-chip{
+  display:flex;align-items:center;gap:6px;padding:0 12px;
+  height:100%;border-right:1px solid var(--border);color:var(--text3);
+  cursor:pointer;transition:color .12s;
+}
+.meta-chip:hover{color:var(--text2);}
+.meta-chip:first-child{padding-left:0;}
+.meta-value{color:var(--text2);}
+
+.editor-scroll{flex:1;overflow-y:auto;padding:0 32px 40px;}
+.editor-scroll::-webkit-scrollbar{width:6px;}
+.editor-scroll::-webkit-scrollbar-track{background:transparent;}
+.editor-scroll::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:3px;}
+
+/* EasyMDE overrides */
+.EasyMDEContainer{height:100%;}
+.CodeMirror{
+  background:transparent !important;color:var(--text) !important;
+  border:none !important;box-shadow:none !important;
+  font-family:var(--mono) !important;font-size:15px !important;
+  line-height:1.75 !important;height:auto !important;
+  min-height:400px;padding:20px 0 !important;
+}
+.CodeMirror-scroll{padding:0 !important;}
+.CodeMirror-cursor{border-left:2px solid var(--accent) !important;}
+.CodeMirror-selected{background:rgba(212,98,26,.15) !important;}
+.editor-toolbar{background:var(--bg3) !important;border:none !important;border-bottom:1px solid var(--border) !important;}
+.editor-toolbar button{color:var(--text2) !important;border:1px solid transparent !important;}
+.editor-toolbar button:hover,.editor-toolbar button.active{background:var(--bg4) !important;color:var(--text) !important;border-color:var(--border2) !important;}
+.editor-toolbar i.separator{border-color:var(--border2) !important;}
+.editor-preview{background:var(--bg2) !important;color:var(--text) !important;padding:20px 28px !important;}
+.editor-preview h1,.editor-preview h2,.editor-preview h3{font-family:var(--serif) !important;font-style:italic !important;color:var(--text) !important;}
+.editor-preview a{color:var(--accent2) !important;}
+.editor-preview blockquote{border-left:3px solid var(--accent) !important;background:var(--accent-bg) !important;color:var(--text2) !important;}
+.editor-preview pre{background:var(--bg4) !important;color:var(--text) !important;}
+.editor-preview code{background:var(--bg4) !important;color:var(--accent2) !important;}
+.editor-statusbar{background:var(--bg2) !important;border-top:1px solid var(--border) !important;color:var(--text3) !important;}
+.EasyMDEContainer .CodeMirror-fullscreen,.EasyMDEContainer.fullscreen .editor-preview-active-side{background:var(--bg) !important;}
+
+/* word count bar */
+.word-bar{
+  padding:5px 32px;display:flex;gap:20px;align-items:center;
+  border-top:1px solid var(--border);background:var(--bg2);
+  font-size:11px;font-family:var(--mono);color:var(--text3);
+  flex-shrink:0;
+}
+.word-bar span{display:flex;align-items:center;gap:5px;}
+.word-bar-dot{width:3px;height:3px;border-radius:50%;background:var(--border2);}
+.reading-time{color:var(--accent2);}
+
+/* ── RIGHT SIDEBAR ── */
+.right-sidebar{
+  background:var(--bg2);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+
+/* Tab nav */
+.tab-nav{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;}
+.tab-btn{
+  flex:1;padding:12px 8px;text-align:center;font-size:11px;font-family:var(--mono);
+  letter-spacing:.5px;text-transform:uppercase;color:var(--text3);
+  cursor:pointer;border-bottom:2px solid transparent;transition:color .12s,border-color .12s;
+  background:none;border-top:none;border-left:none;border-right:none;
+}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-btn:hover:not(.active){color:var(--text2);}
+
+/* Panels scroll */
+.panels-scroll{flex:1;overflow-y:auto;padding:16px;}
+.panels-scroll::-webkit-scrollbar{width:4px;}
+.panels-scroll::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:2px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* Panel sections */
+.panel-section{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);
+  margin-bottom:12px;overflow:hidden;
+}
+.ps-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);
+  user-select:none;
+}
+.ps-header:hover{background:var(--bg4);}
+.ps-title{font-size:12px;font-weight:700;letter-spacing:.2px;display:flex;align-items:center;gap:8px;}
+.ps-title svg{color:var(--text3);}
+.ps-arrow{color:var(--text3);transition:transform .2s;font-size:12px;}
+.ps-header.collapsed .ps-arrow{transform:rotate(-90deg);}
+.ps-body{padding:12px 14px;}
+.ps-body.collapsed{display:none;}
+
+/* Form inputs */
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:10px;font-family:var(--mono);letter-spacing:.8px;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--bg4);border:1px solid var(--border2);
+  border-radius:4px;padding:8px 10px;font-size:12px;font-family:var(--syne);
+  color:var(--text);outline:none;transition:border-color .12s;
+  -webkit-appearance:none;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);}
+.field input::placeholder,.field textarea::placeholder{color:var(--text3);}
+.field textarea{resize:vertical;line-height:1.5;}
+.field select option{background:var(--bg4);}
+
+/* AI assistant */
+.ai-box{background:linear-gradient(135deg,var(--bg4),var(--bg3));border:1px solid var(--border2);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;}
+.ai-header{
+  padding:12px 14px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);background:rgba(212,98,26,.06);
+}
+.ai-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(212,98,26,.15);border:1px solid rgba(212,98,26,.25);
+  color:var(--accent2);font-size:10px;font-family:var(--mono);letter-spacing:.5px;
+  padding:3px 8px;border-radius:20px;
+}
+.ai-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse-ai 2s infinite;}
+@keyframes pulse-ai{0%,100%{opacity:1}50%{opacity:.4}}
+.ai-title{font-size:13px;font-weight:700;}
+.ai-body{padding:12px 14px;}
+
+.ai-step{margin-bottom:14px;}
+.ai-step-label{font-size:10px;font-family:var(--mono);color:var(--text3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.ai-step-num{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--bg5);color:var(--text3);font-size:9px;}
+.ai-input{
+  width:100%;background:var(--bg);border:1px solid var(--border2);
+  border-radius:4px;padding:8px 10px;font-size:12px;font-family:var(--syne);
+  color:var(--text);outline:none;transition:border-color .12s;
+}
+.ai-input:focus{border-color:var(--accent);}
+.ai-input::placeholder{color:var(--text3);}
+.ai-textarea{
+  width:100%;background:var(--bg);border:1px solid var(--border2);
+  border-radius:4px;padding:8px 10px;font-size:11px;font-family:var(--mono);
+  color:var(--text2);outline:none;resize:vertical;line-height:1.5;
+  min-height:80px;
+}
+.ai-textarea:focus{border-color:var(--accent);}
+.ai-btn{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  width:100%;padding:8px 12px;border-radius:4px;font-size:12px;font-weight:600;
+  font-family:var(--syne);cursor:pointer;border:none;margin-top:6px;
+  transition:all .15s;
+}
+.ai-btn-outline{background:transparent;color:var(--text2);border:1px solid var(--border2);}
+.ai-btn-outline:hover{background:var(--bg5);color:var(--text);border-color:var(--border3);}
+.ai-btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(212,98,26,.25);}
+.ai-btn-primary:hover{background:#b8510f;}
+
+.ai-loading{
+  display:none;align-items:center;gap:8px;font-size:11px;font-family:var(--mono);color:var(--text3);
+  padding:8px 0;
+}
+.ai-loading.show{display:flex;}
+.ai-spinner{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Image upload */
+.upload-zone{
+  border:1px dashed var(--border2);border-radius:var(--radius);
+  padding:18px;text-align:center;cursor:pointer;transition:all .15s;
+  background:var(--bg4);position:relative;margin-bottom:10px;
+}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:var(--accent-bg);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{display:flex;align-items:center;justify-content:center;margin-bottom:6px;color:var(--text3);}
+.upload-label{font-size:12px;color:var(--text3);}
+.upload-label span{color:var(--accent);}
+
+.featured-preview{
+  width:100%;aspect-ratio:16/9;border-radius:var(--radius);overflow:hidden;
+  border:1px solid var(--border);margin-bottom:8px;position:relative;
+  background:var(--bg4);display:none;
+}
+.featured-preview img{width:100%;height:100%;object-fit:cover;display:block;}
+.featured-preview .remove-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.6);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .15s;cursor:pointer;
+}
+.featured-preview:hover .remove-overlay{opacity:1;}
+.remove-overlay span{color:#fff;font-size:12px;font-family:var(--mono);}
+
+.url-row{display:flex;gap:6px;}
+.url-row input{flex:1;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;padding:7px 10px;font-size:12px;font-family:var(--syne);color:var(--text);outline:none;}
+.url-row input:focus{border-color:var(--accent);}
+
+/* Tags input */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px;}
+.tag-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--accent-bg);border:1px solid rgba(212,98,26,.2);
+  color:var(--accent2);font-size:11px;font-family:var(--mono);
+  padding:2px 8px;border-radius:20px;
+}
+.tag-chip button{background:none;border:none;color:var(--accent2);cursor:pointer;font-size:13px;line-height:1;padding:0;}
+
+/* Media Gallery Modal */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.8);backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:10px;
+  width:min(700px,90vw);max-height:80vh;display:flex;flex-direction:column;
+  box-shadow:0 32px 80px rgba(0,0,0,.6);
+}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 22px;border-bottom:1px solid var(--border);
+}
+.modal-title{font-size:15px;font-weight:700;}
+.modal-close{background:var(--bg4);border:1px solid var(--border2);border-radius:4px;padding:5px 10px;color:var(--text2);cursor:pointer;font-size:16px;transition:all .12s;}
+.modal-close:hover{background:var(--bg5);color:var(--text);}
+.modal-body{padding:20px;overflow-y:auto;flex:1;}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+.gallery-item{position:relative;border-radius:6px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:border-color .15s,transform .15s;aspect-ratio:4/3;background:var(--bg4);}
+.gallery-item:hover{border-color:var(--accent);transform:scale(1.02);}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;}
+.gallery-del{
+  position:absolute;top:5px;right:5px;
+  background:rgba(0,0,0,.7);border:none;border-radius:4px;
+  color:#f87171;font-size:12px;width:24px;height:24px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .12s;
+}
+.gallery-item:hover .gallery-del{opacity:1;}
+
+/* Responsive */
+@media(max-width:900px){
+  .body-row{grid-template-columns:1fr}
+  .icon-rail{display:none}
+  .right-sidebar{display:none}
+  body{overflow:auto}
+  .shell{height:auto;display:block}
+  .editor-area{height:auto}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ── TOPBAR ── -->
+  <div class="topbar">
+    <div class="tb-logo">
+      <a href="/admin" title="Dashboard" style="display:flex;align-items:center;justify-content:center;"><img src="/static/logo.png" alt="BlogSphere" class="tb-logo-img"></a>
+    </div>
+    <div class="tb-breadcrumb">
+      <a href="/admin" style="color:var(--text3);text-decoration:none;">Admin</a>
+      <span class="tb-sep">/</span>
+      <a href="/admin" style="color:var(--text3);text-decoration:none;">Articles</a>
+      <span class="tb-sep">/</span>
+      <span class="tb-crumb-active">{% if article %}{{ article.title|truncate(40) }}{% else %}New Article{% endif %}</span>
+    </div>
+    <div class="tb-status" id="save-status">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-text">Unsaved</span>
+    </div>
+    <div class="tb-actions">
+      {% if article %}
+      <a href="/article/{{ article.slug }}" target="_blank" class="btn btn-ghost btn-sm">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        Preview
+      </a>
+      <!-- NEW DELETE BUTTON -->
+      <a href="/admin/delete/{{ article.slug }}" class="btn btn-danger btn-sm" onclick="return confirm('Delete this article? This cannot be undone.')">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        Delete
+      </a>
+      {% endif %}
+      <button id="save-btn" class="btn btn-primary btn-sm">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+        Save
+        <span class="tb-kbd">⌘S</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── BODY ── -->
+  <div class="body-row">
+
+    <!-- Icon rail -->
+    <div class="icon-rail">
+      <div class="rail-btn active" title="Editor" onclick="setTab('editor')" id="rail-editor">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <span class="rail-tip">Editor</span>
+      </div>
+      <div class="rail-btn" title="AI Assistant" onclick="setTab('ai')" id="rail-ai">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/></svg>
+        <span class="rail-tip">AI Assistant</span>
+      </div>
+      <div class="rail-btn" title="Media" onclick="setTab('media')" id="rail-media">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="rail-tip">Media</span>
+      </div>
+      <div class="rail-btn" title="Metadata" onclick="setTab('meta')" id="rail-meta">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <span class="rail-tip">Metadata</span>
+      </div>
+      <div class="rail-divider"></div>
+      <div class="rail-btn" onclick="window.location='/admin'" title="Back">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
+        <span class="rail-tip">Dashboard</span>
+      </div>
+    </div>
+
+    <!-- ── EDITOR ── -->
+    <div class="editor-area">
+      <input
+        class="title-input"
+        type="text"
+        id="meta-title"
+        value="{{ article.title if article else '' }}"
+        placeholder="Article title…"
+        oninput="autoSlug(this.value)"
+      >
+
+      <div class="editor-meta-strip">
+        <div class="meta-chip">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          <span class="meta-value" id="strip-cat">{% if article %}{{ article.category }}{% else %}General{% endif %}</span>
+        </div>
+        <div class="meta-chip">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span class="meta-value" id="strip-rt">{% if article %}{{ article.read_time }} min{% else %}5 min{% endif %}</span>
+        </div>
+        <div class="meta-chip">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="meta-value" id="strip-author">{% if article %}{{ article.author }}{% else %}Blogsphere{% endif %}</span>
+        </div>
+        <div class="meta-chip">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span class="meta-value" id="strip-date">{% if article %}{{ article.date }}{% else %}Today{% endif %}</span>
+        </div>
+        <div class="meta-chip" style="border-right:none;margin-left:auto;color:var(--text3);font-size:11px;display:flex;gap:10px;" id="word-count-chip">
+          <span id="wc-words">0 words</span>
+          <span class="word-bar-dot" style="align-self:center"></span>
+          <span id="wc-readtime" class="reading-time">~1 min read</span>
+        </div>
+      </div>
+
+      <div class="editor-scroll">
+        <textarea id="markdown-editor">{{ article.content if article else '' }}</textarea>
+      </div>
+    </div>
+
+    <!-- ── RIGHT SIDEBAR ── -->
+    <div class="right-sidebar">
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="ai" onclick="switchTab('ai',this)">AI</button>
+        <button class="tab-btn" data-tab="media" onclick="switchTab('media',this)">Media</button>
+        <button class="tab-btn" data-tab="meta" onclick="switchTab('meta',this)">Meta</button>
+      </div>
+
+      <div class="panels-scroll">
+
+        <!-- ── AI TAB ── -->
+        <div class="tab-panel active" id="tab-ai">
+          <div class="ai-box">
+            <div class="ai-header">
+              <div class="ai-badge">AI</div>
+              <div class="ai-title">Writing Assistant</div>
+            </div>
+            <div class="ai-body">
+
+              <div class="ai-step">
+                <div class="ai-step-label"><span class="ai-step-num">1</span> Topic</div>
+                <input type="text" class="ai-input" id="topic-input" value="{{ article.title if article else '' }}" placeholder="e.g. The Future of Solar Energy">
+              </div>
+
+              <button class="ai-btn ai-btn-primary" onclick="generateOutline()">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/></svg>
+                Generate Outline
+              </button>
+
+              <div class="ai-loading" id="outline-loading">
+                <div class="ai-spinner"></div>
+                Generating outline…
+              </div>
+
+              <div class="ai-step" style="margin-top:10px;">
+                <div class="ai-step-label"><span class="ai-step-num">2</span> Outline</div>
+                <textarea class="ai-textarea" id="outline-area" rows="6" placeholder="Outline will appear here…"></textarea>
+              </div>
+
+              <button class="ai-btn ai-btn-outline" onclick="generateDraft()">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                Generate Full Draft
+              </button>
+
+              <div class="ai-loading" id="draft-loading">
+                <div class="ai-spinner"></div>
+                Writing draft — this may take a moment…
+              </div>
+
+              <div class="ai-step" style="margin-top:10px;">
+                <div class="ai-step-label"><span class="ai-step-num">3</span> Draft</div>
+                <textarea class="ai-textarea" id="draft-area" rows="7" placeholder="Full draft will appear here…"></textarea>
+              </div>
+
+              <button class="ai-btn ai-btn-primary" onclick="insertDraft()">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Insert Draft into Editor
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Trending topics mini -->
+          <div class="panel-section">
+            <div class="ps-header" onclick="togglePanel(this)">
+              <div class="ps-title">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                Trending Topics
+              </div>
+              <span class="ps-arrow">▾</span>
+            </div>
+            <div class="ps-body">
+              <select class="field select" id="rp-niche" onchange="fetchSidebarTrends()" style="background:var(--bg4);border:1px solid var(--border2);border-radius:4px;padding:6px 10px;font-size:11px;font-family:var(--syne);color:var(--text);outline:none;width:100%;margin-bottom:8px;">
+                <option value="technology">Technology</option>
+                <option value="design">Design</option>
+                <option value="finance">Finance</option>
+                <option value="health">Health</option>
+                <option value="science">Science</option>
+              </select>
+              <div id="sidebar-trends">
+                <div style="font-size:11px;color:var(--text3);font-family:var(--mono)">Loading…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MEDIA TAB ── -->
+        <div class="tab-panel" id="tab-media">
+
+          <!-- Featured image -->
+          <div class="panel-section">
+            <div class="ps-header" onclick="togglePanel(this)">
+              <div class="ps-title">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                Featured Image
+              </div>
+              <span class="ps-arrow">▾</span>
+            </div>
+            <div class="ps-body">
+              <div class="featured-preview" id="featured-preview-box">
+                <img id="featured-preview" src="{% if article and article.featured_image %}{{ article.featured_image }}{% endif %}" alt="">
+                <div class="remove-overlay" onclick="deleteFeatured()">
+                  <span>✕ Remove</span>
+                </div>
+              </div>
+
+              <div class="upload-zone" id="featured-zone">
+                <input type="file" id="featured-file-input" accept="image/*" onchange="uploadFeatured()">
+                <div class="upload-icon">
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                </div>
+                <div class="upload-label">Drop image or <span>click to upload</span></div>
+              </div>
+
+              <div style="margin-bottom:8px;font-size:10px;font-family:var(--mono);color:var(--text3);text-align:center;">— or paste URL —</div>
+              <div class="url-row">
+                <input type="text" id="featured-url-input" placeholder="https://example.com/image.jpg">
+                <button class="btn btn-ghost btn-sm" onclick="addFeaturedByUrl()">Add</button>
+              </div>
+              <input type="hidden" id="featured-image-url" value="{{ article.featured_image if article else '' }}">
+              <input type="hidden" id="featured-image-width" value="{{ article.featured_image_width if article else '' }}">
+              <input type="hidden" id="featured-image-height" value="{{ article.featured_image_height if article else '' }}">
+            </div>
+          </div>
+
+          <!-- Insert inline image -->
+          <div class="panel-section">
+            <div class="ps-header" onclick="togglePanel(this)">
+              <div class="ps-title">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Insert into Article
+              </div>
+              <span class="ps-arrow">▾</span>
+            </div>
+            <div class="ps-body">
+              <div class="upload-zone" style="margin-bottom:10px;">
+                <input type="file" id="inline-file-input" accept="image/*" onchange="uploadInlineImage()">
+                <div class="upload-icon">
+                  <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div class="upload-label">Upload & <span>insert</span></div>
+              </div>
+              <div class="url-row" style="margin-bottom:10px;">
+                <input type="text" id="inline-url-input" placeholder="Paste image URL…">
+                <button class="btn btn-ghost btn-sm" onclick="insertInlineByUrl()">Insert</button>
+              </div>
+              <button class="btn btn-ghost" style="width:100%;justify-content:center;font-size:12px;" onclick="openMediaGallery()">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                Open Media Gallery
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── META TAB ── -->
+        <div class="tab-panel" id="tab-meta">
+
+          <div class="panel-section">
+            <div class="ps-header" onclick="togglePanel(this)">
+              <div class="ps-title">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                Article Details
+              </div>
+              <span class="ps-arrow">▾</span>
+            </div>
+            <div class="ps-body">
+              <div class="field">
+                <label>Slug</label>
+                <input type="text" id="meta-slug" value="{{ article.slug if article else '' }}" placeholder="my-article-slug">
+              </div>
+              <div class="field">
+                <label>Category</label>
+                <select id="meta-category" onchange="document.getElementById('strip-cat').textContent=this.value">
+                  {% for cat in ['General','Technology','Design','Finance','Health','Productivity'] %}
+                  <option {% if article and article.category == cat %}selected{% endif %}>{{ cat }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="field">
+                <label>Date</label>
+                <input type="date" id="meta-date" value="{{ article.date if article else '' }}" onchange="document.getElementById('strip-date').textContent=this.value">
+              </div>
+              <div class="field">
+                <label>Read Time (min)</label>
+                <input type="number" id="meta-read_time" value="{{ article.read_time if article else '5' }}" min="1" onchange="document.getElementById('strip-rt').textContent=this.value+' min'">
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-section">
+            <div class="ps-header" onclick="togglePanel(this)">
+              <div class="ps-title">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Author
+              </div>
+              <span class="ps-arrow">▾</span>
+            </div>
+            <div class="ps-body">
+              <div class="field">
+                <label>Name</label>
+                <input type="text" id="meta-author" value="{{ article.author if article else 'Blogsphere' }}" placeholder="Author name" onchange="document.getElementById('strip-author').textContent=this.value">
+              </div>
+              <div class="field">
+                <label>Bio</label>
+                <textarea id="meta-author_bio" rows="3" placeholder="Short author bio…">{{ article.author_bio if article else '' }}</textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-section">
+            <div class="ps-header" onclick="togglePanel(this)">
+              <div class="ps-title">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                Tags
+              </div>
+              <span class="ps-arrow">▾</span>
+            </div>
+            <div class="ps-body">
+              <div class="tags-wrap" id="tags-wrap">
+                {% set tag_list = (article.tags.split(',') | map('trim') | select | list) if article and article.tags else [] %}
+                {% if tag_list %}
+                  {% for tag in tag_list %}
+                  <span class="tag-chip">{{ tag }}<button onclick="removeTag(this)">×</button></span>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <div class="url-row">
+                <input type="text" id="tag-input" placeholder="Add tag…" onkeydown="if(event.key==='Enter'){event.preventDefault();addTag();}">
+                <button class="btn btn-ghost btn-sm" onclick="addTag()">Add</button>
+              </div>
+              <input type="hidden" id="meta-tags" value="{{ tag_list | join(', ') }}">
+            </div>
+          </div>
+
+          <div class="panel-section">
+            <div class="ps-header" onclick="togglePanel(this)">
+              <div class="ps-title">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                SEO Preview
+              </div>
+              <span class="ps-arrow">▾</span>
+            </div>
+            <div class="ps-body">
+              <div style="background:var(--bg4);border-radius:4px;padding:12px;border:1px solid var(--border);">
+                <div style="font-size:11px;color:#8ab4f8;font-family:var(--mono);margin-bottom:3px;word-break:break-all;" id="seo-url">blogsphere.com/article/<span id="seo-slug">{{ article.slug if article else 'your-slug' }}</span></div>
+                <div style="font-size:13px;color:#3c81c5;font-weight:600;margin-bottom:4px;line-height:1.3;" id="seo-title">{{ article.title if article else 'Your Article Title' }}</div>
+                <div style="font-size:11px;color:var(--text3);line-height:1.5;" id="seo-desc">{{ article.content[:120]|replace('\n',' ') if article else 'Article excerpt will appear here...' }}</div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /tab-meta -->
+
+      </div><!-- /panels-scroll -->
+    </div><!-- /right-sidebar -->
+
+  </div><!-- /body-row -->
+</div><!-- /shell -->
+
+<!-- ── MEDIA GALLERY MODAL ── -->
+<div class="modal-overlay" id="media-modal" onclick="if(event.target===this)closeMediaGallery()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">Media Gallery</span>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div class="upload-zone" style="padding:6px 14px;margin:0;display:inline-flex;align-items:center;gap:6px;font-size:12px;height:32px;cursor:pointer;border-radius:var(--radius);">
+          <input type="file" id="modal-file-input" accept="image/*" onchange="uploadFromModal()">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload
+        </div>
+        <button class="modal-close" onclick="closeMediaGallery()">✕</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="gallery-grid" id="gallery-container">
+        <div style="color:var(--text3);font-size:12px;font-family:var(--mono);">Loading…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── EasyMDE setup ──
+const easyMDE = new EasyMDE({
+  element: document.getElementById('markdown-editor'),
+  spellChecker: false,
+  autosave: { enabled: false },
+  toolbar: ["bold","italic","heading","|","quote","unordered-list","ordered-list","|","link","image","|","preview","side-by-side","fullscreen","|","guide"],
+  status: false,
+});
+easyMDE.codemirror.on('change', () => {
+  const words = easyMDE.value().trim().split(/\s+/).filter(Boolean).length;
+  const wcEl = document.getElementById('wc-words');
+  const rtEl = document.getElementById('wc-readtime');
+  if (wcEl) wcEl.textContent = words.toLocaleString() + ' words';
+  if (rtEl) rtEl.textContent = '~' + Math.max(1, Math.round(words / 225)) + ' min read';
+  // keep meta-read_time in sync
+  const rtInput = document.getElementById('meta-read_time');
+  if (rtInput) { rtInput.value = Math.max(1, Math.round(words / 225)); document.getElementById('strip-rt').textContent = rtInput.value + ' min'; }
+  setSaveStatus('unsaved');
+});
+
+// ── Save ──
+document.getElementById('save-btn').addEventListener('click', saveArticle);
+async function saveArticle() {
+  const btn = document.getElementById('save-btn');
+  btn.textContent = 'Saving…';
+  btn.disabled = true;
+  const data = new FormData();
+  const title = document.getElementById('meta-title').value;
+  const slug = document.getElementById('meta-slug').value || title.toLowerCase().replace(/\s+/g,'-').replace(/['"]/g,'');
+  data.append('slug', slug);
+  data.append('title', title);
+  data.append('category', document.getElementById('meta-category').value);
+  data.append('author', document.getElementById('meta-author').value);
+  data.append('author_bio', document.getElementById('meta-author_bio').value);
+  data.append('date', document.getElementById('meta-date').value);
+  data.append('read_time', document.getElementById('meta-read_time').value);
+  data.append('tags', document.getElementById('meta-tags').value);
+  data.append('content', easyMDE.value());
+  data.append('featured_image', document.getElementById('featured-image-url').value);
+  data.append('featured_image_width', document.getElementById('featured-image-width').value);
+  data.append('featured_image_height', document.getElementById('featured-image-height').value);
+  try {
+    const r = await fetch('/admin/save', { method:'POST', body: data });
+    if (r.redirected) { window.location.href = r.url; return; }
+    setSaveStatus('saved');
+    setTimeout(() => setSaveStatus('idle'), 3000);
+  } catch { setSaveStatus('error'); }
+  btn.innerHTML = '<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Save<span class="tb-kbd">⌘S</span>';
+  btn.disabled = false;
+}
+function setSaveStatus(state) {
+  const dot = document.getElementById('status-dot');
+  const text = document.getElementById('status-text');
+  const colors = { saved:'#22c55e', unsaved:'#f59e0b', error:'#ef4444', idle:'var(--text3)' };
+  const labels = { saved:'Saved', unsaved:'Unsaved changes', error:'Save failed', idle:'All good' };
+  dot.style.background = colors[state] || colors.idle;
+  text.textContent = labels[state] || '';
+  if (state === 'saved') dot.classList.add('saved');
+  else dot.classList.remove('saved');
+}
+
+// ── Keyboard shortcut: Cmd+S / Ctrl+S ──
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+    e.preventDefault();
+    saveArticle();
+  }
+});
+
+// ── Drag & drop for upload zones ──
+document.querySelectorAll('.upload-zone').forEach(zone => {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const input = zone.querySelector('input[type=file]');
+    if (!input) return;
+    const dt = new DataTransfer(); dt.items.add(file); input.files = dt.files;
+    input.dispatchEvent(new Event('change'));
+  });
+});
+function autoSlug(title) {
+  const slugEl = document.getElementById('meta-slug');
+  if (!slugEl.dataset.manual) {
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    slugEl.value = slug;
+    document.getElementById('seo-slug').textContent = slug || 'your-slug';
+  }
+  document.getElementById('seo-title').textContent = title || 'Your Article Title';
+}
+document.getElementById('meta-slug').addEventListener('input', function(){ this.dataset.manual = '1'; document.getElementById('seo-slug').textContent = this.value; });
+
+// ── Tab switching ──
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  ['editor','ai','media','meta'].forEach(n => {
+    const r = document.getElementById('rail-'+n);
+    if (r) r.classList.remove('active');
+  });
+  const rail = document.getElementById('rail-'+name);
+  if (rail) rail.classList.add('active');
+}
+function setTab(name) {
+  const tabBtn = document.querySelector(`.tab-btn[data-tab="${name}"]`);
+  if (tabBtn) switchTab(name, tabBtn);
+}
+
+// ── Collapsible panels ──
+function togglePanel(header) {
+  header.classList.toggle('collapsed');
+  const body = header.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+
+// ── AI ──
+async function generateOutline() {
+  const topic = document.getElementById('topic-input').value;
+  if (!topic) return;
+  document.getElementById('outline-loading').classList.add('show');
+  try {
+    const res = await fetch('/admin/generate-outline', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({topic}) });
+    const data = await res.json();
+    document.getElementById('outline-area').value = data.outline || data.error || 'Error generating outline.';
+  } catch { document.getElementById('outline-area').value = 'Network error.'; }
+  document.getElementById('outline-loading').classList.remove('show');
+}
+async function generateDraft() {
+  const topic = document.getElementById('topic-input').value;
+  const outline = document.getElementById('outline-area').value;
+  if (!topic || !outline) return;
+  document.getElementById('draft-loading').classList.add('show');
+  try {
+    const res = await fetch('/admin/generate-draft', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({topic, outline}) });
+    const data = await res.json();
+    document.getElementById('draft-area').value = data.draft || data.error || 'Error.';
+  } catch { document.getElementById('draft-area').value = 'Network error.'; }
+  document.getElementById('draft-loading').classList.remove('show');
+}
+function insertDraft() {
+  const d = document.getElementById('draft-area').value;
+  if (d) { easyMDE.value(d); setSaveStatus('unsaved'); }
+}
+
+// ── Featured image ──
+{% if article and article.featured_image %}document.getElementById('featured-preview-box').style.display='block';{% endif %}
+async function uploadFeatured() {
+  const file = document.getElementById('featured-file-input').files[0];
+  if (!file) return;
+  const fd = new FormData(); fd.append('file', file);
+  const r = await fetch('/admin/upload-featured', { method:'POST', body: fd });
+  const d = await r.json();
+  if (d.url) setFeaturedImage(d.url, d.width, d.height);
+}
+async function addFeaturedByUrl() {
+  const url = document.getElementById('featured-url-input').value.trim();
+  if (!url) return;
+  const r = await fetch('/admin/upload-via-url', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({url}) });
+  const d = await r.json();
+  if (d.url) setFeaturedImage(d.url, d.width, d.height);
+}
+function setFeaturedImage(url, width, height) {
+  document.getElementById('featured-image-url').value = url;
+  document.getElementById('featured-image-width').value = width || '';
+  document.getElementById('featured-image-height').value = height || '';
+  const box = document.getElementById('featured-preview-box');
+  const img = document.getElementById('featured-preview');
+  img.src = url; box.style.display = 'block';
+  setSaveStatus('unsaved');
+}
+function deleteFeatured() {
+  document.getElementById('featured-image-url').value = '';
+  document.getElementById('featured-image-width').value = '';
+  document.getElementById('featured-image-height').value = '';
+  document.getElementById('featured-preview-box').style.display = 'none';
+  document.getElementById('featured-preview').src = '';
+}
+
+// ── Inline images ──
+async function uploadInlineImage() {
+  const file = document.getElementById('inline-file-input').files[0];
+  if (!file) return;
+  const fd = new FormData(); fd.append('file', file);
+  const r = await fetch('/admin/upload-image', { method:'POST', body: fd });
+  const d = await r.json();
+  if (d.url) insertMarkdownImage(d.url);
+}
+async function insertInlineByUrl() {
+  const url = document.getElementById('inline-url-input').value.trim();
+  if (!url) return;
+  const r = await fetch('/admin/upload-via-url', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({url}) });
+  const d = await r.json();
+  if (d.url) insertMarkdownImage(d.url);
+}
+function insertMarkdownImage(url) {
+  const alt = prompt('Alt text:', 'image');
+  if (alt === null) return;
+  const cm = easyMDE.codemirror;
+  cm.replaceRange(`![${alt}](${url})`, cm.getCursor());
+  cm.focus();
+  setSaveStatus('unsaved');
+}
+async function uploadFromModal() {
+  const file = document.getElementById('modal-file-input').files[0];
+  if (!file) return;
+  const fd = new FormData(); fd.append('file', file);
+  const r = await fetch('/admin/upload-image', { method:'POST', body: fd });
+  await r.json();
+  openMediaGallery();
+}
+
+// ── Media Gallery ──
+async function openMediaGallery() {
+  document.getElementById('media-modal').classList.add('open');
+  const container = document.getElementById('gallery-container');
+  container.innerHTML = '<div style="color:var(--text3);font-size:12px;font-family:var(--mono)">Loading…</div>';
+  const r = await fetch('/admin/list-images');
+  const images = await r.json();
+  if (!images.length) { container.innerHTML = '<div style="color:var(--text3);font-size:12px;font-family:var(--mono)">No images yet. Upload one above.</div>'; return; }
+  container.innerHTML = images.map(img => `
+    <div class="gallery-item" onclick="insertMarkdownImage('${img.url}');closeMediaGallery()">
+      <img src="${img.url}" alt="${img.filename}">
+      <button class="gallery-del" onclick="event.stopPropagation();deleteImage('${img.filename}')">✕</button>
+    </div>
+  `).join('');
+}
+function closeMediaGallery() { document.getElementById('media-modal').classList.remove('open'); }
+async function deleteImage(filename) {
+  if (!confirm(`Delete ${filename}?`)) return;
+  await fetch('/admin/delete-image', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({filename}) });
+  openMediaGallery();
+}
+
+// ── Tags ──
+function addTag() {
+  const input = document.getElementById('tag-input');
+  const val = input.value.trim();
+  if (!val) return;
+  const chip = document.createElement('span');
+  chip.className = 'tag-chip';
+  chip.innerHTML = `${val}<button onclick="removeTag(this)">×</button>`;
+  document.getElementById('tags-wrap').appendChild(chip);
+  input.value = '';
+  updateTagsField();
+}
+function removeTag(btn) { btn.parentElement.remove(); updateTagsField(); }
+function updateTagsField() {
+  const tags = [...document.querySelectorAll('.tag-chip')].map(c => c.textContent.replace('×','').trim());
+  document.getElementById('meta-tags').value = tags.join(', ');
+}
+
+// ── Sidebar trends ──
+async function fetchSidebarTrends() {
+  const niche = document.getElementById('rp-niche').value;
+  const container = document.getElementById('sidebar-trends');
+  container.innerHTML = '<div style="font-size:11px;color:var(--text3);font-family:var(--mono)">Loading…</div>';
+  try {
+    const res = await fetch(`/admin/trends?niche=${niche}`);
+    const data = await res.json();
+    container.innerHTML = data.trending.slice(0,6).map((t,i) => `
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="document.getElementById('topic-input').value='${t}'; setTab('ai');">
+        <span style="font-size:10px;font-family:var(--mono);color:var(--text3);width:14px">${i+1}</span>
+        <span style="font-size:12px;color:var(--text2);flex:1">${t}</span>
+        <span style="color:var(--accent);font-size:11px">→</span>
+      </div>
+    `).join('');
+  } catch { container.innerHTML = '<div style="font-size:11px;color:var(--text3)">Unavailable</div>'; }
+}
+fetchSidebarTrends();
+
+// ── Pre-fill from URL ──
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('topic')) {
+  const t = urlParams.get('topic');
+  document.getElementById('topic-input').value = t;
+  document.getElementById('meta-title').value = t;
+  autoSlug(t);
+}
+{% if article %}
+document.getElementById('meta-category').value = "{{ article.category }}";
+document.getElementById('meta-date').value = "{{ article.date }}";
+{% endif %}
+setSaveStatus('idle');
+</script>
+</body>
+</html>

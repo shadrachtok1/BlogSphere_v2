@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Disclaimer – BlogSphere{% endblock %}
+{% block meta_description %}BlogSphere's disclaimer: our content is for informational purposes only and is not professional financial, medical, or legal advice.{% endblock %}
+{% block og_title %}Disclaimer – BlogSphere{% endblock %}
+{% block content %}
+
+<div class="static-hero">
+  <div class="container">
+    <div class="static-hero-inner">
+      <div class="static-eyebrow">Legal</div>
+      <h1 class="static-hero-title">Disclaimer</h1>
+      <p class="static-hero-sub">
+        What our content is — and isn't.
+        <br>Last updated: <strong>{{ now.strftime('%B %d, %Y') if now else '' }}</strong>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<section class="static-section">
+  <div class="container">
+    <div class="privacy-body">
+
+      <div class="policy-section">
+        <h2>General information only</h2>
+        <p>The content published on BlogSphere is for informational and educational purposes only. Nothing on this site constitutes professional financial, legal, medical, or psychological advice. Articles covering finance, health, or legal topics are written to help readers think clearly about a subject — they are not a substitute for advice from a qualified professional who understands your specific situation.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>No warranties</h2>
+        <p>While we make every effort to ensure the information on BlogSphere is accurate and up to date at the time of publication, we make no warranties or representations of any kind about its completeness, accuracy, reliability, or suitability. Any reliance you place on information from this site is strictly at your own risk.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Financial content</h2>
+        <p>Any articles discussing investing, saving, budgeting, or other financial topics reflect general concepts and should not be treated as personalized financial advice. Before making financial decisions, consult a licensed financial advisor who can assess your individual circumstances.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Health content</h2>
+        <p>Articles discussing health, fitness, sleep, or mental wellbeing are intended to inform, not diagnose or treat. Always consult a qualified healthcare provider with questions regarding a medical condition, and never disregard professional medical advice because of something you read here.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Advertising</h2>
+        <p>BlogSphere may display third‑party advertisements via Google AdSense. The presence of an advertisement does not constitute an endorsement of the advertiser or their products or services by BlogSphere.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>External links</h2>
+        <p>External links in our articles are provided for reference and convenience. We are not responsible for the content, accuracy, or privacy practices of any external sites we link to.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Contact us</h2>
+        <p>If you have questions about this disclaimer, please reach out through our <a href="/contact">Contact page</a>.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.privacy-body { max-width: 720px; margin: 0 auto; }
+.policy-section { padding: 36px 0; border-bottom: 1px solid var(--paper-3); }
+.policy-section:first-child { padding-top: 0; }
+.policy-section:last-child { border-bottom: none; padding-bottom: 0; }
+.policy-section h2 { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 16px; line-height: 1.3; }
+.policy-section p { font-size: 14px; color: var(--ink-2); line-height: 1.85; margin-bottom: 14px; }
+.policy-section p:last-child { margin-bottom: 0; }
+.policy-section a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.policy-section a:hover { text-decoration: none; }
+[data-theme="dark"] .policy-section h2 { color: #e8e3db; }
+[data-theme="dark"] .policy-section p { color: #a8a098; }
+</style>
+{% endblock %}

@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}{{ category }} Articles – BlogSphere{% endblock %}
+{% block meta_description %}Browse all {{ category }} articles on BlogSphere. {{ total }} article{{ 's' if total != 1 else '' }} covering {{ category | lower }} topics written for curious readers.{% endblock %}
+{% block og_title %}{{ category }} – BlogSphere{% endblock %}
+{% block og_description %}Browse {{ total }} {{ category | lower }} article{{ 's' if total != 1 else '' }} on BlogSphere.{% endblock %}
+{% block canonical %}{{ request.host_url }}category/{{ category }}{% endblock %}
+{% block content %}
+
+<!-- ── CATEGORY HERO ── -->
+<div class="cat-hero">
+  <div class="container">
+    <div class="cat-hero-inner">
+      <div class="cat-breadcrumb">
+        <a href="/">Home</a>
+        <span class="cat-breadcrumb-sep">›</span>
+        <a href="/articles">Articles</a>
+        <span class="cat-breadcrumb-sep">›</span>
+        <span>{{ category }}</span>
+      </div>
+      <div class="cat-hero-label">
+        <span class="cat-hero-dot"></span>
+        Topic
+      </div>
+      <h1 class="cat-hero-title">{{ category }}</h1>
+      <p class="cat-hero-sub">
+        {{ total }} article{{ 's' if total != 1 else '' }} on {{ category | lower }} — written for curious, thoughtful readers.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ── ARTICLES GRID ── -->
+<section class="section">
+  <div class="container">
+
+    <div class="articles-header" style="margin-bottom:28px;">
+      <h2 class="section-title" style="font-size:16px;font-family:var(--sans);font-weight:500;color:var(--ink-3);">
+        Showing <strong style="color:var(--ink);">{{ total }}</strong> article{{ 's' if total != 1 else '' }}
+      </h2>
+      <a class="section-link" href="/articles">All articles →</a>
+    </div>
+
+    {% if articles %}
+    <div class="articles-grid">
+      {% for article in articles %}
+      <article class="article-card" onclick="location.href='/article/{{ article.slug }}'">
+        <div class="card-img-wrap">
+          {% if article.featured_image %}
+          <img src="{{ article.featured_image }}" alt="{{ article.title }}" loading="lazy"
+               width="{{ article.featured_image_width | default(800, true) }}"
+               height="{{ article.featured_image_height | default(450, true) }}">
+          {% else %}
+          <div class="card-img-ph">{{ article.category }}</div>
+          {% endif %}
+          <span class="card-badge">{{ article.category }}</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">{{ article.title }}</h3>
+          <p class="card-excerpt">{{ article.excerpt }}</p>
+          <div class="card-meta">
+            <span class="card-author">{{ article.author }}</span>
+            <span class="meta-sep">&middot;</span>
+            <span>{{ article.date }}</span>
+            <span class="meta-sep">&middot;</span>
+            <span class="card-readtime">
+              <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              {{ article.read_time }} min
+            </span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div style="text-align:center;padding:4rem 1rem;color:var(--ink-3);">
+      <p style="font-size:15px;margin-bottom:1rem;">No articles in this category yet.</p>
+      <a href="/articles" class="btn-load-more" style="text-decoration:none;display:inline-flex;">Browse all articles →</a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- ── OTHER TOPICS ── -->
+{% if other_categories %}
+<section class="cat-other-topics">
+  <div class="container">
+    <div class="cat-other-label">Explore other topics</div>
+    <div class="cat-other-pills">
+      {% for cat in other_categories %}
+      <a href="/category/{{ cat }}" class="cat-other-pill">{{ cat }}</a>
+      {% endfor %}
+      <a href="/articles" class="cat-other-pill cat-other-pill--all">All articles →</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<style>
+/* ── Category hero ── */
+.cat-hero {
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--paper-3);
+  padding: 52px 0 44px;
+}
+.cat-hero-inner { max-width: 680px; }
+
+.cat-breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--ink-3);
+  font-family: var(--mono); margin-bottom: 24px;
+}
+.cat-breadcrumb a {
+  color: var(--ink-3); text-decoration: none;
+  transition: color .15s;
+}
+.cat-breadcrumb a:hover { color: var(--accent); }
+.cat-breadcrumb-sep { color: var(--paper-3); }
+.cat-breadcrumb span:last-child { color: var(--ink-2); }
+
+.cat-hero-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 12px;
+}
+.cat-hero-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0;
+}
+.cat-hero-title {
+  font-family: var(--serif);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 700; line-height: 1.1;
+  color: var(--ink); margin-bottom: 16px;
+  letter-spacing: -0.3px;
+}
+.cat-hero-sub {
+  font-size: 16px; color: var(--ink-3);
+  line-height: 1.7; max-width: 500px;
+}
+
+/* ── Other topics ── */
+.cat-other-topics {
+  background: var(--paper-2);
+  border-top: 1px solid var(--paper-3);
+  padding: 36px 0 44px;
+}
+.cat-other-label {
+  font-size: 10px; font-family: var(--mono);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--ink-3); font-weight: 600;
+  margin-bottom: 14px;
+}
+.cat-other-pills {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.cat-other-pill {
+  display: inline-block;
+  padding: 7px 16px; border-radius: 30px;
+  border: 1px solid var(--paper-3);
+  background: var(--paper);
+  font-size: 13px; color: var(--ink-2);
+  text-decoration: none; font-weight: 500;
+  transition: all .15s;
+}
+.cat-other-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-light);
+}
+.cat-other-pill--all {
+  background: var(--ink); color: var(--paper);
+  border-color: var(--ink);
+}
+.cat-other-pill--all:hover {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+</style>
+
+{% endblock %}

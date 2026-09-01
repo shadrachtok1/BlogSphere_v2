@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BlogSphere{% endblock %}</title>
+
+    <!-- ── SEO & Social meta ── -->
+    <meta name="description" content="{% block meta_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and culture.{% endblock %}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{% block canonical %}{{ request.url }}{% endblock %}">
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name"   content="BlogSphere">
+    <meta property="og:title"       content="{% block og_title %}{% block title_inner %}BlogSphere{% endblock %}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and culture.{% endblock %}">
+    <meta property="og:url"         content="{{ request.url }}">
+    <meta property="og:image"       content="{% block og_image %}{{ request.host_url }}static/logo.png{% endblock %}">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale"      content="en_US">
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:site"        content="@blogsphere">
+    <meta name="twitter:title"       content="{% block tw_title %}BlogSphere{% endblock %}">
+    <meta name="twitter:description" content="{% block tw_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and culture.{% endblock %}">
+    <meta name="twitter:image"       content="{% block tw_image %}{{ request.host_url }}static/logo.png{% endblock %}">
+
+    {% block extra_head %}{% endblock %}
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon"   href="/static/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180"    href="/static/apple-touch-icon.png">
+
+    <!-- Fonts: preconnect to both domains, swap so text renders immediately -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400&display=swap">
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <!-- Preload first carousel hero image (set by server via template) -->
+    {% block preload_image %}{% endblock %}
+
+    <!-- Apply saved theme instantly (before paint) to prevent flash -->
+    <script>
+      (function() {
+        var saved = localStorage.getItem('blogsphere-theme');
+        if (!saved) {
+          saved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', saved);
+      })();
+    </script>
+</head>
+<body>
+<div id="read-progress"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="main-nav">
+  <a class="nav-logo" href="/">
+    <img src="/static/logo.png" alt="BlogSphere" class="nav-logo-img">
+    <span class="nav-logo-name">BlogSphere</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/articles">Articles</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/contact">Contact</a></li>
+    <li><a href="/privacy">Privacy</a></li>
+  </ul>
+  <div class="nav-search">
+    <div class="search-box" id="search-trigger" role="button" aria-label="Open search" tabindex="0">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span class="search-label">Search</span>
+      <kbd class="search-kbd">/</kbd>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme"></button>
+    <!-- Hamburger (mobile only) -->
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ MOBILE DRAWER ═══ -->
+<div class="mobile-drawer-overlay" id="drawer-overlay"></div>
+<div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+  <div class="drawer-header">
+    <a class="drawer-logo" href="/">
+      <img src="/static/logo.png" alt="BlogSphere" class="nav-logo-img">
+      <span class="nav-logo-name">BlogSphere</span>
+    </a>
+    <button class="drawer-close" id="drawer-close" aria-label="Close menu">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <nav class="drawer-nav">
+    <a href="/" class="drawer-link">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="/articles" class="drawer-link">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+      Articles
+    </a>
+    <a href="/about" class="drawer-link">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      About
+    </a>
+    <a href="/contact" class="drawer-link">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Contact
+    </a>
+    <a href="/privacy" class="drawer-link">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Privacy
+    </a>
+  </nav>
+  <div class="drawer-divider"></div>
+  <div class="drawer-footer">
+    <button class="drawer-theme-row" id="drawer-theme-toggle">
+      <span id="drawer-theme-label">Toggle theme</span>
+      <span id="drawer-theme-icon">☀️</span>
+    </button>
+  </div>
+</div>
+
+{% block content %}{% endblock %}
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <!-- Accent top border -->
+  <div class="footer-accent-bar"></div>
+
+  <div class="footer-inner">
+
+    <!-- Top row: brand only -->
+    <div class="footer-brand-row">
+      <div class="footer-brand">
+        <a class="footer-logo" href="/">
+          <img src="/static/logo.png" alt="BlogSphere" class="footer-logo-img">
+          <span class="footer-logo-name">BlogSphere</span>
+        </a>
+        <p>Independent journalism and thoughtful perspectives on technology, culture, and the world we're building together.</p>
+        <!-- Social icons -->
+        <div class="footer-social">
+          <a href="/rss.xml" class="social-icon" aria-label="RSS feed">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+        </div>
+        <!-- Add real Twitter/X and LinkedIn links here once those accounts exist.
+             Placeholder "#" links were removed — dead social links look unfinished
+             to both visitors and AdSense reviewers. -->
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="footer-divider"></div>
+
+    <!-- Links row -->
+    <div class="footer-links-row">
+      <div class="footer-col">
+        <h4>Topics</h4>
+        <ul>
+          <li><a href="/category/Technology">Technology</a></li>
+          <li><a href="/category/Design">Design</a></li>
+          <li><a href="/category/Finance">Finance</a></li>
+          <li><a href="/category/Health">Health</a></li>
+          <li><a href="/category/Productivity">Productivity</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="/about">About us</a></li>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/contact">Advertise</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms of Use</a></li>
+          <li><a href="/disclaimer">Disclaimer</a></li>
+          <li><a href="/cookies">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <span>© {{ current_year }} BlogSphere. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/contact">Contact</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<!-- ═══ ENHANCED SEARCH OVERLAY ═══ -->
+<div class="search-overlay" id="search-overlay" role="dialog" aria-modal="true" aria-label="Search articles">
+  <div class="search-popup">
+    <div class="search-input-row">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:.45"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Search articles…" autocomplete="off" aria-label="Search query">
+      <button id="search-close-btn" aria-label="Close search">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="search-hint" id="search-hint">
+      <span>Start typing to search</span>
+      <span class="search-hint-keys"><kbd>↑↓</kbd> navigate &nbsp; <kbd>Enter</kbd> open &nbsp; <kbd>Esc</kbd> close</span>
+    </div>
+    <div class="search-results" id="search-results" role="listbox"></div>
+  </div>
+</div>
+
+<script>
+/* ═══ NAV SCROLL BEHAVIOUR ═══
+   – Shrinks + gets backdrop blur on scroll
+   – Hides on scroll-down, reappears on scroll-up (after 200px) */
+(function () {
+  const nav = document.getElementById('main-nav');
+  let lastY = 0;
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        nav.classList.toggle('scrolled', y > 10);
+        if (y > 200) {
+          if (y > lastY) {
+            nav.classList.add('nav-hidden');
+          } else {
+            nav.classList.remove('nav-hidden');
+          }
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+        lastY = y;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // Article reading progress bar
+  window.addEventListener('scroll', () => {
+    const articleBody = document.querySelector('.article-body');
+    const bar = document.getElementById('read-progress');
+    if (articleBody && bar) {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = Math.round((window.scrollY / h) * 100) + '%';
+      bar.style.display = 'block';
+    } else if (bar) {
+      bar.style.display = 'none';
+    }
+  });
+})();
+
+// Active nav link
+document.querySelectorAll('.nav-links a').forEach(link => {
+  if (link.getAttribute('href') === window.location.pathname) link.classList.add('active');
+});
+
+/* ═══ THEME TOGGLE ═══ */
+(function () {
+  const toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('blogsphere-theme', t);
+    // Sync drawer icon
+    const drawerIcon = document.getElementById('drawer-theme-icon');
+    if (drawerIcon) drawerIcon.textContent = t === 'dark' ? '🌙' : '☀️';
+  }
+
+  toggle.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+  });
+
+  // Respect OS changes if user hasn't manually chosen
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem('blogsphere-theme')) applyTheme(e.matches ? 'dark' : 'light');
+  });
+
+  // Sync drawer icon on load
+  const drawerIcon = document.getElementById('drawer-theme-icon');
+  if (drawerIcon) {
+    const t = document.documentElement.getAttribute('data-theme') || 'light';
+    drawerIcon.textContent = t === 'dark' ? '🌙' : '☀️';
+  }
+})();
+
+/* ═══ ENHANCED SEARCH ═══ */
+(function () {
+  const overlay = document.getElementById('search-overlay');
+  const input = document.getElementById('search-input');
+  const results = document.getElementById('search-results');
+  const hint = document.getElementById('search-hint');
+  const trigger = document.getElementById('search-trigger');
+  const closeBtn = document.getElementById('search-close-btn');
+  let debounceTimer;
+  let selectedIndex = -1;
+
+  function openSearch() {
+    overlay.classList.add('open');
+    input.focus();
+  }
+
+  function closeSearch() {
+    overlay.classList.remove('open');
+    input.value = '';
+    results.innerHTML = '';
+    hint.style.display = 'flex';
+    selectedIndex = -1;
+  }
+
+  function getItems() {
+    return results.querySelectorAll('.search-result-item');
+  }
+
+  function setSelected(idx) {
+    const items = getItems();
+    items.forEach(el => el.classList.remove('selected'));
+    if (idx >= 0 && idx < items.length) {
+      items[idx].classList.add('selected');
+      items[idx].scrollIntoView({ block: 'nearest' });
+    }
+    selectedIndex = idx;
+  }
+
+  function renderResults(data) {
+    hint.style.display = 'none';
+    if (!data.length) {
+      results.innerHTML = '<div class="search-empty">No results for that query</div>';
+      return;
+    }
+    results.innerHTML = data.map((a, i) => `
+      <div class="search-result-item" role="option" data-href="/article/${a.slug}" data-index="${i}">
+        ${a.featured_image
+          ? `<img src="${a.featured_image}" alt="" class="search-result-thumb" loading="lazy">`
+          : `<div class="search-result-thumb-ph"></div>`}
+        <div class="search-result-text">
+          <div class="search-result-cat">${a.category}</div>
+          <div class="search-result-title">${a.title}</div>
+          <div class="search-result-excerpt">${a.excerpt}</div>
+        </div>
+      </div>
+    `).join('');
+
+    results.querySelectorAll('.search-result-item').forEach(el => {
+      el.addEventListener('click', () => { location.href = el.dataset.href; });
+      el.addEventListener('mouseenter', () => {
+        selectedIndex = parseInt(el.dataset.index);
+        getItems().forEach(i => i.classList.remove('selected'));
+        el.classList.add('selected');
+      });
+    });
+  }
+
+  input.addEventListener('input', function () {
+    const q = this.value.trim();
+    clearTimeout(debounceTimer);
+    selectedIndex = -1;
+    if (q.length < 2) {
+      results.innerHTML = '';
+      hint.style.display = 'flex';
+      return;
+    }
+    debounceTimer = setTimeout(() => {
+      fetch(`/api/search?q=${encodeURIComponent(q)}`)
+        .then(r => r.json())
+        .then(renderResults)
+        .catch(() => {});
+    }, 200);
+  });
+
+  document.addEventListener('keydown', e => {
+    // Global "/" to open search
+    if (e.key === '/' && !overlay.classList.contains('open') &&
+        !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      openSearch();
+      return;
+    }
+    if (!overlay.classList.contains('open')) return;
+
+    const items = getItems();
+    if (e.key === 'Escape') { closeSearch(); return; }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelected(Math.min(selectedIndex + 1, items.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelected(Math.max(selectedIndex - 1, 0));
+    } else if (e.key === 'Enter' && selectedIndex >= 0 && items[selectedIndex]) {
+      location.href = items[selectedIndex].dataset.href;
+    }
+  });
+
+  if (trigger) {
+    trigger.addEventListener('click', openSearch);
+    trigger.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openSearch(); });
+  }
+  if (closeBtn) closeBtn.addEventListener('click', closeSearch);
+
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeSearch();
+  });
+})();
+
+/* ═══ MOBILE DRAWER ═══ */
+(function () {
+  const hamburger = document.getElementById('nav-hamburger');
+  const drawer = document.getElementById('mobile-drawer');
+  const drawerOverlay = document.getElementById('drawer-overlay');
+  const drawerClose = document.getElementById('drawer-close');
+  const drawerThemeToggle = document.getElementById('drawer-theme-toggle');
+  const drawerThemeIcon = document.getElementById('drawer-theme-icon');
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    drawerOverlay.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    drawerOverlay.classList.remove('open');
+    drawer.setAttribute('aria-hidden', 'true');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  if (hamburger) hamburger.addEventListener('click', openDrawer);
+  if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+  if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+
+  // Close drawer on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+  });
+
+  // Close drawer when a link is tapped
+  drawer.querySelectorAll('.drawer-link').forEach(link => {
+    link.addEventListener('click', closeDrawer);
+  });
+
+  // Drawer theme toggle mirrors the main toggle
+  if (drawerThemeToggle) {
+    drawerThemeToggle.addEventListener('click', () => {
+      document.getElementById('theme-toggle').click();
+    });
+  }
+
+  // Mark active drawer link
+  document.querySelectorAll('.drawer-link').forEach(link => {
+    if (link.getAttribute('href') === window.location.pathname) link.classList.add('active');
+  });
+})();
+
+/* ═══ BACK TO TOP ═══ */
+(function () {
+  const btn = document.getElementById('back-to-top');
+  if (!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+/* ═══ LINK PREFETCH ON HOVER ═══ */
+(function () {
+  const prefetched = new Set();
+  let hoverTimer;
+
+  function prefetch(url) {
+    if (prefetched.has(url)) return;
+    prefetched.add(url);
+    const link = document.createElement('link');
+    link.rel = 'prefetch'; link.href = url;
+    document.head.appendChild(link);
+  }
+
+  document.addEventListener('mouseover', e => {
+    const card = e.target.closest('.article-card');
+    if (!card) return;
+    const onclick = card.getAttribute('onclick') || '';
+    const match = onclick.match(/location\.href='([^']+)'/);
+    if (!match) return;
+    hoverTimer = setTimeout(() => prefetch(match[1]), 100);
+  });
+  document.addEventListener('mouseout', e => {
+    if (e.target.closest('.article-card')) clearTimeout(hoverTimer);
+  });
+})();
+
+/* ═══ SCROLL-TRIGGERED CARD ANIMATIONS ═══ */
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .article-card { opacity: 0; transform: translateY(22px);
+      transition: opacity 0.45s ease, transform 0.45s ease; }
+    .article-card.card-visible { opacity: 1; transform: translateY(0); }
+  `;
+  document.head.appendChild(style);
+
+  function observe() {
+    const cards = document.querySelectorAll('.article-card:not(.card-visible)');
+    if (!cards.length) return;
+    const io = new IntersectionObserver((entries, obs) => {
+      let delay = 0;
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        setTimeout(() => entry.target.classList.add('card-visible'), delay);
+        delay = Math.min(delay + 60, 300);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.08 });
+    cards.forEach(c => io.observe(c));
+    return io;
+  }
+
+  // Initial run
+  let observer = observe();
+
+  // Re-run when new cards are injected (Load More / category filter)
+  const grid = document.getElementById('articles-grid');
+  if (grid) {
+    new MutationObserver(() => {
+      if (observer) observer.disconnect();
+      observer = observe();
+    }).observe(grid, { childList: true });
+  }
+})();
+</script>
+
+<!-- ═══ BACK TO TOP BUTTON ═══ -->
+<button class="back-to-top" id="back-to-top" aria-label="Back to top">
+  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

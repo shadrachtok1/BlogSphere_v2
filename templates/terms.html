@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Terms of Use – BlogSphere{% endblock %}
+{% block meta_description %}The terms and conditions governing your use of BlogSphere, including content ownership, acceptable use, and liability.{% endblock %}
+{% block og_title %}Terms of Use – BlogSphere{% endblock %}
+{% block content %}
+
+<div class="static-hero">
+  <div class="container">
+    <div class="static-hero-inner">
+      <div class="static-eyebrow">Legal</div>
+      <h1 class="static-hero-title">Terms of Use</h1>
+      <p class="static-hero-sub">
+        The rules for using this site.
+        <br>Last updated: <strong>{{ now.strftime('%B %d, %Y') if now else '' }}</strong>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<section class="static-section">
+  <div class="container">
+
+    <div class="toc-box" style="max-width:720px; margin:0 auto 40px;">
+      <h3>Contents</h3>
+      <ol>
+        <li><a href="#acceptance">Acceptance of terms</a></li>
+        <li><a href="#use-of-site">Use of the site</a></li>
+        <li><a href="#content-ownership">Content and intellectual property</a></li>
+        <li><a href="#user-submissions">User submissions</a></li>
+        <li><a href="#third-party-links">Third‑party links and advertising</a></li>
+        <li><a href="#disclaimer-liability">Disclaimer and limitation of liability</a></li>
+        <li><a href="#changes">Changes to these terms</a></li>
+        <li><a href="#governing-law">Governing law</a></li>
+        <li><a href="#contact-us">Contact us</a></li>
+      </ol>
+    </div>
+
+    <div class="privacy-body">
+
+      <div class="policy-section" id="acceptance">
+        <h2>1. Acceptance of terms</h2>
+        <p>By accessing or using BlogSphere (the "Site"), you agree to be bound by these Terms of Use. If you do not agree with any part of these terms, please do not use the Site.</p>
+      </div>
+
+      <div class="policy-section" id="use-of-site">
+        <h2>2. Use of the site</h2>
+        <p>You may use BlogSphere for personal, non‑commercial purposes. You agree not to:</p>
+        <ul>
+          <li>Use the Site in any way that violates applicable local, national, or international law</li>
+          <li>Attempt to gain unauthorized access to any part of the Site, including administrative systems</li>
+          <li>Scrape, copy, or republish substantial portions of our content without permission</li>
+          <li>Introduce viruses, malware, or other harmful code</li>
+          <li>Interfere with the proper functioning of the Site</li>
+        </ul>
+      </div>
+
+      <div class="policy-section" id="content-ownership">
+        <h2>3. Content and intellectual property</h2>
+        <p>Unless otherwise noted, all articles, graphics, logos, and other material published on BlogSphere are the property of BlogSphere or used with permission. You may share links to our articles and quote short excerpts with proper attribution, but you may not reproduce full articles elsewhere without our written consent.</p>
+      </div>
+
+      <div class="policy-section" id="user-submissions">
+        <h2>4. User submissions</h2>
+        <p>If you submit a message through our Contact form, you confirm that the information you provide is accurate and that you have the right to share it. We may use anonymized or aggregated feedback to improve the Site, but we will not publish your personal contact submissions without your permission.</p>
+      </div>
+
+      <div class="policy-section" id="third-party-links">
+        <h2>5. Third‑party links and advertising</h2>
+        <p>BlogSphere may display advertisements served through Google AdSense and may link to external websites for reference. We do not control and are not responsible for the content, accuracy, or practices of third‑party sites or advertisers. The presence of a link or advertisement does not imply our endorsement.</p>
+      </div>
+
+      <div class="policy-section" id="disclaimer-liability">
+        <h2>6. Disclaimer and limitation of liability</h2>
+        <p>Content on BlogSphere is provided for informational and educational purposes only and does not constitute professional advice. See our <a href="/disclaimer">Disclaimer</a> for details. To the fullest extent permitted by law, BlogSphere and its authors shall not be liable for any direct, indirect, incidental, or consequential damages arising from your use of the Site or reliance on its content.</p>
+      </div>
+
+      <div class="policy-section" id="changes">
+        <h2>7. Changes to these terms</h2>
+        <p>We may revise these Terms of Use from time to time. Updates will be posted on this page with a new "Last updated" date. Continued use of the Site after changes are posted constitutes acceptance of the revised terms.</p>
+      </div>
+
+      <div class="policy-section" id="governing-law">
+        <h2>8. Governing law</h2>
+        <p>These terms are governed by the laws of the Federal Republic of Nigeria, without regard to conflict of law principles. Nothing in this section limits any statutory rights you may have as a consumer under the law of your own country of residence.</p>
+      </div>
+
+      <div class="policy-section" id="contact-us">
+        <h2>9. Contact us</h2>
+        <p>Questions about these Terms of Use can be sent through our <a href="/contact">Contact page</a>.</p>
+        <div class="policy-contact-box">
+          <strong>BlogSphere</strong><br>
+          Use our <a href="/contact">Contact page</a> to reach us directly.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.toc-box { background: var(--paper-2); border: 1px solid var(--paper-3); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 20px 24px; margin: 0 auto 40px; max-width: 720px; }
+.toc-box h3 { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+.toc-box ol { padding-left: 20px; font-size: 14px; color: var(--ink-2); line-height: 2; margin: 0; }
+.toc-box a { color: inherit; text-decoration: none; }
+.toc-box a:hover { color: var(--accent); }
+[data-theme="dark"] .toc-box { background: var(--paper-2); border-color: var(--paper-3); border-left-color: var(--accent); }
+.privacy-body { max-width: 720px; margin: 0 auto; }
+.policy-section { padding: 36px 0; border-bottom: 1px solid var(--paper-3); }
+.policy-section:first-child { padding-top: 0; }
+.policy-section:last-child { border-bottom: none; padding-bottom: 0; }
+.policy-section h2 { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 16px; line-height: 1.3; }
+.policy-section p { font-size: 14px; color: var(--ink-2); line-height: 1.85; margin-bottom: 14px; }
+.policy-section p:last-child { margin-bottom: 0; }
+.policy-section ul { padding-left: 20px; margin: 0 0 14px; }
+.policy-section ul li { font-size: 14px; color: var(--ink-2); line-height: 1.8; margin-bottom: 6px; }
+.policy-section a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.policy-section a:hover { text-decoration: none; }
+[data-theme="dark"] .policy-section h2 { color: #e8e3db; }
+[data-theme="dark"] .policy-section p,
+[data-theme="dark"] .policy-section li { color: #a8a098; }
+.policy-contact-box { background: var(--paper-2); border: 1px solid var(--paper-3); border-radius: 8px; padding: 20px 24px; font-size: 14px; color: var(--ink-2); line-height: 1.85; margin-top: 14px; }
+.policy-contact-box strong { color: var(--ink); }
+.policy-contact-box a { color: var(--accent); text-decoration: underline; }
+[data-theme="dark"] .policy-contact-box { background: var(--paper-2); border-color: var(--paper-3); color: #a8a098; }
+[data-theme="dark"] .policy-contact-box strong { color: #e8e3db; }
+</style>
+{% endblock %}

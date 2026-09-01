@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+{% block title %}BlogSphere – Thoughtful stories for curious minds{% endblock %}
+{% block preload_image %}
+{% if carousel_articles and carousel_articles[0].featured_image %}
+<link rel="preload" as="image" href="{{ carousel_articles[0].featured_image }}">
+{% endif %}
+{% endblock %}
+{% block content %}
+<div class="page">
+
+  <!-- ═══ HERO CAROUSEL ═══ -->
+  {% if carousel_articles %}
+  <section class="hero" id="hero-carousel">
+
+    <!-- Background slides -->
+    <div class="hero-slides">
+      {% for article in carousel_articles %}
+      <div class="hero-slide {% if loop.first %}active{% endif %}" data-index="{{ loop.index0 }}">
+        <div class="hero-bg" style="background-image:url('{{ article.featured_image if article.featured_image else '' }}');"></div>
+        <div class="hero-overlay"></div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Content: bottom-left -->
+    <div class="hero-content-wrap">
+      {% for article in carousel_articles %}
+      <div class="hero-content {% if loop.first %}active{% endif %}" data-index="{{ loop.index0 }}">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-dot"></span>
+          <span>{{ article.category }}</span>
+          <span class="hero-eyebrow-sep">&middot;</span>
+          <span>Featured</span>
+        </div>
+        <h1 class="hero-title">{{ article.title | safe }}</h1>
+        <p class="hero-excerpt">{{ article.excerpt | truncate(130, true, '…') }}</p>
+        <div class="hero-meta-row">
+          <div class="hero-avatar">{{ article.author_initial }}</div>
+          <div class="hero-meta-text">
+            <span class="hero-author-name">{{ article.author }}</span>
+            <span class="hero-meta-sub">{{ article.date }} &middot; {{ article.read_time }} min read</span>
+          </div>
+          <a href="/article/{{ article.slug }}" class="hero-cta">
+            Read article
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Mid-height side arrows -->
+    <button class="hero-arrow hero-arrow--left" id="hero-prev" aria-label="Previous">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <button class="hero-arrow hero-arrow--right" id="hero-next" aria-label="Next">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+
+    <!-- Bottom controls: counter + dots -->
+    <div class="hero-controls-bar">
+      <span class="hero-slide-counter" id="hero-counter">
+        <strong>01</strong> / {{ '%02d' % (carousel_articles|length) }}
+      </span>
+      <div class="hero-dots">
+        {% for article in carousel_articles %}
+        <button class="hero-dot {% if loop.first %}active{% endif %}"
+                data-index="{{ loop.index0 }}"
+                aria-label="Slide {{ loop.index }}"></button>
+        {% endfor %}
+      </div>
+    </div>
+
+  </section>
+
+  {% else %}
+  <section class="hero hero--empty">
+    <div class="hero-overlay"></div>
+    <div class="hero-content-wrap">
+      <div class="hero-content active">
+        <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span><span>Welcome</span></div>
+        <h1 class="hero-title">Welcome to BlogSphere</h1>
+        <p class="hero-excerpt">Start publishing your first article from the admin dashboard.</p>
+        <div class="hero-meta-row">
+          <a href="/admin/new" class="hero-cta">Write your first post <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ═══ ARTICLES + FILTER ═══ -->
+  <section class="section" id="articles-section">
+    <div class="container">
+
+      <!-- Header row: title left, topic pills right, view-all link -->
+      <div class="articles-header">
+        <h2 class="section-title" id="section-title">Latest Articles</h2>
+        <div class="topic-pills" id="category-filters">
+          <button class="topic-pill active" data-category="all">All</button>
+          <button class="topic-pill" data-category="Technology">Technology</button>
+          <button class="topic-pill" data-category="Design">Design</button>
+          <button class="topic-pill" data-category="Finance">Finance</button>
+          <button class="topic-pill" data-category="Health">Health</button>
+          <button class="topic-pill" data-category="Productivity">Productivity</button>
+        </div>
+        <a class="section-link" href="/articles">View all &rarr;</a>
+      </div>
+
+      <div class="articles-grid" id="articles-grid">
+        {% for article in articles %}
+        <article class="article-card" onclick="location.href='/article/{{ article.slug }}'">
+          <div class="card-img-wrap">
+            {% if article.featured_image %}
+            <img src="{{ article.featured_image }}" alt="{{ article.title }}" loading="lazy"
+                 width="{{ article.featured_image_width | default(800, true) }}"
+                 height="{{ article.featured_image_height | default(450, true) }}">
+            {% else %}
+            <div class="card-img-ph">{{ article.category }}</div>
+            {% endif %}
+            <span class="card-badge">{{ article.category }}</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">{{ article.title }}</h3>
+            <p class="card-excerpt">{{ article.excerpt }}</p>
+            <div class="card-meta">
+              <span class="card-author">{{ article.author }}</span>
+              <span class="meta-sep">&middot;</span>
+              <span>{{ article.date }}</span>
+              <span class="meta-sep">&middot;</span>
+              <span class="card-readtime">
+                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                {{ article.read_time }} min
+              </span>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      <div class="load-more-wrap" id="load-more-container">
+        {% if total_articles > 8 %}
+        <button id="load-more-btn" class="btn-load-more">
+          Load more
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </button>
+        {% endif %}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ TRENDING ═══ -->
+  {% if trending %}
+  <section class="trending-section">
+    <div class="container">
+      <div class="trending-header">
+        <span class="trending-label">Trending now</span>
+      </div>
+      <div class="trending-grid">
+        {% for article in trending %}
+        <a class="trending-item" href="/article/{{ article.slug }}">
+          <span class="trending-num">{{ "%02d" % loop.index }}</span>
+          <div class="trending-body">
+            <span class="trending-cat">{{ article.category }}</span>
+            <span class="trending-title">{{ article.title }}</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+/* ── HERO CAROUSEL ── */
+(function () {
+  const slides   = document.querySelectorAll('.hero-slide');
+  const contents = document.querySelectorAll('.hero-content');
+  const dots     = document.querySelectorAll('.hero-dot');
+  const counter  = document.getElementById('hero-counter');
+  const prev     = document.getElementById('hero-prev');
+  const next     = document.getElementById('hero-next');
+  const total    = slides.length;
+  if (!total) return;
+  let cur = 0, timer;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function goTo(idx) {
+    slides[cur].classList.remove('active');
+    contents[cur] && contents[cur].classList.remove('active');
+    dots[cur]     && dots[cur].classList.remove('active');
+    cur = (idx + total) % total;
+    slides[cur].classList.add('active');
+    contents[cur] && contents[cur].classList.add('active');
+    dots[cur]     && dots[cur].classList.add('active');
+    if (counter) counter.innerHTML = '<strong>' + pad(cur + 1) + '</strong> / ' + pad(total);
+  }
+
+  function startTimer() { stopTimer(); if (total > 1) timer = setInterval(() => goTo(cur + 1), 6000); }
+  function stopTimer()  { clearInterval(timer); }
+
+  prev && prev.addEventListener('click', () => { goTo(cur - 1); startTimer(); });
+  next && next.addEventListener('click', () => { goTo(cur + 1); startTimer(); });
+  dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.index); startTimer(); }));
+
+  const hero = document.getElementById('hero-carousel');
+  if (hero) {
+    hero.addEventListener('mouseenter', stopTimer);
+    hero.addEventListener('mouseleave', startTimer);
+    let tx = 0;
+    hero.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    hero.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 44) { goTo(dx < 0 ? cur + 1 : cur - 1); startTimer(); }
+    }, { passive: true });
+  }
+
+  startTimer();
+})();
+
+/* ── ARTICLES + FILTER ── */
+let currentPage = 1, currentCategory = '', isLoading = false;
+
+function skelCards() {
+  return Array(4).fill(0).map(() => `
+    <div class="skel-card">
+      <div class="skel-img"></div>
+      <div class="skel-body">
+        <div class="skel-line w50"></div>
+        <div class="skel-line w100"></div>
+        <div class="skel-line w75"></div>
+      </div>
+    </div>`).join('');
+}
+
+function cardHTML(a) {
+  const img = a.featured_image
+    ? `<img src="${a.featured_image}" alt="${a.title}" loading="lazy" width="${a.featured_image_width || 800}" height="${a.featured_image_height || 450}">`
+    : `<div class="card-img-ph">${a.category}</div>`;
+  return `
+    <article class="article-card" onclick="location.href='/article/${a.slug}'">
+      <div class="card-img-wrap">${img}<span class="card-badge">${a.category}</span></div>
+      <div class="card-body">
+        <h3 class="card-title">${a.title}</h3>
+        <p class="card-excerpt">${a.excerpt}</p>
+        <div class="card-meta">
+          <span class="card-author">${a.author}</span>
+          <span class="meta-sep">·</span>
+          <span>${a.date}</span>
+          <span class="meta-sep">·</span>
+          <span class="card-readtime"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>${a.read_time} min</span>
+        </div>
+      </div>
+    </article>`;
+}
+
+function fetchArticles(page, cat, append) {
+  if (isLoading) return;
+  isLoading = true;
+  const grid = document.getElementById('articles-grid');
+  const lmc  = document.getElementById('load-more-container');
+
+  if (!append) {
+    grid.innerHTML = skelCards();
+    lmc.innerHTML = '';
+  } else {
+    const sk = document.createElement('div');
+    sk.id = 'skel-append'; sk.style.display = 'contents';
+    sk.innerHTML = skelCards(); grid.appendChild(sk);
+  }
+
+  fetch(`/api/articles?page=${page}&category=${encodeURIComponent(cat)}`)
+    .then(r => r.json())
+    .then(data => {
+      if (!append) grid.innerHTML = '';
+      else { const s = document.getElementById('skel-append'); if(s) s.remove(); }
+
+      if (!data.articles.length && !append) {
+        grid.innerHTML = '<p class="no-results">No articles in this category yet.</p>';
+        lmc.innerHTML = ''; isLoading = false; return;
+      }
+
+      data.articles.forEach(a => {
+        const el = document.createElement('div');
+        el.innerHTML = cardHTML(a);
+        grid.appendChild(el.firstElementChild);
+      });
+
+      const title = document.getElementById('section-title');
+      if (title) title.textContent = currentCategory
+        ? currentCategory + (data.total ? ' · ' + data.total + ' article' + (data.total !== 1 ? 's' : '') : '')
+        : 'Latest Articles';
+
+      if (data.has_next) {
+        lmc.innerHTML = '<button id="load-more-btn" class="btn-load-more">Load more <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg></button>';
+        document.getElementById('load-more-btn').addEventListener('click', () => {
+          currentPage++; fetchArticles(currentPage, currentCategory, true);
+        });
+      } else {
+        lmc.innerHTML = '';
+      }
+      isLoading = false;
+    })
+    .catch(() => { isLoading = false; });
+}
+
+document.querySelectorAll('#category-filters .topic-pill').forEach(pill => {
+  pill.addEventListener('click', function () {
+    document.querySelectorAll('#category-filters .topic-pill').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    currentCategory = this.dataset.category === 'all' ? '' : this.dataset.category;
+    currentPage = 1;
+    fetchArticles(1, currentCategory, false);
+  });
+});
+
+const lmb = document.getElementById('load-more-btn');
+if (lmb) lmb.addEventListener('click', () => { currentPage++; fetchArticles(currentPage, currentCategory, true); });
+</script>
+{% endblock %}
