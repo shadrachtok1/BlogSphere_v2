@@ -1,6 +1,7 @@
 import os
 import uuid
 import re
+import shutil
 import requests as http_requests
 from datetime import datetime
 from pathlib import Path
@@ -87,10 +88,44 @@ def inject_current_year():
 
 # ── Content folders ─────────────────────────────────────
 BASE_DIR = Path(__file__).parent
-ARTICLES_DIR = Path(os.getenv("ARTICLES_DIR", str(BASE_DIR / "content" / "articles")))
-UPLOAD_FOLDER = Path(os.getenv("UPLOAD_FOLDER", str(BASE_DIR / "static" / "uploads")))
+# The content shipped in the git repo — this is the permanent "seed" copy,
+# always at these fixed locations regardless of where the live app is
+# actually reading/writing from.
+BUNDLED_ARTICLES_DIR = BASE_DIR / "content" / "articles"
+BUNDLED_UPLOAD_DIR = BASE_DIR / "static" / "uploads"
+
+ARTICLES_DIR = Path(os.getenv("ARTICLES_DIR", str(BUNDLED_ARTICLES_DIR)))
+UPLOAD_FOLDER = Path(os.getenv("UPLOAD_FOLDER", str(BUNDLED_UPLOAD_DIR)))
 ARTICLES_DIR.mkdir(parents=True, exist_ok=True)
 UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
+
+def _seed_from_bundle(target_dir: Path, bundle_dir: Path):
+    """
+    If target_dir points somewhere other than the bundled seed location
+    (e.g. a freshly-mounted, still-empty Railway volume) and is currently
+    empty, copy the bundled files into it once. Safe to call on every
+    startup — it's a no-op if target_dir already has content, so it will
+    never overwrite anything created or edited after the first deploy.
+    """
+    try:
+        if target_dir.resolve() == bundle_dir.resolve():
+            return  # not using a separate volume (e.g. local dev) — nothing to seed
+        if any(target_dir.iterdir()):
+            return  # already seeded, or already has real content — leave it alone
+        if not bundle_dir.exists():
+            return
+        copied = 0
+        for item in bundle_dir.iterdir():
+            if item.is_file():
+                shutil.copy2(item, target_dir / item.name)
+                copied += 1
+        if copied:
+            print(f"[seed] Copied {copied} file(s) from {bundle_dir} to {target_dir}")
+    except Exception as e:
+        print(f"[seed] Warning: could not seed {target_dir} from {bundle_dir}: {e}")
+
+_seed_from_bundle(ARTICLES_DIR, BUNDLED_ARTICLES_DIR)
+_seed_from_bundle(UPLOAD_FOLDER, BUNDLED_UPLOAD_DIR)
 
 # Serve uploaded images from wherever UPLOAD_FOLDER actually lives (e.g. a
 # mounted Railway volume outside the app's static/ folder), while keeping
