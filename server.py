@@ -87,10 +87,20 @@ def inject_current_year():
 
 # ── Content folders ─────────────────────────────────────
 BASE_DIR = Path(__file__).parent
-ARTICLES_DIR = BASE_DIR / "content" / "articles"
-UPLOAD_FOLDER = BASE_DIR / "static" / "uploads"
+ARTICLES_DIR = Path(os.getenv("ARTICLES_DIR", str(BASE_DIR / "content" / "articles")))
+UPLOAD_FOLDER = Path(os.getenv("UPLOAD_FOLDER", str(BASE_DIR / "static" / "uploads")))
 ARTICLES_DIR.mkdir(parents=True, exist_ok=True)
 UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
+
+# Serve uploaded images from wherever UPLOAD_FOLDER actually lives (e.g. a
+# mounted Railway volume outside the app's static/ folder), while keeping
+# existing /static/uploads/<file> URLs working unchanged everywhere else
+# in the site (articles, templates, etc.). This route is more specific
+# than Flask's built-in /static/<path:filename> rule, so it takes priority
+# for anything under /static/uploads/ specifically.
+@app.route("/static/uploads/<path:filename>")
+def serve_uploaded_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
