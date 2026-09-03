@@ -14,19 +14,13 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from pytrends.request import TrendReq
 
-import smtplib
-from email.mime.text import MIMEText
-
 # ── Load environment ────────────────────────────────────
 load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
-SMTP_HOST = os.getenv("SMTP_HOST")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USERNAME = os.getenv("SMTP_USERNAME")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 CONTACT_RECEIVER_EMAIL = os.getenv("CONTACT_RECEIVER_EMAIL")
-MAIL_FROM = os.getenv("MAIL_FROM", SMTP_USERNAME)
+MAIL_FROM = os.getenv("MAIL_FROM")
 
 # ── Login rate limiting ──────────────────────────────────
 # Simple in-memory tracker: blocks an IP after too many failed admin
@@ -425,16 +419,22 @@ def about():
 
 def send_contact_email(name, email, subject, message):
     body = f"From: {name} <{email}>\n\n{message}"
-    msg = MIMEText(body)
-    msg["Subject"] = f"[Contact Form] {subject}"
-    msg["From"] = MAIL_FROM
-    msg["To"] = CONTACT_RECEIVER_EMAIL
-    msg["Reply-To"] = email  # so hitting "reply" goes to the visitor, not yourself
-
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-        server.starttls()
-        server.login(SMTP_USERNAME, SMTP_PASSWORD)
-        server.sendmail(MAIL_FROM, [CONTACT_RECEIVER_EMAIL], msg.as_string())
+    response = http_requests.post(
+        "https://api.resend.com/emails",
+        headers={
+            "Authorization": f"Bearer {RESEND_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "from": MAIL_FROM,
+            "to": [CONTACT_RECEIVER_EMAIL],
+            "subject": f"[Contact Form] {subject}",
+            "text": body,
+            "reply_to": email,  # so hitting "reply" goes to the visitor, not yourself
+        },
+        timeout=10,  # fail fast rather than hang and block the worker
+    )
+    response.raise_for_status()
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
