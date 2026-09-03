@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Blogsphere Content Assistant – powered by GitHub Models (free tier)
-Uses the OpenAI-compatible GitHub Models endpoint.
+Blogsphere Content Assistant – powered by Google Gemini (free tier)
+Uses the OpenAI-compatible Gemini endpoint.
 """
 
 import os
@@ -10,7 +10,7 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
-# ── OpenAI SDK (used with GitHub Models base URL) ──
+# ── OpenAI SDK (used with Gemini's OpenAI-compatible base URL) ──
 try:
     from openai import OpenAI
 except ImportError:
@@ -37,21 +37,20 @@ try:
 except ImportError:
     pass
 
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-# ── GitHub Models client (OpenAI-compatible) ──
-GITHUB_MODELS_BASE = "https://models.github.ai/inference/chat/completions"
+# ── Gemini client (OpenAI-compatible) ──
+GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
 def create_client():
-    """Return an OpenAI client pointed at GitHub Models."""
-    if not GITHUB_TOKEN:
-        print("❌ GITHUB_TOKEN not found. Add it to your .env file.")
-        print("   Get one at: https://github.com/settings/tokens")
-        print("   (Models → Access: Read-only)")
+    """Return an OpenAI client pointed at Gemini's OpenAI-compatible endpoint."""
+    if not GEMINI_API_KEY:
+        print("❌ GEMINI_API_KEY not found. Add it to your .env file.")
+        print("   Get one at: https://aistudio.google.com")
         sys.exit(1)
     return OpenAI(
-        base_url="https://models.github.ai/inference",
-        api_key=GITHUB_TOKEN,
+        base_url=GEMINI_BASE_URL,
+        api_key=GEMINI_API_KEY,
     )
 
 # ────────────────────────────────────────────────────────
@@ -80,7 +79,7 @@ def gather_research(keyword, num_sources=5):
     return sources
 
 def generate_outline(topic, research_text):
-    """Generate an article outline via GitHub Models."""
+    """Generate an article outline via Gemini."""
     client = create_client()
     prompt = f"""You are a helpful assistant for a writer.
 Based on the following research about "{topic}", create a detailed article outline
@@ -91,7 +90,7 @@ Research notes:
 
 Outline:"""
     response = client.chat.completions.create(
-        model="openai/gpt-4o",
+        model="gemini-3.8-flash",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.7,
     )
@@ -99,7 +98,7 @@ Outline:"""
     return [line.strip() for line in outline_text.split("\n") if line.strip()]
 
 def generate_draft(topic, outline, research_text):
-    """Generate a first draft via GitHub Models."""
+    """Generate a first draft via Gemini."""
     client = create_client()
     outline_str = "\n".join(outline)
     prompt = f"""Write a detailed first draft of an article on "{topic}".
@@ -115,7 +114,7 @@ Research:
 
 Draft (at least 800 words):"""
     response = client.chat.completions.create(
-        model="openai/gpt-4o",
+        model="gemini-3.8-flash",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.8,
         max_tokens=2000,
@@ -123,7 +122,7 @@ Draft (at least 800 words):"""
     return response.choices[0].message.content.strip()
 
 def main():
-    parser = argparse.ArgumentParser(description="Blogsphere Content Assistant (GitHub Models)")
+    parser = argparse.ArgumentParser(description="Blogsphere Content Assistant (Gemini)")
     parser.add_argument("--topic", type=str, help="Article topic / keyword")
     parser.add_argument("--niche", type=str, default="technology", help="Niche for trending topics")
     parser.add_argument("--trending", action="store_true", help="Show trending topics and exit")
