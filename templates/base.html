@@ -32,9 +32,12 @@
 
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon"   href="/static/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180"    href="/static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16"   href="/static/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32"   href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48"   href="/static/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96"   href="/static/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180"      href="/static/apple-touch-icon.png">
 
     <!-- Fonts: preconnect to both domains, swap so text renders immediately -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,6 +59,26 @@
         }
         document.documentElement.setAttribute('data-theme', saved);
       })();
+    </script>
+
+    <!-- Structured data: helps Google identify BlogSphere as an Organization/WebSite for branded search -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "BlogSphere",
+      "url": "https://blogsphere.ng",
+      "logo": "https://blogsphere.ng/static/favicon-192x192.png",
+      "sameAs": []
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "BlogSphere",
+      "url": "https://blogsphere.ng"
+    }
     </script>
 </head>
 <body>
