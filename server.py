@@ -16,7 +16,7 @@ from pytrends.request import TrendReq
 
 # ── Load environment ────────────────────────────────────
 load_dotenv()
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 CONTACT_RECEIVER_EMAIL = os.getenv("CONTACT_RECEIVER_EMAIL")
@@ -146,13 +146,13 @@ if not ADMIN_USERNAME or not ADMIN_PASSWORD:
         "and edit or delete your content."
     )
 
-# ── GitHub Models client ────────────────────────────────
+# ── Gemini (OpenAI-compatible) client ───────────────────
 def get_models_client():
-    if not GITHUB_TOKEN:
+    if not GEMINI_API_KEY:
         return None
     return OpenAI(
-        base_url="https://models.github.ai/inference",
-        api_key=GITHUB_TOKEN,
+        base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+        api_key=GEMINI_API_KEY,
     )
 
 # ── Markdown to HTML ────────────────────────────────────
@@ -828,7 +828,7 @@ RULES:
 Return ONLY the section titles, one per line, with no extra commentary."""
     try:
         resp = client.chat.completions.create(
-            model="openai/gpt-4o",
+            model="gemini-3.8-flash",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
         )
@@ -862,7 +862,7 @@ Outline:
 Draft (at least 800 words):"""
     try:
         resp = client.chat.completions.create(
-            model="openai/gpt-4o",
+            model="gemini-3.8-flash",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.8,
             max_tokens=2000,
