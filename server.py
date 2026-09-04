@@ -22,6 +22,11 @@ RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 CONTACT_RECEIVER_EMAIL = os.getenv("CONTACT_RECEIVER_EMAIL")
 MAIL_FROM = os.getenv("MAIL_FROM")
 
+# Custom admin URL prefix (e.g. "Sheddo_is_Admin7" instead of "admin"),
+# set via env var so it isn't hardcoded in the public repo.
+# Falls back to "admin" if not set, so local dev still works out of the box.
+ADMIN_PATH = os.getenv("ADMIN_PATH", "admin").strip("/")
+
 # ── Login rate limiting ──────────────────────────────────
 # Simple in-memory tracker: blocks an IP after too many failed admin
 # login attempts within a time window. Note: this state lives in a
@@ -78,7 +83,7 @@ app.jinja_env.filters['slugify'] = custom_slugify
 
 @app.context_processor
 def inject_current_year():
-    return {"current_year": datetime.now().year, "now": datetime.now()}
+    return {"current_year": datetime.now().year, "now": datetime.now(), "admin_path": ADMIN_PATH}
 
 # ── Content folders ─────────────────────────────────────
 BASE_DIR = Path(__file__).parent
@@ -569,7 +574,7 @@ def api_search():
 # ADMIN ROUTES
 # ══════════════════════════════════════════════════════════
 
-@app.route("/admin")
+@app.route(f"/{ADMIN_PATH}")
 @admin_required
 def admin_dashboard():
     articles = list_articles()
@@ -582,7 +587,7 @@ def admin_dashboard():
     }
     return render_template("admin/dashboard.html", articles=articles, stats=stats)
 
-@app.route("/admin/login", methods=["GET", "POST"])
+@app.route(f"/{ADMIN_PATH}/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
         client_ip = _get_client_ip()
@@ -607,18 +612,18 @@ def admin_login():
                 flash("Too many failed login attempts. Please try again in 15 minutes.", "danger")
     return render_template("admin/login.html")
 
-@app.route("/admin/logout")
+@app.route(f"/{ADMIN_PATH}/logout")
 def admin_logout():
     session.pop("admin_logged_in", None)
     flash("Logged out.", "info")
     return redirect(url_for("admin_login"))
 
-@app.route("/admin/new")
+@app.route(f"/{ADMIN_PATH}/new")
 @admin_required
 def admin_new_article():
     return render_template("admin/editor.html", article=None, mode="new")
 
-@app.route("/admin/edit/<slug>")
+@app.route(f"/{ADMIN_PATH}/edit/<slug>")
 @admin_required
 def admin_edit(slug):
     article = load_article(slug)
@@ -627,7 +632,7 @@ def admin_edit(slug):
         return redirect(url_for("admin_dashboard"))
     return render_template("admin/editor.html", article=article, mode="edit")
 
-@app.route("/admin/save", methods=["POST"])
+@app.route(f"/{ADMIN_PATH}/save", methods=["POST"])
 @admin_required
 def admin_save():
     slug = request.form.get("slug", "").strip()
@@ -667,7 +672,7 @@ def admin_save():
     flash("Article saved successfully.", "success")
     return redirect(url_for("admin_edit", slug=slug))
 
-@app.route("/admin/delete/<slug>")
+@app.route(f"/{ADMIN_PATH}/delete/<slug>")
 @admin_required
 def admin_delete(slug):
     file = ARTICLES_DIR / f"{slug}.md"
@@ -727,7 +732,7 @@ def process_and_save_image(file_obj, original_name):
     return unique_name, width, height, image_url
 
 
-@app.route("/admin/list-images")
+@app.route(f"/{ADMIN_PATH}/list-images")
 @admin_required
 def list_images():
     images = []
@@ -749,7 +754,7 @@ def list_images():
             })
     return jsonify(images)
 
-@app.route("/admin/delete-image", methods=["POST"])
+@app.route(f"/{ADMIN_PATH}/delete-image", methods=["POST"])
 @admin_required
 def delete_image():
     filename = request.json.get("filename")
@@ -761,7 +766,7 @@ def delete_image():
         return jsonify({"success": True})
     return jsonify({"error": "File not found"}), 404
 
-@app.route("/admin/upload-image", methods=["POST"])
+@app.route(f"/{ADMIN_PATH}/upload-image", methods=["POST"])
 @admin_required
 def upload_image():
     if 'file' not in request.files:
@@ -774,12 +779,12 @@ def upload_image():
     _, width, height, image_url = process_and_save_image(file, file.filename)
     return jsonify({"url": image_url, "width": width, "height": height})
 
-@app.route("/admin/upload-featured", methods=["POST"])
+@app.route(f"/{ADMIN_PATH}/upload-featured", methods=["POST"])
 @admin_required
 def upload_featured():
     return upload_image()
 
-@app.route("/admin/upload-via-url", methods=["POST"])
+@app.route(f"/{ADMIN_PATH}/upload-via-url", methods=["POST"])
 @admin_required
 def upload_via_url():
     image_url = request.json.get("url")
@@ -806,7 +811,7 @@ def upload_via_url():
         return jsonify({"error": str(e)}), 400
 
 # ── Assistant API endpoints ─────────────────────────────
-@app.route("/admin/generate-outline", methods=["POST"])
+@app.route(f"/{ADMIN_PATH}/generate-outline", methods=["POST"])
 @admin_required
 def ajax_generate_outline():
     topic = request.json.get("topic")
@@ -836,7 +841,7 @@ Return ONLY the section titles, one per line, with no extra commentary."""
     except Exception as e:
         return {"error": str(e)}, 500
 
-@app.route("/admin/generate-draft", methods=["POST"])
+@app.route(f"/{ADMIN_PATH}/generate-draft", methods=["POST"])
 @admin_required
 def ajax_generate_draft():
     data = request.json
@@ -871,7 +876,7 @@ Draft (at least 800 words):"""
     except Exception as e:
         return {"error": str(e)}, 500
 
-@app.route("/admin/trends")
+@app.route(f"/{ADMIN_PATH}/trends")
 @admin_required
 def ajax_trending():
     niche = request.args.get("niche", "technology")
@@ -976,7 +981,7 @@ def robots():
     base = request.host_url.rstrip('/')
     content = f"""User-agent: *
 Allow: /
-Disallow: /admin
+Disallow: /{ADMIN_PATH}
 Disallow: /api/
 
 Sitemap: {base}/sitemap.xml

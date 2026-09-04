@@ -233,11 +233,11 @@ td:first-child{color:var(--text);font-weight:500;}
 
   <div class="sb-section">
     <div class="sb-section-label">Workspace</div>
-    <a class="sb-link active" href="/admin">
+    <a class="sb-link active" href="/{{ admin_path }}">
       <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
       Dashboard
     </a>
-    <a class="sb-link" href="/admin/new">
+    <a class="sb-link" href="/{{ admin_path }}/new">
       <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7h14"/></svg>
       New Article
       <span class="sb-badge">+</span>
@@ -264,7 +264,7 @@ td:first-child{color:var(--text);font-weight:500;}
       <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       View Site
     </a>
-    <a class="sb-link" href="/admin/logout">
+    <a class="sb-link" href="/{{ admin_path }}/logout">
       <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
       Logout
     </a>
@@ -277,7 +277,7 @@ td:first-child{color:var(--text);font-weight:500;}
         <div class="sb-user-name">Admin</div>
         <div class="sb-user-role">superuser</div>
       </div>
-      <a href="/admin/logout" class="sb-logout" style="text-decoration:none">
+      <a href="/{{ admin_path }}/logout" class="sb-logout" style="text-decoration:none">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
       </a>
     </div>
@@ -293,7 +293,7 @@ td:first-child{color:var(--text);font-weight:500;}
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
         View Site
       </a>
-      <a href="/admin/new" class="btn btn-primary">
+      <a href="/{{ admin_path }}/new" class="btn btn-primary">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14m-7-7h14"/></svg>
         New Article
       </a>
@@ -344,7 +344,7 @@ td:first-child{color:var(--text);font-weight:500;}
       <div class="panel">
         <div class="panel-header">
           <span class="panel-title">Recent Articles</span>
-          <a href="/admin/new" class="btn btn-ghost btn-xs">+ New</a>
+          <a href="/{{ admin_path }}/new" class="btn btn-ghost btn-xs">+ New</a>
         </div>
         <div class="panel-body">
           {% if stats.recent_articles %}
@@ -364,13 +364,13 @@ td:first-child{color:var(--text);font-weight:500;}
               </div>
               <span class="cat-badge {{ article.category|lower|replace(' ','') }}">{{ article.category }}</span>
               <div class="article-actions">
-                <a href="/admin/edit/{{ article.slug }}" class="btn btn-ghost btn-xs">Edit</a>
+                <a href="/{{ admin_path }}/edit/{{ article.slug }}" class="btn btn-ghost btn-xs">Edit</a>
                 <a href="/article/{{ article.slug }}" class="btn btn-ghost btn-xs" target="_blank">↗</a>
               </div>
             </div>
             {% endfor %}
           {% else %}
-            <div style="padding:28px 20px;text-align:center;color:var(--text3);font-size:13px;">No articles yet. <a href="/admin/new" style="color:var(--accent);text-decoration:none;">Write your first →</a></div>
+            <div style="padding:28px 20px;text-align:center;color:var(--text3);font-size:13px;">No articles yet. <a href="/{{ admin_path }}/new" style="color:var(--accent);text-decoration:none;">Write your first →</a></div>
           {% endif %}
         </div>
       </div>
@@ -469,9 +469,9 @@ td:first-child{color:var(--text);font-weight:500;}
               <td><span class="modified-date">{{ article.modified }}</span></td>
               <td>
                 <div class="td-actions">
-                  <a href="/admin/edit/{{ article.slug }}" class="btn btn-ghost btn-xs">Edit</a>
+                  <a href="/{{ admin_path }}/edit/{{ article.slug }}" class="btn btn-ghost btn-xs">Edit</a>
                   <a href="/article/{{ article.slug }}" class="btn btn-ghost btn-xs" target="_blank">View</a>
-                  <a href="/admin/delete/{{ article.slug }}" class="btn btn-danger btn-xs" onclick="return confirm('Delete this article? This cannot be undone.')">Delete</a>
+                  <a href="/{{ admin_path }}/delete/{{ article.slug }}" class="btn btn-danger btn-xs" onclick="return confirm('Delete this article? This cannot be undone.')">Delete</a>
                 </div>
               </td>
             </tr>
@@ -554,10 +554,10 @@ async function fetchTrends() {
   const container = document.getElementById('trending-container');
   container.innerHTML = '<div class="loading-state"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>';
   try {
-    const res = await fetch(`/admin/trends?niche=${niche}`);
+    const res = await fetch(`/{{ admin_path }}/trends?niche=${niche}`);
     const data = await res.json();
     container.innerHTML = data.trending.map((t,i) => `
-      <div class="trend-item" onclick="location.href='/admin/new?topic=${encodeURIComponent(t)}'">
+      <div class="trend-item" onclick="location.href='/{{ admin_path }}/new?topic=${encodeURIComponent(t)}'">
         <span class="trend-num">${String(i+1).padStart(2,'0')}</span>
         <span class="trend-text">${t}</span>
         <span class="trend-arrow">→</span>
@@ -571,7 +571,7 @@ async function fetchTrends() {
 function goToEditor(e) {
   e.preventDefault();
   const topic = document.getElementById('quick-topic').value.trim();
-  location.href = topic ? `/admin/new?topic=${encodeURIComponent(topic)}` : '/admin/new';
+  location.href = topic ? `/{{ admin_path }}/new?topic=${encodeURIComponent(topic)}` : '/{{ admin_path }}/new';
 }
 
 fetchTrends();
@@ -581,7 +581,7 @@ async function openMediaGallery() {
   document.getElementById('media-modal').classList.add('open');
   const container = document.getElementById('gallery-container');
   container.innerHTML = '<div style="color:var(--text3);font-size:12px;font-family:var(--mono)">Loading…</div>';
-  const r = await fetch('/admin/list-images');
+  const r = await fetch('/{{ admin_path }}/list-images');
   const images = await r.json();
   if (!images.length) { container.innerHTML = '<div style="color:var(--text3);font-size:12px;font-family:var(--mono)">No images yet.</div>'; return; }
   container.innerHTML = images.map(img => `
@@ -594,7 +594,7 @@ async function openMediaGallery() {
 function closeMediaGallery() { document.getElementById('media-modal').classList.remove('open'); }
 async function deleteImage(filename) {
   if (!confirm(`Delete ${filename}?`)) return;
-  await fetch('/admin/delete-image', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({filename}) });
+  await fetch('/{{ admin_path }}/delete-image', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({filename}) });
   openMediaGallery(); // refresh
 }
 </script>
