@@ -17,7 +17,7 @@
     <meta property="og:title"       content="{% block og_title %}{% block title_inner %}BlogSphere{% endblock %}{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and culture.{% endblock %}">
     <meta property="og:url"         content="{{ request.url }}">
-    <meta property="og:image"       content="{% block og_image %}{{ request.host_url }}static/logo.png{% endblock %}">
+    <meta property="og:image"       content="{% block og_image %}{{ request.host_url }}static/og-image.png{% endblock %}">
     <meta property="og:image:width"  content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale"      content="en_US">
@@ -27,7 +27,7 @@
     <meta name="twitter:site"        content="@blogsphere">
     <meta name="twitter:title"       content="{% block tw_title %}BlogSphere{% endblock %}">
     <meta name="twitter:description" content="{% block tw_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and culture.{% endblock %}">
-    <meta name="twitter:image"       content="{% block tw_image %}{{ request.host_url }}static/logo.png{% endblock %}">
+    <meta name="twitter:image"       content="{% block tw_image %}{{ request.host_url }}static/og-image.png{% endblock %}">
 
     {% block extra_head %}{% endblock %}
 
