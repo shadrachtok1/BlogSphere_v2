@@ -968,7 +968,7 @@ def rss_feed():
 <channel>
   <title>BlogSphere</title>
   <link>{base}/</link>
-  <description>Independent journalism and thoughtful perspectives on technology, design, finance, health, and culture.</description>
+  <description>Independent journalism and thoughtful perspectives on technology, design, finance, health, and productivity.</description>
   <lastBuildDate>{now}</lastBuildDate>
 {chr(10).join(items)}
 </channel>
