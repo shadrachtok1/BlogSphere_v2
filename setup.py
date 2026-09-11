@@ -848,7 +848,7 @@ base_html = """<!DOCTYPE html>
   <div class="footer-top">
     <div class="footer-brand">
       <div class="nav-logo" style="cursor:default"><span>B</span> BlogSphere</div>
-      <p>Independent journalism and thoughtful perspectives on technology, culture, and the world we're building together.</p>
+      <p>Independent journalism and thoughtful perspectives on technology, design, finance, health, productivity and the world we're building together.</p>
     </div>
     <div class="footer-col">
       <h4>Topics</h4>
@@ -1121,12 +1121,13 @@ about_html = """{% extends "base.html" %}
     <div class="values-grid">
       <div class="value-card"><h4>Technology</h4><p>AI, software, digital culture and the tools reshaping work and life.</p></div>
       <div class="value-card"><h4>Finance</h4><p>Personal finance, investing, and economic ideas that actually matter.</p></div>
-      <div class="value-card"><h4>Health & Science</h4><p>Evidence-based writing on the body, mind, and cutting-edge research.</p></div>
-      <div class="value-card"><h4>Design & Culture</h4><p>How things are made, why aesthetics matter, and creative thinking.</p></div>
+      <div class="value-card"><h4>Health</h4><p>Evidence-based writing on the body, mind, and cutting-edge research.</p></div>
+      <div class="value-card"><h4>Design</h4><p>How things are made, why aesthetics matter, and creative thinking.</p></div>
+      <div class="value-card"><h4>Productivity</h4><p>Systems, habits, and tools for doing meaningful work without burning out.</p></div>
     </div>
-    <h2>Advertising & independence</h2>
-    <p>BlogSphere is supported by Google AdSense advertising and optional reader subscriptions. Our editorial decisions are entirely independent of our advertising relationships. We do not accept sponsored articles, and no advertiser has ever influenced a single word of our editorial content.</p>
-    <p>If you'd like to work with us, please reach out via the contact page.</p>
+   <h2>Advertising & independence</h2>
+   <p>BlogSphere is a free, ad-supported publication. We plan to work with Google AdSense to display advertising and may explore other revenue options in the future. Whatever our advertising relationships look like, our editorial decisions remain entirely independent of them and no advertiser will ever influence a single word of our editorial content.</p>
+   <p>If you'd like to work with us, please reach out via the contact page.</p>
   </div>
 </div>
 {% endblock %}"""

@@ -15,7 +15,7 @@
     <title>{% block title %}BlogSphere{% endblock %}</title>
 
     <!-- ── SEO & Social meta ── -->
-    <meta name="description" content="{% block meta_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and culture.{% endblock %}">
+    <meta name="description" content="{% block meta_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and productivity.{% endblock %}">
     <meta name="robots" content="index, follow">
     <meta name="google-site-verification" content="a_Vwfc8zt7m4NRpaIAlCeg-MdMXf6uMMxfQ2jdObb9w" />
     <link rel="canonical" href="{% block canonical %}{{ request.url }}{% endblock %}">
@@ -24,7 +24,7 @@
     <meta property="og:type"        content="{% block og_type %}website{% endblock %}">
     <meta property="og:site_name"   content="BlogSphere">
     <meta property="og:title"       content="{% block og_title %}{% block title_inner %}BlogSphere{% endblock %}{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and culture.{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and productivity.{% endblock %}">
     <meta property="og:url"         content="{{ request.url }}">
     <meta property="og:image"       content="{% block og_image %}{{ request.host_url }}static/og-image.png{% endblock %}">
     <meta property="og:image:width"  content="1200">
@@ -35,7 +35,7 @@
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:site"        content="@blogsphere">
     <meta name="twitter:title"       content="{% block tw_title %}BlogSphere{% endblock %}">
-    <meta name="twitter:description" content="{% block tw_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and culture.{% endblock %}">
+    <meta name="twitter:description" content="{% block tw_description %}Independent journalism and thoughtful perspectives on technology, design, finance, health, and productivity.{% endblock %}">
     <meta name="twitter:image"       content="{% block tw_image %}{{ request.host_url }}static/og-image.png{% endblock %}">
 
     {% block extra_head %}{% endblock %}
@@ -180,7 +180,7 @@
           <img src="/static/logo.png" alt="BlogSphere" class="footer-logo-img">
           <span class="footer-logo-name">BlogSphere</span>
         </a>
-        <p>Independent journalism and thoughtful perspectives on technology, culture, and the world we're building together.</p>
+        <p>Independent journalism and thoughtful perspectives on technology, design, finance, health, productivity and the world we're building together.</p>
         <!-- Social icons -->
         <div class="footer-social">
           <a href="/rss.xml" class="social-icon" aria-label="RSS feed">
