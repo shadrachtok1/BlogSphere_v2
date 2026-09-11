@@ -968,7 +968,7 @@ def rss_feed():
 <channel>
   <title>BlogSphere</title>
   <link>{base}/</link>
-  <description>Independent journalism and thoughtful perspectives on technology, design, finance, health, and productivity.</description>
+  <description>Independent journalism and thoughtful perspectives on technology, design, finance, health, and culture.</description>
   <lastBuildDate>{now}</lastBuildDate>
 {chr(10).join(items)}
 </channel>
@@ -986,6 +986,12 @@ Disallow: /api/
 
 Sitemap: {base}/sitemap.xml
 """
+    return app.response_class(content, mimetype='text/plain')
+
+# ── ads.txt ───────────────────────────────────────────────
+@app.route("/ads.txt")
+def ads_txt():
+    content = "google.com, pub-2041187550876537, DIRECT, f08c47fec0942fa0\n"
     return app.response_class(content, mimetype='text/plain')
 
 @app.route("/favicon.ico")
